@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.9.0"
-    application
-}
+    kotlin("plugin.serialization") version "1.9.0"
+    application}
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
@@ -12,6 +12,11 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 }
 
 tasks.test {

@@ -1,3 +1,6 @@
-fun main(args: Array<String>) {
+import javax.swing.SwingUtilities
+
+fun main() {
+    SwingUtilities.invokeLater { MainFrame() }
 
 }
