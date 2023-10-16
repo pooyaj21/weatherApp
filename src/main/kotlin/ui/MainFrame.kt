@@ -2,6 +2,7 @@ import core.ApiManager
 import kotlinx.coroutines.runBlocking
 import ui.loading.LoadingPanelController
 import ui.loading.LoadingPanelView
+import ui.mainPage.MainPageView
 import ui.startedPanel.StartedPanelController
 import ui.startedPanel.StartedPanelView
 import java.awt.Dimension
@@ -11,6 +12,7 @@ import javax.swing.JFrame
 class MainFrame : JFrame("SkyCast") {
     private lateinit var loadingPanel: LoadingPanelView
     private val startedPanel: StartedPanelView
+    private lateinit var mainPage: MainPageView
 
     init {
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
@@ -19,17 +21,19 @@ class MainFrame : JFrame("SkyCast") {
         isVisible = true
 
 
-        startedPanel = StartedPanelView(StartedPanelController(), object:StartedPanelView.EventListener{
+        startedPanel = StartedPanelView(StartedPanelController(), object : StartedPanelView.EventListener {
             override fun nextPage() {
                 loadingPanel = LoadingPanelView(LoadingPanelController())
                 loadingPanel.setBounds(0, 0, width, height)
-                add(loadingPanel)
+//                add(loadingPanel)
 
             }
         })
-
+        mainPage = MainPageView()
+//        mainPage.
+        add(mainPage)
         startedPanel.setBounds(0, 0, width, height)
-        add(startedPanel)
+//        add(startedPanel)
 
 
     }
