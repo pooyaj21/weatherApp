@@ -21,6 +21,6 @@ fun convertUTCToLocalHour(utcTimestamp: Long, offsetInSeconds: Int): String {
     val instant = Instant.ofEpochMilli(utcTimestamp*1000)
     val offset = ZoneOffset.ofTotalSeconds(offsetInSeconds)
     val offsetDateTime = instant.atOffset(offset)
-    val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
     return formatter.format(offsetDateTime)
 }

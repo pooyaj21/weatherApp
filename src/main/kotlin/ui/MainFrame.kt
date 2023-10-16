@@ -1,12 +1,11 @@
-import core.ApiManager
-import kotlinx.coroutines.runBlocking
 import ui.loading.LoadingPanelController
 import ui.loading.LoadingPanelView
+import ui.mainPage.MainPageController
 import ui.mainPage.MainPageView
+import ui.startedPanel.EventListener
 import ui.startedPanel.StartedPanelController
 import ui.startedPanel.StartedPanelView
 import java.awt.Dimension
-import java.awt.event.ActionListener
 import javax.swing.JFrame
 
 class MainFrame : JFrame("SkyCast") {
@@ -21,21 +20,22 @@ class MainFrame : JFrame("SkyCast") {
         isVisible = true
 
 
-        startedPanel = StartedPanelView(StartedPanelController(), object : StartedPanelView.EventListener {
+        startedPanel = StartedPanelView(StartedPanelController(), object : EventListener {
             override fun nextPage() {
-                loadingPanel = LoadingPanelView(LoadingPanelController())
+                loadingPanel = LoadingPanelView(LoadingPanelController(), object : EventListener {
+                    override fun nextPage() {
+                        mainPage = MainPageView(MainPageController())
+                        add(mainPage)
+                    }
+                })
                 loadingPanel.setBounds(0, 0, width, height)
-//                add(loadingPanel)
-
+                add(loadingPanel)
             }
         })
-        mainPage = MainPageView()
-//        mainPage.
-        add(mainPage)
+
         startedPanel.setBounds(0, 0, width, height)
-//        add(startedPanel)
-
-
+        add(startedPanel)
     }
 }
+
 

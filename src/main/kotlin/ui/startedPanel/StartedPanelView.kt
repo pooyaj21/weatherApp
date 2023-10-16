@@ -1,6 +1,7 @@
 package ui.startedPanel
 
 import core.ApiManager
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import ui.RoundedTextField
 import ui.util.*
@@ -47,8 +48,6 @@ class StartedPanelView(startedPanelController: StartedPanelController, nextPageL
                         startedPanelController.getCity(searchBox.text)
                         this@StartedPanelView.isVisible = false
                         nextPageLoader.nextPage()
-                        println(ApiManager.weatherDataApi?.let { convertUTCToLocalHour(it.dt,
-                            ApiManager.weatherDataApi!!.timeZone) })
                     }
                 }
             }
@@ -59,9 +58,9 @@ class StartedPanelView(startedPanelController: StartedPanelController, nextPageL
 
 
     }
+}
 
-    fun interface EventListener {
-        fun nextPage()
-    }
 
+fun interface EventListener {
+    fun nextPage()
 }

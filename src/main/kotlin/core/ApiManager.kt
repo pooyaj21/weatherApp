@@ -8,8 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 object ApiManager {
-    var weatherDataApi: ApiWeatherData? = null
-        private set
+    lateinit var weatherDataApi: ApiWeatherData
     suspend fun weatherApiCreator(cityName: String): ApiWeatherData {
         val json = Json {
             ignoreUnknownKeys = true
