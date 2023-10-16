@@ -9,7 +9,7 @@ import java.awt.event.ActionListener
 import javax.swing.JFrame
 
 class MainFrame : JFrame("SkyCast") {
-    private val loadingPanel: LoadingPanelView
+    private lateinit var loadingPanel: LoadingPanelView
     private val startedPanel: StartedPanelView
 
     init {
@@ -18,16 +18,21 @@ class MainFrame : JFrame("SkyCast") {
         setLocationRelativeTo(null)
         isVisible = true
 
-        loadingPanel = LoadingPanelView(LoadingPanelController())
-        startedPanel = StartedPanelView(StartedPanelController(), ActionListener {
-            loadingPanel.isVisible = true
+//        loadingPanel = LoadingPanelView(LoadingPanelController())
+
+        startedPanel = StartedPanelView(StartedPanelController(), object:StartedPanelView.EventListener{
+            override fun nextPage() {
+                loadingPanel = LoadingPanelView(LoadingPanelController())
+                loadingPanel.setBounds(0, 0, width, height)
+                add(loadingPanel)
+
+            }
         })
 
         startedPanel.setBounds(0, 0, width, height)
         add(startedPanel)
 
-        loadingPanel.setBounds(0, 0, width, height)
-        loadingPanel.isVisible = false
-        add(loadingPanel)
+
     }
 }
+
