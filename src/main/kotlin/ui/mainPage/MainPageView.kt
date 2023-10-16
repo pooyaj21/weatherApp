@@ -70,7 +70,7 @@ class MainPageView (mainPageController: MainPageController):JPanel(){
 
         val windStatus = JLabel("${mainPageController.getWind()}")
         windStatus.foreground = foregroundColor
-        windStatus.setBounds(165, 490, 40, 50)
+        windStatus.setBounds(165, 490, 60, 50)
         windStatus.font = Font(null, Font.PLAIN, 16)
         add(windStatus)
 
@@ -81,7 +81,7 @@ class MainPageView (mainPageController: MainPageController):JPanel(){
 
         val temp = JLabel("${mainPageController.getTemp()}")
         temp.foreground = foregroundColor
-        temp.setBounds(285, 490, 40, 50)
+        temp.setBounds(285, 490, 60, 50)
         temp.font = Font(null, Font.PLAIN, 16)
         add(temp)
     }

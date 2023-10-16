@@ -14,11 +14,12 @@ import javax.swing.JPanel
 class LoadingPanelView(loadingPanelController: LoadingPanelController,eventListener: EventListener) : JPanel() {
     init {
         val whetherType = loadingPanelController.getWeatherApi().weathers.get(0)
+        val weatherType = loadingPanelController.getWeatherApi()?.weathers?.get(0)
         layout = null
         isVisible = true
         background = Color(0xE5ECF4)
 
-        val weatherText = when (whetherType.main) {
+        val weatherText =when(weatherType?.main){
             "Clear" -> "Sunny"
             "Clouds" -> "Cloudy"
             "Rain" -> "Rainy"
@@ -40,7 +41,8 @@ class LoadingPanelView(loadingPanelController: LoadingPanelController,eventListe
         }
 
 
-        val icon = ImageIcon("assets/${whetherType.icon}.png")
+
+        val icon = ImageIcon("assets/${weatherType?.icon}.png")
         val imageLabel = JLabel(resizeIcon(icon, 100, 100))
         imageLabel.setBounds(25, 35, 100, 100)
         add(imageLabel)

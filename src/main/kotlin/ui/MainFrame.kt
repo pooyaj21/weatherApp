@@ -1,3 +1,7 @@
+import core.ApiManager
+import kotlinx.coroutines.runBlocking
+import ui.airPollution.AirPollutionController
+import ui.airPollution.AirPollutionView
 import ui.loading.LoadingPanelController
 import ui.loading.LoadingPanelView
 import ui.mainPage.MainPageController
@@ -9,9 +13,10 @@ import java.awt.Dimension
 import javax.swing.JFrame
 
 class MainFrame : JFrame("SkyCast") {
-    private lateinit var loadingPanel: LoadingPanelView
-    private val startedPanel: StartedPanelView
-    private lateinit var mainPage: MainPageView
+//    private lateinit var loadingPanel: LoadingPanelView
+//    private val startedPanel: StartedPanelView
+//    private lateinit var mainPage: MainPageView
+    private lateinit var airPollution: AirPollutionView
 
     init {
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
@@ -19,22 +24,28 @@ class MainFrame : JFrame("SkyCast") {
         setLocationRelativeTo(null)
         isVisible = true
 
+//
+//        startedPanel = StartedPanelView(StartedPanelController(), object : EventListener {
+//            override fun nextPage() {
+//                loadingPanel = LoadingPanelView(LoadingPanelController(), object : EventListener {
+//                    override fun nextPage() {
+//                        mainPage = MainPageView(MainPageController())
+//                        add(mainPage)
+//                    }
+//                })
+//                loadingPanel.setBounds(0, 0, width, height)
+//                add(loadingPanel)
+//            }
+//        })
+//
+//        startedPanel.setBounds(0, 0, width, height)
+//        add(startedPanel)
 
-        startedPanel = StartedPanelView(StartedPanelController(), object : EventListener {
-            override fun nextPage() {
-                loadingPanel = LoadingPanelView(LoadingPanelController(), object : EventListener {
-                    override fun nextPage() {
-                        mainPage = MainPageView(MainPageController())
-                        add(mainPage)
-                    }
-                })
-                loadingPanel.setBounds(0, 0, width, height)
-                add(loadingPanel)
-            }
-        })
+        runBlocking { ApiManager.weatherApiCreator("tehran") }
 
-        startedPanel.setBounds(0, 0, width, height)
-        add(startedPanel)
+        airPollution= AirPollutionView(AirPollutionController())
+        airPollution.setBounds(0,0,width,height)
+        add(airPollution)
     }
 }
 

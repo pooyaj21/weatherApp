@@ -2,25 +2,75 @@ package core
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 object ApiManager {
     lateinit var weatherDataApi: ApiWeatherData
+    lateinit var pollutionDataApi: ApiPollutionData
+
     suspend fun weatherApiCreator(cityName: String): ApiWeatherData {
         val json = Json {
             ignoreUnknownKeys = true
         }
         val api: WeatherApiService = Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org")
-            .addConverterFactory(json.asConverterFactory(MediaType.parse("application/json")!!))
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaTypeOrNull()!!))
             .build()
             .create(WeatherApiService::class.java)
         weatherDataApi=api.getData(cityName, "9a553da7016360c1f1e8f07fdf39012b")
         return api.getData(cityName, "9a553da7016360c1f1e8f07fdf39012b")
     }
+    class MyInterceptor : Interceptor {
+
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request = chain.request()
+            // Add your custom header here
+            val modifiedRequest = request.newBuilder()
+                .addHeader("Mamad", "44")
+                .build()
+            return chain.proceed(modifiedRequest)
+        }
+    }
+    suspend fun pollutionApiCreator(): ApiPollutionData {
+        val json = Json {
+            ignoreUnknownKeys = true
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(MyInterceptor())
+            .addNetworkInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+            .build()
+
+        val api: PollutionApiService = Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org")
+            .client(client)
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaTypeOrNull()!!))
+            .build()
+            .create(PollutionApiService::class.java)
+
+        pollutionDataApi=api.getData(weatherDataApi.coord.lat.toString(), weatherDataApi.coord.lon.toString(), "9a553da7016360c1f1e8f07fdf39012b")
+        return api.getData(weatherDataApi.coord.lat.toString(), weatherDataApi.coord.lon.toString(), "9a553da7016360c1f1e8f07fdf39012b")
+
+
+
+
+//        try {
+//            val weatherData = api.getData("35.6892523", "51.3896004", "9a553da7016360c1f1e8f07fdf39012b")
+//            println(weatherData)
+//            // The headers have been logged during the API request in the interceptor.
+//        } catch (e: Exception) {
+//            println("Error: ${e.message}")
+//        }
+    }
+
+
 }
 
 interface WeatherApiService {
@@ -29,4 +79,15 @@ interface WeatherApiService {
         @Query("q") cityName: String,
         @Query("appid") apiKey: String
     ): ApiWeatherData
+
+}
+
+
+interface PollutionApiService{
+    @GET("/data/2.5/air_pollution")
+    suspend fun getData(
+        @Query("lat") lat: String,
+        @Query("lon") lon: String,
+        @Query("appid") apiKey: String
+    ): ApiPollutionData
 }
