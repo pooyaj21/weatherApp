@@ -4,7 +4,7 @@ import core.ApiManager
 import core.ApiWeatherData
 
 class LoadingPanelController {
-    fun getWeatherType():String{
-        return ApiManager.weatherDataApi?.weathers?.get(0)?.description?:"Error"
+    fun getWeatherApi(): ApiWeatherData? {
+        return ApiManager.weatherDataApi
     }
 }

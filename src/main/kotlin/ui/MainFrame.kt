@@ -18,7 +18,6 @@ class MainFrame : JFrame("SkyCast") {
         setLocationRelativeTo(null)
         isVisible = true
 
-//        loadingPanel = LoadingPanelView(LoadingPanelController())
 
         startedPanel = StartedPanelView(StartedPanelController(), object:StartedPanelView.EventListener{
             override fun nextPage() {

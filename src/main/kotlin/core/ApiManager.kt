@@ -11,9 +11,12 @@ object ApiManager {
     var weatherDataApi: ApiWeatherData? = null
         private set
     suspend fun weatherApiCreator(cityName: String): ApiWeatherData {
+        val json = Json {
+            ignoreUnknownKeys = true
+        }
         val api: WeatherApiService = Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org")
-            .addConverterFactory(Json.asConverterFactory(MediaType.parse("application/json")!!))
+            .addConverterFactory(json.asConverterFactory(MediaType.parse("application/json")!!))
             .build()
             .create(WeatherApiService::class.java)
         weatherDataApi=api.getData(cityName, "9a553da7016360c1f1e8f07fdf39012b")

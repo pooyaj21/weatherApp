@@ -1,7 +1,9 @@
 package ui.startedPanel
 
+import core.ApiManager
 import kotlinx.coroutines.runBlocking
 import ui.RoundedTextField
+import ui.util.*
 import java.awt.Color
 import java.awt.Font
 import java.awt.event.ActionListener
@@ -45,7 +47,8 @@ class StartedPanelView(startedPanelController: StartedPanelController, nextPageL
                         startedPanelController.getCity(searchBox.text)
                         this@StartedPanelView.isVisible = false
                         nextPageLoader.nextPage()
-
+                        println(ApiManager.weatherDataApi?.let { convertUTCToLocalHour(it.dt,
+                            ApiManager.weatherDataApi!!.timeZone) })
                     }
                 }
             }
