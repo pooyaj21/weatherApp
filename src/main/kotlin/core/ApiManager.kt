@@ -3,7 +3,6 @@ package core
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -39,7 +38,7 @@ object ApiManager {
             return chain.proceed(modifiedRequest)
         }
     }
-    suspend fun pollutionApiCreator(): ApiPollutionData {
+    suspend fun pollutionApiCreator(previousApi: ApiWeatherData): ApiPollutionData {
         val json = Json {
             ignoreUnknownKeys = true
         }
@@ -55,19 +54,8 @@ object ApiManager {
             .build()
             .create(PollutionApiService::class.java)
 
-        pollutionDataApi=api.getData(weatherDataApi.coord.lat.toString(), weatherDataApi.coord.lon.toString(), "9a553da7016360c1f1e8f07fdf39012b")
-        return api.getData(weatherDataApi.coord.lat.toString(), weatherDataApi.coord.lon.toString(), "9a553da7016360c1f1e8f07fdf39012b")
-
-
-
-
-//        try {
-//            val weatherData = api.getData("35.6892523", "51.3896004", "9a553da7016360c1f1e8f07fdf39012b")
-//            println(weatherData)
-//            // The headers have been logged during the API request in the interceptor.
-//        } catch (e: Exception) {
-//            println("Error: ${e.message}")
-//        }
+        pollutionDataApi=api.getData(previousApi.coord.lat.toString(), previousApi.coord.lon.toString(), "9a553da7016360c1f1e8f07fdf39012b")
+        return api.getData(previousApi.coord.lat.toString(), previousApi.coord.lon.toString(), "9a553da7016360c1f1e8f07fdf39012b")
     }
 
 
