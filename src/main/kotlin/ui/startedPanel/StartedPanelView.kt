@@ -42,7 +42,7 @@ class StartedPanelView(startedPanelController: StartedPanelController, nextPageL
 
         val errorSearchBox = JLabel("*please enter a valid city name")
         errorSearchBox.foreground = Color.red
-        errorSearchBox.setBounds(70, 370, 240, 30)
+        errorSearchBox.setBounds(70, 375, 240, 30)
         errorSearchBox.font = Font(null, Font.ITALIC, 12)
         errorSearchBox.isVisible=false
         add(errorSearchBox)
