@@ -4,9 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.OkHttpClient
 import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -53,24 +51,23 @@ object ApiManager {
         return api.getData(previousApi.coord.lat.toString(), previousApi.coord.lon.toString(), "9a553da7016360c1f1e8f07fdf39012b")
     }
 
+    interface WeatherApiService {
+        @GET("/data/2.5/weather")
+        suspend fun getData(
+            @Query("q") cityName: String,
+            @Query("appid") apiKey: String
+        ): ApiWeatherData
 
+    }
+
+
+    interface PollutionApiService{
+        @GET("/data/2.5/air_pollution")
+        suspend fun getData(
+            @Query("lat") lat: String,
+            @Query("lon") lon: String,
+            @Query("appid") apiKey: String
+        ): ApiPollutionData
+    }
 }
 
-interface WeatherApiService {
-    @GET("/data/2.5/weather")
-    suspend fun getData(
-        @Query("q") cityName: String,
-        @Query("appid") apiKey: String
-    ): ApiWeatherData
-
-}
-
-
-interface PollutionApiService{
-    @GET("/data/2.5/air_pollution")
-    suspend fun getData(
-        @Query("lat") lat: String,
-        @Query("lon") lon: String,
-        @Query("appid") apiKey: String
-    ): ApiPollutionData
-}

@@ -1,36 +1,36 @@
 package ui.startedPanel
 
 import core.ApiManager
-import core.ApiWeatherData
 import domain.GetCityWeatherUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import retrofit2.Response
+import ui.EventListener
 import ui.UiState
 import ui.util.RoundedTextField
 import java.awt.Color
 import java.awt.Font
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
-import java.lang.Exception
 import javax.swing.ImageIcon
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-val errorSearchBox = JLabel("*please enter a valid city name")
 
 class StartedPanelView(nextPageLoader: EventListener) : JPanel() {
-    val startedPanelController=StartedPanelController(CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager))
+    val errorSearchBox = JLabel("*please enter a valid city name")
+    val startedPanelController =
+        StartedPanelController(CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager))
+
     init {
         startedPanelController.callBack = {
-            when(it) {
+            when (it) {
                 is UiState.Loading -> println("Loading")
                 is UiState.Data -> {
                     this@StartedPanelView.isVisible = false
                     nextPageLoader.nextPage(it.model)
                 }
-                is UiState.Error -> errorSearchBox.isVisible =true
+
+                is UiState.Error -> errorSearchBox.isVisible = true
             }
         }
 
@@ -78,12 +78,5 @@ class StartedPanelView(nextPageLoader: EventListener) : JPanel() {
             override fun keyReleased(e: KeyEvent?) {}
         })
         add(searchBox)
-
-
     }
-}
-
-
-fun interface EventListener {
-    fun nextPage(response: ApiWeatherData)
 }

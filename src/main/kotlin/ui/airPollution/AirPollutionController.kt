@@ -1,13 +1,10 @@
 package ui.airPollution
 
-import core.ApiManager
 import core.ApiPollutionData
 import core.ApiWeatherData
-import domain.GetCityWeatherUseCase
 import domain.GetWeatherPollutionUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import ui.UiState
 
 class AirPollutionController(

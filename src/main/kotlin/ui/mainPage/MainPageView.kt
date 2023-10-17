@@ -2,7 +2,7 @@ package ui.mainPage
 
 
 import core.ApiWeatherData
-import ui.startedPanel.EventListener
+import ui.EventListener
 import ui.util.resizeIcon
 import java.awt.*
 import java.awt.event.ActionListener

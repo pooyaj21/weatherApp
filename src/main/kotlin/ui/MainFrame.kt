@@ -1,8 +1,8 @@
 import ui.airPollution.AirPollutionView
 import ui.loading.LoadingPanelView
 import ui.mainPage.MainPageView
-import ui.startedPanel.EventListener
 import ui.startedPanel.StartedPanelView
+import ui.EventListener
 import java.awt.Dimension
 import javax.swing.JFrame
 
