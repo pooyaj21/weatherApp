@@ -1,19 +1,10 @@
-import core.ApiManager
-import kotlinx.coroutines.runBlocking
-import ui.airPollution.AirPollutionController
 import ui.airPollution.AirPollutionView
-import ui.loading.LoadingPanelController
 import ui.loading.LoadingPanelView
-import ui.mainPage.MainPageController
 import ui.mainPage.MainPageView
 import ui.startedPanel.EventListener
-import ui.startedPanel.StartedPanelController
 import ui.startedPanel.StartedPanelView
 import java.awt.Dimension
-import java.awt.event.ActionEvent
-import java.awt.event.KeyEvent
-import javax.swing.*
-import javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
+import javax.swing.JFrame
 
 class MainFrame : JFrame("SkyCast") {
     private lateinit var loadingPanel: LoadingPanelView
@@ -28,24 +19,22 @@ class MainFrame : JFrame("SkyCast") {
         isVisible = true
 
 
-        startedPanel = StartedPanelView(StartedPanelController(), object : EventListener {
-            override fun nextPage() {
-                loadingPanel = LoadingPanelView(LoadingPanelController(), object : EventListener {
-                    override fun nextPage() {
-                        mainPage = MainPageView(MainPageController(), object : EventListener {
-                            override fun nextPage() {
-                                airPollution = AirPollutionView(AirPollutionController())
-                                airPollution.setBounds(0, 0, width, height)
-                                add(airPollution)
-                            }
-                        })
-                        add(mainPage)
-                    }
+        startedPanel = StartedPanelView(
+            EventListener {
+                loadingPanel = LoadingPanelView(it, EventListener {
+                    mainPage = MainPageView(it, EventListener {
+                        airPollution = AirPollutionView(it)
+                        airPollution.setBounds(0, 0, width, height)
+                        add(airPollution)
+                    })
+                    mainPage.setBounds(0, 0, width, height)
+                    add(mainPage)
                 })
                 loadingPanel.setBounds(0, 0, width, height)
                 add(loadingPanel)
-            }
-        })
+                loadingPanel.repaint()
+                loadingPanel.revalidate()
+            })
         startedPanel.setBounds(0, 0, width, height)
         add(startedPanel)
     }

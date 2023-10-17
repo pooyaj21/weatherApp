@@ -1,8 +1,6 @@
-package ui
-import RoundedBorder
+package ui.util
 import java.awt.*
 import java.awt.geom.RoundRectangle2D
-import javax.swing.BorderFactory
 import javax.swing.JTextField
 import javax.swing.SwingConstants
 

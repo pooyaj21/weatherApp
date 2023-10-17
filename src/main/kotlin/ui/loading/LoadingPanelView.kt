@@ -1,19 +1,18 @@
 package ui.loading
 
-import kotlinx.coroutines.runBlocking
+import core.ApiWeatherData
 import ui.startedPanel.EventListener
 import ui.util.resizeIcon
 import java.awt.Color
 import java.awt.Font
 import java.awt.event.ActionListener
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
 import javax.swing.ImageIcon
 import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-class LoadingPanelView(loadingPanelController: LoadingPanelController, eventListener: EventListener) : JPanel() {
+class LoadingPanelView(response: ApiWeatherData,eventListener: EventListener) : JPanel() {
+    private val loadingPanelController= LoadingPanelController(response)
     private val backgroundColor = if (loadingPanelController.getDayOrNight() == "d") Color(0xE5ECF4)
     else Color(0x1E1E1E)
 
@@ -21,12 +20,11 @@ class LoadingPanelView(loadingPanelController: LoadingPanelController, eventList
     else Color(0xE5ECF4)
 
     init {
-        val weatherType = loadingPanelController.getWeatherApi().weathers[0]
         layout = null
         isVisible = true
         background = backgroundColor
 
-        val weatherText = when (weatherType.main) {
+        val weatherText = when (loadingPanelController.getMainName()) {
             "Clear" -> "Sunny"
             "Clouds" -> "Cloudy"
             "Rain" -> "Rainy"
@@ -48,7 +46,7 @@ class LoadingPanelView(loadingPanelController: LoadingPanelController, eventList
         }
 
 
-        val icon = ImageIcon("assets/${weatherType.icon}.png")
+        val icon = ImageIcon("assets/${loadingPanelController.getIcon()}.png")
         val imageLabel = JLabel(resizeIcon(icon, 100, 100))
         imageLabel.setBounds(25, 35, 100, 100)
         add(imageLabel)
@@ -82,7 +80,7 @@ class LoadingPanelView(loadingPanelController: LoadingPanelController, eventList
         weatherLabel.font = Font(null, Font.BOLD, 36)
         weatherLabel.addActionListener(ActionListener {
             this@LoadingPanelView.isVisible = false
-            eventListener.nextPage()
+            eventListener.nextPage(response)
         })
         weatherLabel.isOpaque=false
         weatherLabel.isBorderPainted=false

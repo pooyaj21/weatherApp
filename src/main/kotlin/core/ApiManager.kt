@@ -42,14 +42,9 @@ object ApiManager {
         val json = Json {
             ignoreUnknownKeys = true
         }
-        val client = OkHttpClient.Builder()
-            .addInterceptor(MyInterceptor())
-            .addNetworkInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
-            .build()
 
         val api: PollutionApiService = Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org")
-            .client(client)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaTypeOrNull()!!))
             .build()
             .create(PollutionApiService::class.java)

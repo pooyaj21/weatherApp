@@ -1,27 +1,31 @@
 package ui.airPollution
 
 import core.ApiManager
+import core.ApiPollutionData
+import core.ApiWeatherData
+import domain.GetCityWeatherUseCase
+import domain.GetWeatherPollutionUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import retrofit2.Response
+import ui.UiState
 
-class AirPollutionController {
-    fun getDayOrNight(): String {
-        return ApiManager.weatherDataApi.weathers[0].icon.last().toString()
+class AirPollutionController(
+    private val coroutineScope: CoroutineScope,
+    private val getWeatherPollutionUseCase: GetWeatherPollutionUseCase
+) {
+
+    var callBack: ((UiState<ApiPollutionData>) -> Unit)? = null
+    fun pollution(response: ApiWeatherData) {
+        coroutineScope.launch {
+            callBack?.invoke(UiState.Loading)
+            var result = getWeatherPollutionUseCase.get(response)
+            if (result.isSuccess) {
+                callBack?.invoke(UiState.Data(result.getOrThrow()))
+            } else {
+                callBack?.invoke(UiState.Error(result.exceptionOrNull()))
+            }
+        }
     }
-    fun getIcon():String{
-        return ApiManager.weatherDataApi.weathers[0].icon
-    }
-    fun getDescription():String{
-        return ApiManager.weatherDataApi.weathers[0].description
-    }
-    fun getCo():String{
-        return ApiManager.pollutionDataApi.list[0].components.co.toString()
-    }
-    fun getNo2():String{
-        return ApiManager.pollutionDataApi.list[0].components.no2.toString()
-    }
-    fun getNo():String{
-        return ApiManager.pollutionDataApi.list[0].components.no.toString()
-    }
-    fun getO3():String{
-        return ApiManager.pollutionDataApi.list[0].components.o3.toString()
-    }
+
 }

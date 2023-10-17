@@ -1,13 +1,16 @@
 package ui.startedPanel
 
 import core.ApiManager
-import kotlinx.coroutines.delay
+import core.ApiWeatherData
+import domain.GetCityWeatherUseCase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import ui.RoundedTextField
-import ui.util.*
+import retrofit2.Response
+import ui.UiState
+import ui.util.RoundedTextField
 import java.awt.Color
 import java.awt.Font
-import java.awt.event.ActionListener
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.lang.Exception
@@ -15,8 +18,22 @@ import javax.swing.ImageIcon
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-class StartedPanelView(startedPanelController: StartedPanelController, nextPageLoader: EventListener) : JPanel() {
+val errorSearchBox = JLabel("*please enter a valid city name")
+
+class StartedPanelView(nextPageLoader: EventListener) : JPanel() {
+    val startedPanelController=StartedPanelController(CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager))
     init {
+        startedPanelController.callBack = {
+            when(it) {
+                is UiState.Loading -> println("Loading")
+                is UiState.Data -> {
+                    this@StartedPanelView.isVisible = false
+                    nextPageLoader.nextPage(it.model)
+                }
+                is UiState.Error -> errorSearchBox.isVisible =true
+            }
+        }
+
         layout = null
         isVisible = true
         background = Color(0xE5ECF4)
@@ -40,11 +57,10 @@ class StartedPanelView(startedPanelController: StartedPanelController, nextPageL
         placeHolder.font = Font(null, Font.BOLD, 16)
         add(placeHolder)
 
-        val errorSearchBox = JLabel("*please enter a valid city name")
         errorSearchBox.foreground = Color.red
         errorSearchBox.setBounds(70, 375, 240, 30)
         errorSearchBox.font = Font(null, Font.ITALIC, 12)
-        errorSearchBox.isVisible=false
+        errorSearchBox.isVisible = false
         add(errorSearchBox)
 
         val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)
@@ -54,16 +70,8 @@ class StartedPanelView(startedPanelController: StartedPanelController, nextPageL
 
             override fun keyPressed(e: KeyEvent?) {
                 if (e?.keyCode == KeyEvent.VK_ENTER) {
-                    errorSearchBox.isVisible=false
-                    runBlocking {
-                        try {
-                            startedPanelController.getCity(searchBox.text)
-                            this@StartedPanelView.isVisible = false
-                            nextPageLoader.nextPage()
-                        }catch (e:Exception){
-                            errorSearchBox.isVisible=true
-                        }
-                    }
+                    errorSearchBox.isVisible = false
+                    startedPanelController.city(searchBox.text)
                 }
             }
 
@@ -77,5 +85,5 @@ class StartedPanelView(startedPanelController: StartedPanelController, nextPageL
 
 
 fun interface EventListener {
-    fun nextPage()
+    fun nextPage(response: ApiWeatherData)
 }

@@ -1,47 +1,47 @@
 package ui.mainPage
 
-import core.ApiManager
+import core.ApiWeatherData
 import ui.util.convertUTCToLocalHour
 import ui.util.getDayOfWeekFromUTC
 
-class MainPageController {
+class MainPageController(private val response: ApiWeatherData) {
 
     fun getDayOrNight(): String {
-        return ApiManager.weatherDataApi.weathers[0].icon.last().toString()
+        return response.weathers[0].icon.last().toString()
     }
     fun getCountry(): String {
-        return ApiManager.weatherDataApi.name
+        return response.name
     }
     fun getDay(): String {
-        return getDayOfWeekFromUTC(ApiManager.weatherDataApi.dt, ApiManager.weatherDataApi.timeZone).toString()
+        return getDayOfWeekFromUTC(response.dt, response.timeZone).toString()
     }
     fun getTime(): String {
-        return convertUTCToLocalHour(ApiManager.weatherDataApi.dt, ApiManager.weatherDataApi.timeZone)
+        return convertUTCToLocalHour(response.dt, response.timeZone)
     }
     fun getFellingTemp(): Int {
-        return ((ApiManager.weatherDataApi.main.feelsLike)-273.15).toInt()
+        return ((response.main.feelsLike)-273.15).toInt()
     }
     fun getIcon():String{
-        return ApiManager.weatherDataApi.weathers[0].icon
+        return response.weathers[0].icon
     }
 
     fun getDescription():String{
-        return ApiManager.weatherDataApi.weathers[0].description
+        return response.weathers[0].description
     }
 
     fun getSunRise():String{
-        return convertUTCToLocalHour(ApiManager.weatherDataApi.sys.sunrise, ApiManager.weatherDataApi.timeZone)
+        return convertUTCToLocalHour(response.sys.sunrise, response.timeZone)
     }
 
     fun getSunSet():String{
-        return convertUTCToLocalHour(ApiManager.weatherDataApi.sys.sunset, ApiManager.weatherDataApi.timeZone)
+        return convertUTCToLocalHour(response.sys.sunset, response.timeZone)
     }
 
     fun getTemp(): Int {
-        return ((ApiManager.weatherDataApi.main.temp)-273.15).toInt()
+        return ((response.main.temp)-273.15).toInt()
     }
 
     fun getWind(): Double {
-        return ApiManager.weatherDataApi.wind.speed
+        return response.wind.speed
     }
 }

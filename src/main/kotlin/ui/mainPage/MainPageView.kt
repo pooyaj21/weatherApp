@@ -1,6 +1,7 @@
 package ui.mainPage
 
 
+import core.ApiWeatherData
 import ui.startedPanel.EventListener
 import ui.util.resizeIcon
 import java.awt.*
@@ -10,7 +11,8 @@ import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-class MainPageView(mainPageController: MainPageController, eventListener: EventListener) : JPanel() {
+class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPanel() {
+    private val mainPageController= MainPageController(response)
     private val backgroundColor = if (mainPageController.getDayOrNight() == "d") Color(0xE5ECF4)
     else Color(0x1E1E1E)
 
@@ -63,7 +65,7 @@ class MainPageView(mainPageController: MainPageController, eventListener: EventL
         description.isContentAreaFilled = false
         description.addActionListener(ActionListener {
             this@MainPageView.isVisible = false
-            eventListener.nextPage()
+            eventListener.nextPage(response)
         })
         add(description)
 
@@ -109,6 +111,8 @@ class MainPageView(mainPageController: MainPageController, eventListener: EventL
         temp.horizontalAlignment = JLabel.CENTER
         temp.verticalAlignment = JLabel.CENTER
         add(temp)
+        repaint()
+        revalidate()
     }
 
     override fun paintComponent(g: Graphics) {

@@ -2,12 +2,16 @@ package ui.loading
 
 import core.ApiManager
 import core.ApiWeatherData
+import retrofit2.Response
 
-class LoadingPanelController {
+class LoadingPanelController(private val response: ApiWeatherData) {
     fun getDayOrNight(): String {
-        return ApiManager.weatherDataApi.weathers[0].icon.last().toString()
+        return response.weathers[0].icon.last().toString()
     }
-    fun getWeatherApi(): ApiWeatherData {
-        return ApiManager.weatherDataApi
+    fun getMainName():String{
+        return response.weathers[0].main
+    }
+    fun getIcon():String{
+        return response.weathers[0].icon
     }
 }
