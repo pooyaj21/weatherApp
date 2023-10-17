@@ -1,7 +1,7 @@
 package ui.loading
 
 import core.ApiWeatherData
-import ui.startedPanel.EventListener
+import ui.EventListener
 import ui.util.resizeIcon
 import java.awt.Color
 import java.awt.Font
