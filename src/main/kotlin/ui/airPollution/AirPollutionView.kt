@@ -23,7 +23,7 @@ class AirPollutionView(airPollutionController: AirPollutionController) : JPanel(
         runBlocking { ApiManager.pollutionApiCreator() }
 
         val pollutionIcon = ImageIcon("assets/${airPollutionController.getIcon()}.png")
-        val pollutionIconLabel = JLabel(pollutionIcon)
+        val pollutionIconLabel = JLabel(resizeIcon(pollutionIcon, 100, 100))
         pollutionIconLabel.setBounds(130, 90, 100, 100)
         add(pollutionIconLabel)
 

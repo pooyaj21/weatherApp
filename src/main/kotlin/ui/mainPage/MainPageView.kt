@@ -40,7 +40,7 @@ class MainPageView(mainPageController: MainPageController, eventListener: EventL
         add(date)
 
         val icon = ImageIcon("assets/${mainPageController.getIcon()}.png")
-        val imageLabel = JLabel(icon)
+        val imageLabel = JLabel(resizeIcon(icon, 100, 100))
         imageLabel.setBounds(130, 190, 100, 100)
         add(imageLabel)
 
