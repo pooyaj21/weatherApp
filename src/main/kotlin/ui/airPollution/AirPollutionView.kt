@@ -24,13 +24,6 @@ class AirPollutionView(response: ApiWeatherData) : JPanel() {
 
     private val foregroundColor = if (response.weathers[0].icon.last().toString() == "d") Color(0x1E1E1E)
     else Color(0xE5ECF4)
-    val loadingGif = try {
-        ImageIcon("assets/loading.gif")
-    }catch (e: Exception) {
-        e.printStackTrace()
-        null
-    }
-    val loadingGifLabel = JLabel(loadingGif)
 
     private lateinit var airPollutionData: ApiPollutionData
 
@@ -42,18 +35,9 @@ class AirPollutionView(response: ApiWeatherData) : JPanel() {
         airPollutionController.pollution(response)
         airPollutionController.callBack = {
             when (it) {
-                is UiState.Loading -> {
-                    if (loadingGif != null) {
-                        loadingGifLabel.setBounds(130, 270, 100, 100)
-                        loadingGifLabel.isVisible=true
-                        add(loadingGifLabel)
-                    } else {
-                        println("Error loading the GIF file.")
-                    }
-                }
-                is UiState.Data ->{
+                is UiState.Loading -> {}
+                is UiState.Data -> {
                     airPollutionData = it.model
-                    loadingGifLabel.isVisible=false
                     val pollutionIcon = ImageIcon("assets/${response.weathers[0].icon}.png")
                     val pollutionIconLabel = JLabel(resizeIcon(pollutionIcon, 100, 100))
                     pollutionIconLabel.setBounds(130, 90, 100, 100)
@@ -102,6 +86,7 @@ class AirPollutionView(response: ApiWeatherData) : JPanel() {
                     repaint()
                     revalidate()
                 }
+
                 is UiState.Error -> println("Error")
             }
         }
