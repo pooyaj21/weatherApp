@@ -63,10 +63,10 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
         description.isOpaque = false
         description.isBorderPainted = false
         description.isContentAreaFilled = false
-        description.addActionListener(ActionListener {
+        description.addActionListener {
             this@MainPageView.isVisible = false
             eventListener.nextPage(response)
-        })
+        }
         add(description)
 
 

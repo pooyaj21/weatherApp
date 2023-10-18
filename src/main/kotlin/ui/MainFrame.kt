@@ -19,8 +19,22 @@ class MainFrame : JFrame("SkyCast") {
         isVisible = true
 
 
-        startedPanel = StartedPanelView(
-            EventListener {
+        startedPanel = StartedPanelView({
+            loadingPanel = LoadingPanelView(it, EventListener {
+                mainPage = MainPageView(it, EventListener {
+                    airPollution = AirPollutionView(it)
+                    airPollution.setBounds(0, 0, width, height)
+                    add(airPollution)
+                })
+                mainPage.setBounds(0, 0, width, height)
+                add(mainPage)
+            })
+            loadingPanel.setBounds(0, 0, width, height)
+            add(loadingPanel)
+            loadingPanel.repaint()
+            loadingPanel.revalidate()
+        },
+            {
                 loadingPanel = LoadingPanelView(it, EventListener {
                     mainPage = MainPageView(it, EventListener {
                         airPollution = AirPollutionView(it)

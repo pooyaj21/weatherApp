@@ -1,6 +1,7 @@
 package ui.startedPanel
 
 import core.ApiManager
+import domain.GetCityBaseOnIp
 import domain.GetCityWeatherUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -9,22 +10,28 @@ import ui.UiState
 import ui.util.RoundedTextField
 import java.awt.Color
 import java.awt.Font
+import java.awt.event.ActionListener
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import javax.swing.ImageIcon
+import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
 
 
-class StartedPanelView(nextPageLoader: EventListener) : JPanel() {
+class StartedPanelView(locationPageLoader: EventListener,nextPageLoader: EventListener) : JPanel() {
     val errorSearchBox = JLabel("*please enter a valid city name")
     val startedPanelController =
-        StartedPanelController(CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager))
+        StartedPanelController(
+            CoroutineScope(Dispatchers.IO),
+            GetCityWeatherUseCase(ApiManager),
+            GetCityBaseOnIp(ApiManager)
+        )
 
     init {
         startedPanelController.callBack = {
             when (it) {
-                is UiState.Loading -> println("Loading")
+                is UiState.Loading -> {}
                 is UiState.Data -> {
                     this@StartedPanelView.isVisible = false
                     nextPageLoader.nextPage(it.model)
@@ -78,5 +85,37 @@ class StartedPanelView(nextPageLoader: EventListener) : JPanel() {
             override fun keyReleased(e: KeyEvent?) {}
         })
         add(searchBox)
+
+        val locationIcon = ImageIcon("assets/location.png")
+        val locationButton = JButton(locationIcon)
+        locationButton.isOpaque = false
+        locationButton.isBorderPainted = false
+        locationButton.isContentAreaFilled = false
+        locationButton.setBounds(0,0,50,50)
+        locationButton.addActionListener(ActionListener {
+            startedPanelController.city()
+            startedPanelController.callBack = {
+                when (it) {
+                    is UiState.Loading ->{}
+                    is UiState.Data -> {
+                        this@StartedPanelView.isVisible = false
+                        locationPageLoader.nextPage(it.model)
+                        startedPanelController.callBack = {
+                            when (it) {
+                                is UiState.Loading -> {}
+                                is UiState.Data -> {
+                                    this@StartedPanelView.isVisible = false
+                                    nextPageLoader.nextPage(it.model)
+                                }
+
+                                is UiState.Error -> errorSearchBox.isVisible = true
+                            }
+                        }
+                    }
+                    is UiState.Error -> errorSearchBox.isVisible = true
+                }
+            }
+        })
+        add(locationButton)
     }
 }
