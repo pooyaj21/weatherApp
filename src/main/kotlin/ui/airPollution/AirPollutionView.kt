@@ -6,15 +6,18 @@ import core.ApiWeatherData
 import domain.GetWeatherPollutionUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import ui.EventListener
 import ui.UiState
 import ui.util.resizeIcon
 import java.awt.Color
 import java.awt.Font
+import java.awt.event.ActionListener
 import javax.swing.ImageIcon
+import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-class AirPollutionView(response: ApiWeatherData) : JPanel() {
+class AirPollutionView(response: ApiWeatherData, eventListener: EventListener) : JPanel() {
     private val airPollutionController = AirPollutionController(
         CoroutineScope(Dispatchers.IO),
         GetWeatherPollutionUseCase(ApiManager)
@@ -82,6 +85,15 @@ class AirPollutionView(response: ApiWeatherData) : JPanel() {
                     o3Status.horizontalAlignment = JLabel.CENTER
                     o3Status.verticalAlignment = JLabel.CENTER
                     add(o3Status)
+
+                    val backIcon = ImageIcon("assets/back${response.weathers[0].icon.last()}.png")
+                    val backButton = JButton(resizeIcon(backIcon,30,30))
+                    backButton.isOpaque = false
+                    backButton.isBorderPainted = false
+                    backButton.isContentAreaFilled = false
+                    backButton.setBounds(0,0,50,50)
+                    backButton.addActionListener(ActionListener { eventListener.previousPage() })
+                    add(backButton)
 
                     repaint()
                     revalidate()

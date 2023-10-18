@@ -19,7 +19,7 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 
 
-class StartedPanelView(locationPageLoader: EventListener,nextPageLoader: EventListener) : JPanel() {
+class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventListener) : JPanel() {
     val errorSearchBox = JLabel("*please enter a valid city name")
     val startedPanelController =
         StartedPanelController(
@@ -27,7 +27,7 @@ class StartedPanelView(locationPageLoader: EventListener,nextPageLoader: EventLi
             GetCityWeatherUseCase(ApiManager),
             GetCityBaseOnIp(ApiManager)
         )
-
+    private var visibilityChangeListener: ((Boolean) -> Unit)? = null
     init {
         startedPanelController.callBack = {
             when (it) {
@@ -70,6 +70,42 @@ class StartedPanelView(locationPageLoader: EventListener,nextPageLoader: EventLi
         errorSearchBox.isVisible = false
         add(errorSearchBox)
 
+        val locationIcon = ImageIcon("assets/location.png")
+        val locationButton = JButton(locationIcon)
+        locationButton.isOpaque = false
+        locationButton.isBorderPainted = false
+        locationButton.isContentAreaFilled = false
+        locationButton.isFocusPainted=false
+        locationButton.setBounds(0, 0, 50, 50)
+        locationButton.addActionListener(ActionListener {
+            errorSearchBox.isVisible=false
+            startedPanelController.city()
+            startedPanelController.callBack = {
+                when (it) {
+                    is UiState.Loading -> {}
+                    is UiState.Data -> {
+                        this@StartedPanelView.isVisible = false
+                        locationPageLoader.nextPage(it.model)
+                        startedPanelController.callBack = {
+                            when (it) {
+                                is UiState.Loading -> {}
+                                is UiState.Data -> {
+                                    this@StartedPanelView.isVisible = false
+                                    nextPageLoader.nextPage(it.model)
+                                }
+                                is UiState.Error -> {
+                                    errorSearchBox.isVisible = true
+                                }
+                            }
+                        }
+                    }
+
+                    is UiState.Error -> errorSearchBox.isVisible = true
+                }
+            }
+        })
+        add(locationButton)
+
         val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)
         searchBox.setBounds(55, 330, 240, 50)
         searchBox.addKeyListener(object : KeyListener {
@@ -84,38 +120,17 @@ class StartedPanelView(locationPageLoader: EventListener,nextPageLoader: EventLi
 
             override fun keyReleased(e: KeyEvent?) {}
         })
+        setVisibilityChangeListener { isVisible -> searchBox.text = "" }
         add(searchBox)
+    }
 
-        val locationIcon = ImageIcon("assets/location.png")
-        val locationButton = JButton(locationIcon)
-        locationButton.isOpaque = false
-        locationButton.isBorderPainted = false
-        locationButton.isContentAreaFilled = false
-        locationButton.setBounds(0,0,50,50)
-        locationButton.addActionListener(ActionListener {
-            startedPanelController.city()
-            startedPanelController.callBack = {
-                when (it) {
-                    is UiState.Loading ->{}
-                    is UiState.Data -> {
-                        this@StartedPanelView.isVisible = false
-                        locationPageLoader.nextPage(it.model)
-                        startedPanelController.callBack = {
-                            when (it) {
-                                is UiState.Loading -> {}
-                                is UiState.Data -> {
-                                    this@StartedPanelView.isVisible = false
-                                    nextPageLoader.nextPage(it.model)
-                                }
-
-                                is UiState.Error -> errorSearchBox.isVisible = true
-                            }
-                        }
-                    }
-                    is UiState.Error -> errorSearchBox.isVisible = true
-                }
-            }
-        })
-        add(locationButton)
+    fun setVisibilityChangeListener(listener: (Boolean) -> Unit) {
+        visibilityChangeListener = listener
+    }
+    override fun setVisible(visible: Boolean) {
+        super.setVisible(visible)
+        if (visible) {
+            visibilityChangeListener?.invoke(visible)
+        }
     }
 }

@@ -111,6 +111,16 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
         temp.horizontalAlignment = JLabel.CENTER
         temp.verticalAlignment = JLabel.CENTER
         add(temp)
+
+        val backIcon = ImageIcon("assets/back${mainPageController.getDayOrNight()}.png")
+        val backButton = JButton(resizeIcon(backIcon,30,30))
+        backButton.isOpaque = false
+        backButton.isBorderPainted = false
+        backButton.isContentAreaFilled = false
+        backButton.setBounds(0,0,50,50)
+        backButton.addActionListener(ActionListener { eventListener.previousPage() })
+        add(backButton)
+
         repaint()
         revalidate()
     }

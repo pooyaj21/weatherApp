@@ -102,5 +102,15 @@ class LoadingPanelView(response: ApiWeatherData,eventListener: EventListener) : 
         bottomLabel.horizontalAlignment = JLabel.LEFT
         bottomLabel.verticalAlignment = JLabel.CENTER
         add(bottomLabel)
+
+        val backIcon = ImageIcon("assets/back${loadingPanelController.getDayOrNight()}.png")
+        val backButton = JButton(resizeIcon(backIcon,30,30))
+        backButton.isOpaque = false
+        backButton.isBorderPainted = false
+        backButton.isContentAreaFilled = false
+        backButton.setBounds(0,0,50,50)
+        backButton.addActionListener(ActionListener { eventListener.previousPage() })
+        add(backButton)
+
     }
 }
