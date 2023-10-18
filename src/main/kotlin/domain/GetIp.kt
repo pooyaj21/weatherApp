@@ -1,7 +1,5 @@
 package domain
 
-import core.ApiManager
-import core.ApiWeatherData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
@@ -15,9 +13,7 @@ class GetIp() {
             val url = URL("https://api.ipify.org")
             val reader = BufferedReader(InputStreamReader(url.openStream()))
             publicIp = reader.readLine().trim()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        } catch (_: Exception) { }
         publicIp
     }
 }

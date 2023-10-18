@@ -6,18 +6,19 @@ import core.ApiWeatherData
 import domain.GetWeatherPollutionUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import retrofit2.HttpException
 import ui.EventListener
 import ui.UiState
+import ui.UiStatePanel
 import ui.util.resizeIcon
 import java.awt.Color
 import java.awt.Font
 import java.awt.event.ActionListener
-import javax.swing.ImageIcon
-import javax.swing.JButton
-import javax.swing.JLabel
-import javax.swing.JPanel
+import java.net.SocketException
+import java.net.UnknownHostException
+import javax.swing.*
 
-class AirPollutionView(response: ApiWeatherData, eventListener: EventListener) : JPanel() {
+class AirPollutionView(response: ApiWeatherData, eventListener: EventListener) : UiStatePanel() {
     private val airPollutionController = AirPollutionController(
         CoroutineScope(Dispatchers.IO),
         GetWeatherPollutionUseCase(ApiManager)
@@ -35,11 +36,20 @@ class AirPollutionView(response: ApiWeatherData, eventListener: EventListener) :
         isVisible = true
         background = backgroundColor
 
-        airPollutionController.pollution(response)
+        val loadingPanel = onLoading()
+        loadingPanel.setBounds(0, 0, 370, 640)
+        loadingPanel.background=backgroundColor
+        add(loadingPanel)
+        setComponentZOrder(loadingPanel,0)
+        loadingPanel.isVisible=false
+
         airPollutionController.callBack = {
             when (it) {
-                is UiState.Loading -> {}
+                is UiState.Loading -> {
+                    loadingPanel.isVisible=true
+                }
                 is UiState.Data -> {
+                    loadingPanel.isVisible=false
                     airPollutionData = it.model
                     val pollutionIcon = ImageIcon("assets/${response.weathers[0].icon}.png")
                     val pollutionIconLabel = JLabel(resizeIcon(pollutionIcon, 100, 100))
@@ -87,11 +97,11 @@ class AirPollutionView(response: ApiWeatherData, eventListener: EventListener) :
                     add(o3Status)
 
                     val backIcon = ImageIcon("assets/back${response.weathers[0].icon.last()}.png")
-                    val backButton = JButton(resizeIcon(backIcon,30,30))
+                    val backButton = JButton(resizeIcon(backIcon, 30, 30))
                     backButton.isOpaque = false
                     backButton.isBorderPainted = false
                     backButton.isContentAreaFilled = false
-                    backButton.setBounds(0,0,50,50)
+                    backButton.setBounds(0, 0, 50, 50)
                     backButton.addActionListener(ActionListener { eventListener.previousPage() })
                     add(backButton)
 
@@ -99,9 +109,34 @@ class AirPollutionView(response: ApiWeatherData, eventListener: EventListener) :
                     revalidate()
                 }
 
-                is UiState.Error -> println("Error")
+                is UiState.Error -> {
+                    loadingPanel.isVisible=false
+                    if (it.throwable is UnknownHostException || it.throwable is HttpException||it.throwable is SocketException) {
+                        val options = arrayOf("Try Again")
+                        val choice = JOptionPane.showOptionDialog(
+                            null,
+                            "Something went wrong",
+                            "Confirmation",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]
+                        )
+                        when (choice) {
+                            0 -> {
+                                airPollutionController.pollution(response)
+                            }
+                        }
+                    }
+                }
             }
         }
+        airPollutionController.pollution(response)
+    }
+
+    override fun createDataPanel() {
+        TODO("Not yet implemented")
     }
 
 }

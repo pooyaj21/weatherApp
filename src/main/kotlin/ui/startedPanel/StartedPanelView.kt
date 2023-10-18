@@ -5,21 +5,25 @@ import domain.GetCityBaseOnIp
 import domain.GetCityWeatherUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import retrofit2.HttpException
 import ui.EventListener
 import ui.UiState
+import ui.UiStatePanel
 import ui.util.RoundedTextField
 import java.awt.Color
 import java.awt.Font
 import java.awt.event.ActionListener
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
+import java.net.SocketException
+import java.net.UnknownHostException
 import javax.swing.ImageIcon
 import javax.swing.JButton
 import javax.swing.JLabel
-import javax.swing.JPanel
+import javax.swing.JOptionPane
 
 
-class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventListener) : JPanel() {
+class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventListener) : UiStatePanel() {
     val errorSearchBox = JLabel("*please enter a valid city name")
     val startedPanelController =
         StartedPanelController(
@@ -28,22 +32,58 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
             GetCityBaseOnIp(ApiManager)
         )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
-    init {
-        startedPanelController.callBack = {
-            when (it) {
-                is UiState.Loading -> {}
-                is UiState.Data -> {
-                    this@StartedPanelView.isVisible = false
-                    nextPageLoader.nextPage(it.model)
-                }
+    val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)
 
-                is UiState.Error -> errorSearchBox.isVisible = true
-            }
-        }
+
+    init {
 
         layout = null
         isVisible = true
         background = Color(0xE5ECF4)
+
+        val loadingPanel = onLoading()
+        loadingPanel.setBounds(0, 0, 370, 640)
+        add(loadingPanel)
+        setComponentZOrder(loadingPanel, 0)
+        loadingPanel.isVisible = false
+
+        startedPanelController.callBack = {
+            when (it) {
+                is UiState.Loading -> {
+                    loadingPanel.isVisible = true
+                }
+
+                is UiState.Data -> {
+                    loadingPanel.isVisible = false
+                    this@StartedPanelView.isVisible = false
+                    nextPageLoader.nextPage(it.model)
+                }
+
+                is UiState.Error -> {
+                    loadingPanel.isVisible = false
+                    if (it.throwable is HttpException) errorSearchBox.isVisible = true
+                    else if (it.throwable is UnknownHostException || it.throwable is SocketException) {
+                        val options = arrayOf("Try Again")
+                        val choice = JOptionPane.showOptionDialog(
+                            null,
+                            "Something went wrong",
+                            "Confirmation",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]
+                        )
+                        when (choice) {
+                            0 -> {
+                                startedPanelController.city(searchBox.text)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         val title = JLabel("SkyCast")
         title.foreground = Color(0x1E1E1E)
@@ -75,38 +115,82 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
         locationButton.isOpaque = false
         locationButton.isBorderPainted = false
         locationButton.isContentAreaFilled = false
-        locationButton.isFocusPainted=false
+        locationButton.isFocusPainted = false
         locationButton.setBounds(0, 0, 50, 50)
         locationButton.addActionListener(ActionListener {
-            errorSearchBox.isVisible=false
+            errorSearchBox.isVisible = false
             startedPanelController.city()
             startedPanelController.callBack = {
                 when (it) {
-                    is UiState.Loading -> {}
+                    is UiState.Loading -> {
+                        loadingPanel.isVisible=true
+                    }
+
                     is UiState.Data -> {
+                        loadingPanel.isVisible=false
                         this@StartedPanelView.isVisible = false
                         locationPageLoader.nextPage(it.model)
-                        startedPanelController.callBack = {
-                            when (it) {
-                                is UiState.Loading -> {}
-                                is UiState.Data -> {
-                                    this@StartedPanelView.isVisible = false
-                                    nextPageLoader.nextPage(it.model)
-                                }
-                                is UiState.Error -> {
-                                    errorSearchBox.isVisible = true
+//                        startedPanelController.callBack = {
+//                            when (it) {
+//                                is UiState.Loading -> {
+//                                }
+//                                is UiState.Data -> {
+//                                    loadingPanel.isVisible=false
+//                                    this@StartedPanelView.isVisible = false
+//                                    nextPageLoader.nextPage(it.model)
+//                                }
+//                                is UiState.Error -> {
+//                                    if (it.throwable is HttpException) errorSearchBox.isVisible = true
+//                                    else if (it.throwable is UnknownHostException) {
+//                                        val options = arrayOf("Try Again")
+//                                        val choice = JOptionPane.showOptionDialog(
+//                                            null,
+//                                            "Something went wrong",
+//                                            "Confirmation",
+//                                            JOptionPane.YES_NO_OPTION,
+//                                            JOptionPane.QUESTION_MESSAGE,
+//                                            null,
+//                                            options,
+//                                            options[0]
+//                                        )
+//                                        when (choice) {
+//                                            0 -> {
+//                                                locationButton.doClick()
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+                    }
+
+                    is UiState.Error -> {
+                        loadingPanel.isVisible=false
+                        if (it.throwable is HttpException) errorSearchBox.isVisible = true
+                        else if (it.throwable is UnknownHostException) {
+                            val options = arrayOf("Try Again")
+                            val choice = JOptionPane.showOptionDialog(
+                                null,
+                                "Something went wrong",
+                                "Confirmation",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                options,
+                                options[0]
+                            )
+                            when (choice) {
+                                0 -> {
+                                    locationButton.doClick()
                                 }
                             }
                         }
                     }
-
-                    is UiState.Error -> errorSearchBox.isVisible = true
                 }
             }
         })
         add(locationButton)
 
-        val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)
         searchBox.setBounds(55, 330, 240, 50)
         searchBox.addKeyListener(object : KeyListener {
             override fun keyTyped(e: KeyEvent?) {}
@@ -124,9 +208,14 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
         add(searchBox)
     }
 
-    fun setVisibilityChangeListener(listener: (Boolean) -> Unit) {
+    private fun setVisibilityChangeListener(listener: (Boolean) -> Unit) {
         visibilityChangeListener = listener
     }
+
+    override fun createDataPanel() {
+        TODO("Not yet implemented")
+    }
+
     override fun setVisible(visible: Boolean) {
         super.setVisible(visible)
         if (visible) {
