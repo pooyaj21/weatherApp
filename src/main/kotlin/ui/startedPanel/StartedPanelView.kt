@@ -14,8 +14,6 @@ import java.awt.Color
 import java.awt.Font
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
-import java.net.SocketException
-import java.net.UnknownHostException
 import javax.swing.ImageIcon
 import javax.swing.JButton
 import javax.swing.JLabel
@@ -83,13 +81,18 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
                     }
 
                     is UiState.Error -> {
-                        onError(
-                            "An error occurred while processing the request",
-                            null,
-                            null
-                        )
-                        Thread.sleep(5000)
-                        onData()
+                        if (it.throwable is HttpException) {
+                            errorSearchBox.isVisible = true
+                            onData()
+                        } else {
+                            onError(
+                                "An error occurred while processing the request",
+                                null,
+                                null
+                            )
+                            Thread.sleep(5000)
+                            onData()
+                        }
                     }
                 }
             }
@@ -118,6 +121,7 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
                 is UiState.Loading -> {
                     onLoading()
                 }
+
                 is UiState.Data -> {
                     onData()
                     this@StartedPanelView.isVisible = false
@@ -125,11 +129,10 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
                 }
 
                 is UiState.Error -> {
-                    if (it.throwable is HttpException){
+                    if (it.throwable is HttpException) {
                         errorSearchBox.isVisible = true
                         onData()
-                    }
-                    else{
+                    } else {
                         onError(
                             "An error occurred while processing the request",
                             null,
