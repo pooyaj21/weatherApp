@@ -12,7 +12,6 @@ import ui.UiStatePanel
 import ui.util.RoundedTextField
 import java.awt.Color
 import java.awt.Font
-import java.awt.event.ActionListener
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.net.SocketException
@@ -20,70 +19,24 @@ import java.net.UnknownHostException
 import javax.swing.ImageIcon
 import javax.swing.JButton
 import javax.swing.JLabel
-import javax.swing.JOptionPane
+import javax.swing.JPanel
 
 
 class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventListener) : UiStatePanel() {
-    val errorSearchBox = JLabel("*please enter a valid city name")
-    val startedPanelController =
-        StartedPanelController(
-            CoroutineScope(Dispatchers.IO),
-            GetCityWeatherUseCase(ApiManager),
-            GetCityBaseOnIp(ApiManager)
-        )
+    private val errorSearchBox = JLabel("*please enter a valid city name")
+    private val startedPanelController = StartedPanelController(
+        CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager), GetCityBaseOnIp(ApiManager)
+    )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
-    val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)
-
+    private val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)
+    private val locationIcon = ImageIcon("assets/location.png")
+    private val locationButton = JButton(locationIcon)
 
     init {
 
         layout = null
         isVisible = true
         background = Color(0xE5ECF4)
-
-        val loadingPanel = onLoading()
-        loadingPanel.setBounds(0, 0, 370, 640)
-        add(loadingPanel)
-        setComponentZOrder(loadingPanel, 0)
-        loadingPanel.isVisible = false
-
-        startedPanelController.callBack = {
-            when (it) {
-                is UiState.Loading -> {
-                    loadingPanel.isVisible = true
-                }
-
-                is UiState.Data -> {
-                    loadingPanel.isVisible = false
-                    this@StartedPanelView.isVisible = false
-                    nextPageLoader.nextPage(it.model)
-                }
-
-                is UiState.Error -> {
-                    loadingPanel.isVisible = false
-                    if (it.throwable is HttpException) errorSearchBox.isVisible = true
-                    else if (it.throwable is UnknownHostException || it.throwable is SocketException) {
-                        val options = arrayOf("Try Again")
-                        val choice = JOptionPane.showOptionDialog(
-                            null,
-                            "Something went wrong",
-                            "Confirmation",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]
-                        )
-                        when (choice) {
-                            0 -> {
-                                startedPanelController.city(searchBox.text)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
 
         val title = JLabel("SkyCast")
         title.foreground = Color(0x1E1E1E)
@@ -110,8 +63,7 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
         errorSearchBox.isVisible = false
         add(errorSearchBox)
 
-        val locationIcon = ImageIcon("assets/location.png")
-        val locationButton = JButton(locationIcon)
+
         locationButton.isOpaque = false
         locationButton.isBorderPainted = false
         locationButton.isContentAreaFilled = false
@@ -121,31 +73,24 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
             startedPanelController.callBack = {
                 when (it) {
                     is UiState.Loading -> {
-                        loadingPanel.isVisible = true
+                        onLoading()
                     }
 
                     is UiState.Data -> {
-                        loadingPanel.isVisible = false
+                        onData()
                         this@StartedPanelView.isVisible = false
-                        locationPageLoader.nextPage(it.model)
-                        startedPanelController.callBack = {
-                            when (it) {
-                                is UiState.Loading -> {
-                                    loadingPanel.isVisible = true
-                                }
-
-                                is UiState.Data -> {
-                                    loadingPanel.isVisible = false
-                                    this@StartedPanelView.isVisible = false
-                                    nextPageLoader.nextPage(it.model)
-                                }
-
-                                is UiState.Error -> errorSearchBox.isVisible = true
-                            }
-                        }
+                        nextPageLoader.nextPage(it.model)
                     }
 
-                    is UiState.Error -> errorSearchBox.isVisible = true
+                    is UiState.Error -> {
+                        onError(
+                            "An error occurred while processing the request",
+                            null,
+                            null
+                        )
+                        Thread.sleep(5000)
+                        onData()
+                    }
                 }
             }
         }
@@ -164,16 +109,46 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
 
             override fun keyReleased(e: KeyEvent?) {}
         })
-        setVisibilityChangeListener { isVisible -> searchBox.text = "" }
+        setVisibilityChangeListener { searchBox.text = "" }
         add(searchBox)
+
+
+        startedPanelController.callBack = {
+            when (it) {
+                is UiState.Loading -> {
+                    onLoading()
+                }
+
+
+                is UiState.Data -> {
+                    onData()
+                    this@StartedPanelView.isVisible = false
+                    nextPageLoader.nextPage(it.model)
+                }
+
+                is UiState.Error -> {
+                    if (it.throwable is HttpException) errorSearchBox.isVisible = true
+                    else{
+                        onError(
+                            "An error occurred while processing the request",
+                            null,
+                            null
+                        )
+                        Thread.sleep(5000)
+                        onData()
+                    }
+                }
+            }
+        }
+
     }
 
     private fun setVisibilityChangeListener(listener: (Boolean) -> Unit) {
         visibilityChangeListener = listener
     }
 
-    override fun createDataPanel() {
-        TODO("Not yet implemented")
+    override fun createDataPanel(): JPanel {
+        return JPanel()
     }
 
     override fun setVisible(visible: Boolean) {
