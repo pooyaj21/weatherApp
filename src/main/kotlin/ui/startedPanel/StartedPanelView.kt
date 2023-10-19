@@ -115,80 +115,40 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
         locationButton.isOpaque = false
         locationButton.isBorderPainted = false
         locationButton.isContentAreaFilled = false
-        locationButton.isFocusPainted = false
         locationButton.setBounds(0, 0, 50, 50)
-        locationButton.addActionListener(ActionListener {
-            errorSearchBox.isVisible = false
+        locationButton.addActionListener {
             startedPanelController.city()
             startedPanelController.callBack = {
                 when (it) {
                     is UiState.Loading -> {
-                        loadingPanel.isVisible=true
+                        loadingPanel.isVisible = true
                     }
 
                     is UiState.Data -> {
-                        loadingPanel.isVisible=false
+                        loadingPanel.isVisible = false
                         this@StartedPanelView.isVisible = false
                         locationPageLoader.nextPage(it.model)
-//                        startedPanelController.callBack = {
-//                            when (it) {
-//                                is UiState.Loading -> {
-//                                }
-//                                is UiState.Data -> {
-//                                    loadingPanel.isVisible=false
-//                                    this@StartedPanelView.isVisible = false
-//                                    nextPageLoader.nextPage(it.model)
-//                                }
-//                                is UiState.Error -> {
-//                                    if (it.throwable is HttpException) errorSearchBox.isVisible = true
-//                                    else if (it.throwable is UnknownHostException) {
-//                                        val options = arrayOf("Try Again")
-//                                        val choice = JOptionPane.showOptionDialog(
-//                                            null,
-//                                            "Something went wrong",
-//                                            "Confirmation",
-//                                            JOptionPane.YES_NO_OPTION,
-//                                            JOptionPane.QUESTION_MESSAGE,
-//                                            null,
-//                                            options,
-//                                            options[0]
-//                                        )
-//                                        when (choice) {
-//                                            0 -> {
-//                                                locationButton.doClick()
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-                    }
-
-                    is UiState.Error -> {
-                        loadingPanel.isVisible=false
-                        if (it.throwable is HttpException) errorSearchBox.isVisible = true
-                        else if (it.throwable is UnknownHostException) {
-                            val options = arrayOf("Try Again")
-                            val choice = JOptionPane.showOptionDialog(
-                                null,
-                                "Something went wrong",
-                                "Confirmation",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                options,
-                                options[0]
-                            )
-                            when (choice) {
-                                0 -> {
-                                    locationButton.doClick()
+                        startedPanelController.callBack = {
+                            when (it) {
+                                is UiState.Loading -> {
+                                    loadingPanel.isVisible = true
                                 }
+
+                                is UiState.Data -> {
+                                    loadingPanel.isVisible = false
+                                    this@StartedPanelView.isVisible = false
+                                    nextPageLoader.nextPage(it.model)
+                                }
+
+                                is UiState.Error -> errorSearchBox.isVisible = true
                             }
                         }
                     }
+
+                    is UiState.Error -> errorSearchBox.isVisible = true
                 }
             }
-        })
+        }
         add(locationButton)
 
         searchBox.setBounds(55, 330, 240, 50)
