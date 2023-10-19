@@ -118,8 +118,6 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
                 is UiState.Loading -> {
                     onLoading()
                 }
-
-
                 is UiState.Data -> {
                     onData()
                     this@StartedPanelView.isVisible = false
@@ -127,7 +125,10 @@ class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventL
                 }
 
                 is UiState.Error -> {
-                    if (it.throwable is HttpException) errorSearchBox.isVisible = true
+                    if (it.throwable is HttpException){
+                        errorSearchBox.isVisible = true
+                        onData()
+                    }
                     else{
                         onError(
                             "An error occurred while processing the request",
