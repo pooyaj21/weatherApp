@@ -20,7 +20,7 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 
 
-class StartedPanelView(locationPageLoader: EventListener, nextPageLoader: EventListener) : UiStatePanel() {
+class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
     private val errorSearchBox = JLabel("*please enter a valid city name")
     private val startedPanelController = StartedPanelController(
         CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager), GetCityBaseOnIp(ApiManager)

@@ -60,47 +60,7 @@ class MainFrame : JFrame("SkyCast") {
 
             override fun previousPage() {}
 
-        },
-            object : EventListener {
-                override fun nextPage(response: ApiWeatherData) {
-                    loadingPanel = LoadingPanelView(response, object : EventListener {
-                        override fun nextPage(response: ApiWeatherData) {
-                            mainPage = MainPageView(response, object : EventListener {
-                                override fun nextPage(response: ApiWeatherData) {
-                                    airPollution = AirPollutionView(response, object : EventListener {
-                                        override fun nextPage(response: ApiWeatherData) {}
-                                        override fun previousPage() {
-                                            airPollution.isVisible = false
-                                            mainPage.isVisible = true
-                                        }
-                                    })
-                                    airPollution.setBounds(0, 0, width, height)
-                                    add(airPollution)
-                                }
-
-                                override fun previousPage() {
-                                    mainPage.isVisible = false
-                                    loadingPanel.isVisible = true
-                                }
-                            })
-                            mainPage.setBounds(0, 0, width, height)
-                            add(mainPage)
-                        }
-
-                        override fun previousPage() {
-                            loadingPanel.isVisible = false
-                            startedPanel.isVisible = true
-                        }
-
-                    })
-                    loadingPanel.setBounds(0, 0, width, height)
-                    add(loadingPanel)
-                    loadingPanel.repaint()
-                    loadingPanel.revalidate()
-                }
-
-                override fun previousPage() {}
-            })
+        })
 
         startedPanel.setBounds(0, 0, width, height)
         add(startedPanel)
