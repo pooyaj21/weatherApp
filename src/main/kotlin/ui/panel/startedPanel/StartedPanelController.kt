@@ -1,11 +1,11 @@
-package ui.startedPanel
+package ui.panel.startedPanel
 
 import core.ApiWeatherData
 import domain.GetCityBaseOnIp
 import domain.GetCityWeatherUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import ui.UiState
+import ui.model.UiState
 
 class StartedPanelController(
     private val coroutineScope: CoroutineScope,

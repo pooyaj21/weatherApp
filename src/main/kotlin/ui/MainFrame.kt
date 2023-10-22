@@ -1,19 +1,15 @@
 package ui
 
-import core.ApiWeatherData
-import ui.airPollution.AirPollutionView
-import ui.loading.LoadingPanelView
-import ui.mainPage.MainPageView
-import ui.startedPanel.StartedPanelView
+import ui.panel.startedPanel.StartedPanelView
 import java.awt.Dimension
+import java.util.*
 import javax.swing.JFrame
 import javax.swing.JPanel
 
 class MainFrame : JFrame("SkyCast") {
-    private lateinit var loadingPanel: LoadingPanelView
-    private lateinit var startedPanel: StartedPanelView
-    private lateinit var mainPage: MainPageView
-    private lateinit var airPollution: AirPollutionView
+
+    private var startedPanel: StartedPanelView
+    private val navigator = StackNavigator(this)
 
     init {
         defaultCloseOperation = EXIT_ON_CLOSE
@@ -21,75 +17,31 @@ class MainFrame : JFrame("SkyCast") {
         setLocationRelativeTo(null)
         isVisible = true
 
-        initializeStartedPanel()
+        startedPanel = StartedPanelView(navigator)
+
+        navigator.push(startedPanel)
     }
 
-    private fun initializeStartedPanel() {
-        startedPanel = StartedPanelView(object : EventListener {
-            override fun nextPage(response: ApiWeatherData) {
-                loadingPanel = LoadingPanelView(response, loadingPanelListener())
-                addPanel(loadingPanel)
+    private class StackNavigator(private val frame: JFrame) : Navigator {
 
-                loadingPanel.setBounds(0, 0, width, height)
-            }
+        private val stack = Stack<JPanel>()
 
-            override fun previousPage() {
-                // No previous action in this panel
-            }
-        })
+        override fun pop() {
+            stack.lastOrNull()?.let { frame.remove(it) }
+            if (stack.isNotEmpty()) stack.pop()
+            stack.lastOrNull()?.isVisible = true
+        }
 
-        startedPanel.setBounds(0, 0, width, height)
-        addPanel(startedPanel)
-    }
-
-    private fun loadingPanelListener(): EventListener {
-        return object : EventListener {
-            override fun nextPage(response: ApiWeatherData) {
-                mainPage = MainPageView(response, mainPageListener())
-                addPanel(mainPage)
-
-                mainPage.setBounds(0, 0, width, height)
-            }
-
-            override fun previousPage() {
-                startedPanel.isVisible = true
-                loadingPanel.isVisible = false
-            }
+        override fun push(panel: JPanel) {
+            stack.lastOrNull()?.isVisible = false
+            stack.push(panel)
+            frame.add(panel)
         }
     }
 
-    private fun mainPageListener(): EventListener {
-        return object : EventListener {
-            override fun nextPage(response: ApiWeatherData) {
-                airPollution = AirPollutionView(response, airPollutionListener())
-                addPanel(airPollution)
+}
 
-                airPollution.setBounds(0, 0, width, height)
-            }
-
-            override fun previousPage() {
-                mainPage.isVisible = false
-                loadingPanel.isVisible = true
-            }
-        }
-    }
-
-    private fun airPollutionListener(): EventListener {
-        return object : EventListener {
-            override fun nextPage(response: ApiWeatherData) {
-                // No next action in this panel
-            }
-
-            override fun previousPage() {
-                airPollution.isVisible = false
-                mainPage.isVisible = true
-            }
-        }
-    }
-
-    private fun addPanel(panel: JPanel) {
-        add(panel)
-        panel.repaint()
-        panel.revalidate()
-    }
+interface Navigator {
+    fun pop()
+    fun push(panel: JPanel)
 }

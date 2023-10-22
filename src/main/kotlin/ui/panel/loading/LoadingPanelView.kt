@@ -1,14 +1,19 @@
-package ui.loading
+package ui.panel.loading
 
 import core.ApiWeatherData
-import ui.EventListener
+import ui.Navigator
+import ui.panel.mainPage.MainPageView
+import ui.util.FontEnum
 import ui.util.resizeIcon
+import ui.util.setFont
 import java.awt.Color
-import java.awt.Font
-import javax.swing.*
+import javax.swing.ImageIcon
+import javax.swing.JButton
+import javax.swing.JLabel
+import javax.swing.JPanel
 
 
-class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) : JPanel() {
+class LoadingPanelView(private val response: ApiWeatherData, private val navigator: Navigator) : JPanel() {
     private val loadingPanelController = LoadingPanelController(response)
     private val backgroundColor = if (loadingPanelController.getDayOrNight() == "d") Color(0xE5ECF4)
     else Color(0x1E1E1E)
@@ -56,7 +61,7 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
         val firstLine = JLabel("It’s").apply {
             foreground = foregroundColor
             setBounds(25, 340, 240, 45)
-            font = Font(null, Font.BOLD, 36)
+            setFont(FontEnum.BOLD, 36)
         }
         add(firstLine)
 
@@ -64,7 +69,7 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
         val secondLine = JLabel("fucking").apply {
             foreground = foregroundColor
             setBounds(25, 385, 240, 45)
-            font = Font(null, Font.BOLD, 36)
+            setFont(FontEnum.BOLD, 36)
         }
         add(secondLine)
 
@@ -81,10 +86,12 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
                 "Tornado" -> foreground = Color(0x434a5c)
             }
             setBounds(5, 430, 240, 45)
-            font = Font(null, Font.BOLD, 36)
+            setFont(FontEnum.BOLD, 36)
             addActionListener {
-                this@LoadingPanelView.isVisible = false
-                eventListener.nextPage(response)
+                val mainPage = MainPageView(response, navigator).apply {
+                    setBounds(0, 0, width, height)
+                }
+                navigator.push(mainPage)
             }
             isOpaque = false
             isBorderPainted = false
@@ -97,7 +104,7 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
         val lastLine = JLabel("now.").apply {
             foreground = foregroundColor
             setBounds(25, 475, 240, 45)
-            font = Font(null, Font.BOLD, 36)
+            setFont(FontEnum.BOLD, 36)
         }
         add(lastLine)
 
@@ -105,7 +112,7 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
         val bottomLabel = JLabel("you can look outside to get more information").apply {
             foreground = foregroundColor
             setBounds(25, 570, 360, 45)
-            font = Font(null, Font.BOLD, 12)
+            setFont(FontEnum.SEMI_BOLD, 12)
             horizontalAlignment = JLabel.LEFT
             verticalAlignment = JLabel.CENTER
         }
@@ -123,7 +130,7 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
             isBorderPainted = false
             isContentAreaFilled = false
             setBounds(0, 0, 50, 50)
-            addActionListener { eventListener.previousPage() }
+            addActionListener { navigator.pop() }
         }
         add(backButton)
 

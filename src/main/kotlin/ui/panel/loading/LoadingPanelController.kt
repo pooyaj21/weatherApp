@@ -1,4 +1,4 @@
-package ui.loading
+package ui.panel.loading
 
 import core.ApiWeatherData
 

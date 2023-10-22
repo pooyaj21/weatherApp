@@ -1,11 +1,11 @@
-package ui.airPollution
+package ui.panel.airPollution
 
 import core.ApiPollutionData
 import core.ApiWeatherData
 import domain.GetWeatherPollutionUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import ui.UiState
+import ui.model.UiState
 
 class AirPollutionController(
     private val coroutineScope: CoroutineScope,

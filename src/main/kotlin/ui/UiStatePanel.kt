@@ -3,8 +3,12 @@ package ui
 import ui.util.RoundedButton
 import java.awt.Color
 import java.awt.Font
-import java.awt.event.*
-import javax.swing.*
+import java.awt.event.ActionListener
+import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
+import javax.swing.ImageIcon
+import javax.swing.JLabel
+import javax.swing.JPanel
 
 
 abstract class UiStatePanel : JPanel() {
@@ -67,8 +71,9 @@ abstract class UiStatePanel : JPanel() {
         }
     }
     private val dataPanel by lazy { createDataPanel() }
-    fun onLoading() {
-        errorPanel.isVisible=false
+    fun onLoading(bacGroundColor: Color) {
+        loadingPanel.background = bacGroundColor
+        errorPanel.isVisible = false
         loadingPanel.isVisible = true
     }
 
@@ -88,8 +93,8 @@ abstract class UiStatePanel : JPanel() {
 
 
     fun onData() {
-        loadingPanel.isVisible=false
-        errorPanel.isVisible=false
+        loadingPanel.isVisible = false
+        errorPanel.isVisible = false
         dataPanel.isVisible = true
     }
 

@@ -1,4 +1,4 @@
-package ui.startedPanel
+package ui.panel.startedPanel
 
 import core.ApiManager
 import domain.GetCityBaseOnIp
@@ -6,19 +6,20 @@ import domain.GetCityWeatherUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import retrofit2.HttpException
-import ui.EventListener
-import ui.UiState
+import ui.Navigator
 import ui.UiStatePanel
+import ui.model.UiState
+import ui.panel.loading.LoadingPanelView
+import ui.util.FontEnum
 import ui.util.RoundedTextField
+import ui.util.setFont
 import java.awt.Color
-import java.awt.Font
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import javax.swing.*
 
 
-
-class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
+class StartedPanelView(navigator: Navigator) : UiStatePanel() {
     private val startedPanelController = StartedPanelController(
         CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager), GetCityBaseOnIp(ApiManager)
     )
@@ -35,7 +36,7 @@ class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
         val title = JLabel("SkyCast").apply {
             foreground = Color(0x1E1E1E)
             setBounds(0, 70, 360, 86)
-            font = Font(null, Font.BOLD, 36)
+            setFont(FontEnum.BOLD, 36)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -44,14 +45,13 @@ class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
 
         val imageLabel = JLabel(ImageIcon("assets/IMG/SkyCast.png")).apply {
             setBounds(130, 166, 100, 100)
-
         }
         add(imageLabel)
 
         val placeHolder = JLabel("Enter your location:").apply {
             foreground = Color(0x1E1E1E)
             setBounds(60, 300, 240, 30)
-            font = Font(null, Font.BOLD, 16)
+            setFont(FontEnum.SEMI_BOLD, 16)
         }
         add(placeHolder)
 
@@ -59,7 +59,7 @@ class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
         val errorSearchBox = JLabel("*please enter a valid city name").apply {
             foreground = Color.red
             setBounds(70, 375, 240, 30)
-            font = Font(null, Font.ITALIC, 12)
+            setFont(FontEnum.LIGHT, 12)
             isVisible = false
         }
         add(errorSearchBox)
@@ -75,13 +75,15 @@ class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
                 startedPanelController.callBack = {
                     when (it) {
                         is UiState.Loading -> {
-                            onLoading()
+                            onLoading(Color(0xE5ECF4))
                         }
 
                         is UiState.Data -> {
                             onData()
-                            this@StartedPanelView.isVisible = false
-                            nextPageLoader.nextPage(it.model)
+                            val loadingPanel = LoadingPanelView(it.model, navigator).apply {
+                                setBounds(0, 0, width, height)
+                            }
+                            navigator.push(loadingPanel)
                         }
 
                         is UiState.Error -> {
@@ -125,13 +127,15 @@ class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
         startedPanelController.callBack = {
             when (it) {
                 is UiState.Loading -> {
-                    onLoading()
+                    onLoading(Color(0xE5ECF4))
                 }
 
                 is UiState.Data -> {
                     onData()
-                    this@StartedPanelView.isVisible = false
-                    nextPageLoader.nextPage(it.model)
+                    val loadingPanel = LoadingPanelView(it.model, navigator).apply {
+                        setBounds(0, 0, width, height)
+                    }
+                    navigator.push(loadingPanel)
                 }
 
                 is UiState.Error -> {

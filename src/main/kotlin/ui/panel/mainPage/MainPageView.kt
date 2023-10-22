@@ -1,14 +1,17 @@
-package ui.mainPage
+package ui.panel.mainPage
 
 
 import core.ApiWeatherData
-import ui.EventListener
+import ui.Navigator
+import ui.panel.airPollution.AirPollutionView
+import ui.util.FontEnum
 import ui.util.resizeIcon
+import ui.util.setFont
 import java.awt.*
 import javax.swing.*
 
 
-class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPanel() {
+class MainPageView(response: ApiWeatherData, navigator: Navigator) : JPanel() {
     private val mainPageController = MainPageController(response)
     private val backgroundColor = if (mainPageController.getDayOrNight() == "d") Color(0xE5ECF4)
     else Color(0x1E1E1E)
@@ -25,7 +28,7 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
         val country = JLabel(mainPageController.getCountry()).apply {
             foreground = foregroundColor
             setBounds(0, 90, 360, 50)
-            font = Font(null, Font.BOLD, 36)
+            setFont(FontEnum.BOLD, 36)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -34,7 +37,7 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
         val date = JLabel("${mainPageController.getDay()}/${mainPageController.getTime()}").apply {
             foreground = foregroundColor
             setBounds(0, 140, 360, 30)
-            font = Font(null, Font.BOLD, 20)
+            setFont(FontEnum.SEMI_BOLD, 20)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -51,7 +54,7 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
         val feelingTemp = JLabel("${mainPageController.getFellingTemp()}°C").apply {
             foreground = foregroundColor
             setBounds(0, 280, 360, 50)
-            font = Font(null, Font.BOLD, 40)
+            setFont(FontEnum.BOLD, 40)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -60,15 +63,17 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
         val description =JButton(mainPageController.getDescription()).apply {
             foreground = foregroundColor
             setBounds(0, 340, 360, 30)
-            font = Font(null, Font.BOLD, 20)
+            setFont(FontEnum.SEMI_BOLD, 20)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
             isOpaque = false
             isBorderPainted = false
             isContentAreaFilled = false
             addActionListener {
-                this@MainPageView.isVisible = false
-                eventListener.nextPage(response)
+                val airPollutionPanel = AirPollutionView(response, navigator).apply {
+                    setBounds(0, 0, width, height)
+                }
+                navigator.push(airPollutionPanel)
             }
         }
         add(description)
@@ -88,7 +93,7 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
         val sunStatusLabel = JLabel(sunStatus).apply {
             foreground = foregroundColor
             setBounds(0, 490, 120, 50)
-            font = Font(null, Font.PLAIN, 16)
+            setFont(FontEnum.REGULAR, 16)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -105,7 +110,7 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
         val windStatus = JLabel("${mainPageController.getWind()}").apply {
             foreground = foregroundColor
             setBounds(120, 490, 120, 50)
-            font = Font(null, Font.PLAIN, 16)
+            setFont(FontEnum.REGULAR, 16)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -122,7 +127,7 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
         val temp = JLabel("${mainPageController.getTemp()}").apply {
             foreground = foregroundColor
             setBounds(240, 490, 120, 50)
-            font = Font(null, Font.PLAIN, 16)
+            setFont(FontEnum.REGULAR, 16)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -138,7 +143,7 @@ class MainPageView(response: ApiWeatherData, eventListener: EventListener) : JPa
             isBorderPainted = false
             isContentAreaFilled = false
             setBounds(0, 0, 50, 50)
-            addActionListener { eventListener.previousPage() }
+            addActionListener { navigator.pop()}
         }
         add(backButton)
 

@@ -1,17 +1,20 @@
-package ui.airPollution
+package ui.panel.airPollution
 
 import core.*
 import domain.GetWeatherPollutionUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import ui.*
+import ui.model.UiState
+import ui.util.FontEnum
 import ui.util.resizeIcon
+import ui.util.setFont
 import java.awt.Color
 import java.awt.Font
 import javax.swing.*
 
 
-class AirPollutionView(private val response: ApiWeatherData, private val eventListener: EventListener) :
+class AirPollutionView(private val response: ApiWeatherData,private val navigator: Navigator) :
     UiStatePanel() {
     private val airPollutionController = AirPollutionController(
         CoroutineScope(Dispatchers.IO),
@@ -33,7 +36,7 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
         airPollutionController.callBack = {
             when (it) {
                 is UiState.Loading -> {
-                    onLoading()
+                    onLoading(backgroundColor)
                 }
 
                 is UiState.Data -> {
@@ -49,7 +52,7 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
                         null
                     )
                     Thread.sleep(5000)
-                    eventListener.previousPage()
+                    navigator.pop()
                 }
             }
         }
@@ -77,7 +80,7 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
         val description = JLabel(response.weathers[0].description).apply {
             foreground = foregroundColor
             setBounds(0, 200, 360, 30)
-            font = Font(null, Font.PLAIN, 20)
+            setFont(FontEnum.BOLD, 20)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -87,7 +90,7 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
         val coStatus = JLabel("CO:${airPollutionData.list[0].components.co}").apply {
             foreground = foregroundColor
             setBounds(0, 350, 180, 30)
-            font = Font(null, Font.PLAIN, 20)
+            setFont(FontEnum.SEMI_BOLD, 20)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -97,7 +100,7 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
         val no2Status = JLabel("NO2:${airPollutionData.list[0].components.no2}").apply {
             foreground = foregroundColor
             setBounds(180, 350, 180, 30)
-            font = Font(null, Font.PLAIN, 20)
+            setFont(FontEnum.SEMI_BOLD, 20)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -107,7 +110,7 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
         val noStatus = JLabel("NO:${airPollutionData.list[0].components.no}").apply {
             foreground = foregroundColor
             setBounds(0, 400, 180, 30)
-            font = Font(null, Font.PLAIN, 20)
+            setFont(FontEnum.SEMI_BOLD, 20)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -117,7 +120,7 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
         val o3Status = JLabel("O3:${airPollutionData.list[0].components.o3}").apply {
             foreground = foregroundColor
             setBounds(180, 400, 180, 30)
-            font = Font(null, Font.PLAIN, 20)
+            setFont(FontEnum.SEMI_BOLD, 20)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
         }
@@ -135,7 +138,7 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
             isBorderPainted = false
             isContentAreaFilled = false
             setBounds(0, 0, 50, 50)
-            addActionListener { eventListener.previousPage() }
+            addActionListener { navigator.pop() }
         }
         dataPanel.add(backButton)
 

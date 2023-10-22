@@ -1,4 +1,4 @@
-package ui.mainPage
+package ui.panel.mainPage
 
 import core.ApiWeatherData
 import ui.util.convertUTCToLocalHour
