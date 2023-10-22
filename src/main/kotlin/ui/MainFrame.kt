@@ -137,8 +137,8 @@ class MainFrame : JFrame("SkyCast") {
             }
 
             override fun previousPage() {
-                mainPage.isVisible = true
-                loadingPanel.isVisible = false
+                mainPage.isVisible = false
+                loadingPanel.isVisible = true
             }
         }
     }
