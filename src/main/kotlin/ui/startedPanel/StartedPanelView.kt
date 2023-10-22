@@ -21,14 +21,12 @@ import javax.swing.JPanel
 
 
 class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
-    private val errorSearchBox = JLabel("*please enter a valid city name")
     private val startedPanelController = StartedPanelController(
         CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager), GetCityBaseOnIp(ApiManager)
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
     private val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)
-    private val locationIcon = ImageIcon("assets/location.png")
-    private val locationButton = JButton(locationIcon)
+
 
     init {
 
@@ -36,68 +34,82 @@ class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
         isVisible = true
         background = Color(0xE5ECF4)
 
-        val title = JLabel("SkyCast")
-        title.foreground = Color(0x1E1E1E)
-        title.setBounds(0, 70, 360, 86)
-        title.font = Font(null, Font.BOLD, 36)
-        title.horizontalAlignment = JLabel.CENTER
-        title.verticalAlignment = JLabel.CENTER
-        add(title)
+        //Title
+        JLabel("SkyCast").apply {
+            foreground = Color(0x1E1E1E)
+            setBounds(0, 70, 360, 86)
+            font = Font(null, Font.BOLD, 36)
+            horizontalAlignment = JLabel.CENTER
+            verticalAlignment = JLabel.CENTER
+        }.also {
+            add(it)
+        }
 
-        val icon = ImageIcon("assets/SkyCast.png")
-        val imageLabel = JLabel(icon)
-        imageLabel.setBounds(130, 166, 100, 100)
-        add(imageLabel)
+        //Lego
+        JLabel(ImageIcon("assets/SkyCast.png")).apply {
+            setBounds(130, 166, 100, 100)
 
-        val placeHolder = JLabel("Enter your location:")
-        placeHolder.foreground = Color(0x1E1E1E)
-        placeHolder.setBounds(60, 300, 240, 30)
-        placeHolder.font = Font(null, Font.BOLD, 16)
-        add(placeHolder)
+        }.also { add(it) }
 
-        errorSearchBox.foreground = Color.red
-        errorSearchBox.setBounds(70, 375, 240, 30)
-        errorSearchBox.font = Font(null, Font.ITALIC, 12)
-        errorSearchBox.isVisible = false
-        add(errorSearchBox)
+        //PlaceHolder
+        JLabel("Enter your location:").apply {
+            foreground = Color(0x1E1E1E)
+            setBounds(60, 300, 240, 30)
+            font = Font(null, Font.BOLD, 16)
+        }.also {
+            add(it)
+        }
 
+        //ErrorSearchBoX
+        val errorSearchBox = JLabel("*please enter a valid city name").apply {
+            foreground = Color.red
+            setBounds(70, 375, 240, 30)
+            font = Font(null, Font.ITALIC, 12)
+            isVisible = false
+        }.also {
+            add(it)
+        }
 
-        locationButton.isOpaque = false
-        locationButton.isBorderPainted = false
-        locationButton.isContentAreaFilled = false
-        locationButton.setBounds(0, 0, 50, 50)
-        locationButton.addActionListener {
-            startedPanelController.city()
-            startedPanelController.callBack = {
-                when (it) {
-                    is UiState.Loading -> {
-                        onLoading()
-                    }
+        //Location Icon
+        JButton(ImageIcon("assets/location.png")).apply {
+            isOpaque = false
+            isBorderPainted = false
+            isContentAreaFilled = false
+            setBounds(0, 0, 50, 50)
+            addActionListener {
+                startedPanelController.city()
+                startedPanelController.callBack = {
+                    when (it) {
+                        is UiState.Loading -> {
+                            onLoading()
+                        }
 
-                    is UiState.Data -> {
-                        onData()
-                        this@StartedPanelView.isVisible = false
-                        nextPageLoader.nextPage(it.model)
-                    }
-
-                    is UiState.Error -> {
-                        if (it.throwable is HttpException) {
-                            errorSearchBox.isVisible = true
+                        is UiState.Data -> {
                             onData()
-                        } else {
-                            onError(
-                                "An error occurred while processing the request",
-                                null,
-                                null
-                            )
-                            Thread.sleep(5000)
-                            onData()
+                            this@StartedPanelView.isVisible = false
+                            nextPageLoader.nextPage(it.model)
+                        }
+
+                        is UiState.Error -> {
+                            if (it.throwable is HttpException) {
+                                errorSearchBox.isVisible = true
+                                onData()
+                            } else {
+                                onError(
+                                    "An error occurred while processing the request",
+                                    null
+                                )
+                                Thread.sleep(5000)
+                                onData()
+                            }
                         }
                     }
                 }
             }
+
+        }.also {
+            add(it)
         }
-        add(locationButton)
 
         searchBox.setBounds(55, 330, 240, 50)
         searchBox.addKeyListener(object : KeyListener {
@@ -135,7 +147,6 @@ class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
                     } else {
                         onError(
                             "An error occurred while processing the request",
-                            null,
                             null
                         )
                         Thread.sleep(5000)

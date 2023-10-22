@@ -6,16 +6,12 @@ import core.ApiWeatherData
 import domain.GetWeatherPollutionUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import retrofit2.HttpException
 import ui.EventListener
 import ui.UiState
 import ui.UiStatePanel
 import ui.util.resizeIcon
 import java.awt.Color
 import java.awt.Font
-import java.awt.event.ActionListener
-import java.net.SocketException
-import java.net.UnknownHostException
 import javax.swing.ImageIcon
 import javax.swing.JButton
 import javax.swing.JLabel
@@ -54,13 +50,12 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
                 }
 
                 is UiState.Error -> {
-                        onError(
-                            "An error occurred while processing the request",
-                            null,
-                            null
-                        )
-                        Thread.sleep(5000)
-                        eventListener.previousPage()
+                    onError(
+                        "An error occurred while processing the request",
+                        null
+                    )
+                    Thread.sleep(5000)
+                    eventListener.previousPage()
                 }
             }
         }
@@ -68,67 +63,90 @@ class AirPollutionView(private val response: ApiWeatherData, private val eventLi
     }
 
     override fun createDataPanel(): JPanel {
-        val dataPanel = JPanel()
-        dataPanel.layout = null
-        dataPanel.isVisible = true
-        dataPanel.background = backgroundColor
-        dataPanel.setBounds(0, 0, 370, 640)
+        val dataPanel = JPanel().apply {
+            layout = null
+            isVisible = true
+            background = backgroundColor
+            setBounds(0, 0, 370, 640)
+        }
 
-        val pollutionIcon = ImageIcon("assets/${response.weathers[0].icon}.png")
-        val pollutionIconLabel = JLabel(resizeIcon(pollutionIcon, 100, 100))
+        val pollutionIconLabel = JLabel(resizeIcon(
+            icon = ImageIcon("assets/${response.weathers[0].icon}.png"),
+            width = 100,
+            height = 100
+        ))
         pollutionIconLabel.setBounds(130, 90, 100, 100)
         dataPanel.add(pollutionIconLabel)
 
-        val description = JLabel(response.weathers[0].description)
-        description.foreground = foregroundColor
-        description.setBounds(0, 200, 360, 30)
-        description.font = Font(null, Font.PLAIN, 20)
-        description.horizontalAlignment = JLabel.CENTER
-        description.verticalAlignment = JLabel.CENTER
-        dataPanel.add(description)
+        //weather description
+        JLabel(response.weathers[0].description).apply {
+            foreground = foregroundColor
+            setBounds(0, 200, 360, 30)
+            font = Font(null, Font.PLAIN, 20)
+            horizontalAlignment = JLabel.CENTER
+            verticalAlignment = JLabel.CENTER
+        }.also {
+            dataPanel.add(it)
+        }
 
-        val coStatus = JLabel("CO:${airPollutionData.list[0].components.co}")
-        coStatus.foreground = foregroundColor
-        coStatus.setBounds(0, 350, 180, 30)
-        coStatus.font = Font(null, Font.PLAIN, 20)
-        coStatus.horizontalAlignment = JLabel.CENTER
-        coStatus.verticalAlignment = JLabel.CENTER
-        dataPanel.add(coStatus)
+        //coStatus
+        JLabel("CO:${airPollutionData.list[0].components.co}").apply {
+            foreground = foregroundColor
+            setBounds(0, 350, 180, 30)
+            font = Font(null, Font.PLAIN, 20)
+            horizontalAlignment = JLabel.CENTER
+            verticalAlignment = JLabel.CENTER
+        }.also {
+            dataPanel.add(it)
+        }
 
-        val no2Status = JLabel("NO2:${airPollutionData.list[0].components.no2}")
-        no2Status.foreground = foregroundColor
-        no2Status.setBounds(180, 350, 180, 30)
-        no2Status.font = Font(null, Font.PLAIN, 20)
-        no2Status.horizontalAlignment = JLabel.CENTER
-        no2Status.verticalAlignment = JLabel.CENTER
-        dataPanel.add(no2Status)
+        //no2Status
+         JLabel("NO2:${airPollutionData.list[0].components.no2}").apply {
+            foreground = foregroundColor
+            setBounds(180, 350, 180, 30)
+            font = Font(null, Font.PLAIN, 20)
+            horizontalAlignment = JLabel.CENTER
+            verticalAlignment = JLabel.CENTER
+        }.also {
+             dataPanel.add(it)
+        }
 
-        val noStatus = JLabel("NO:${airPollutionData.list[0].components.no}")
-        noStatus.foreground = foregroundColor
-        noStatus.setBounds(0, 400, 180, 30)
-        noStatus.font = Font(null, Font.PLAIN, 20)
-        noStatus.horizontalAlignment = JLabel.CENTER
-        noStatus.verticalAlignment = JLabel.CENTER
-        dataPanel.add(noStatus)
+        //noStatus
+        JLabel("NO:${airPollutionData.list[0].components.no}").apply {
+            foreground = foregroundColor
+            setBounds(0, 400, 180, 30)
+            font = Font(null, Font.PLAIN, 20)
+            horizontalAlignment = JLabel.CENTER
+            verticalAlignment = JLabel.CENTER
+        }.also {
+            dataPanel.add(it)
+        }
 
-        val o3Status = JLabel("O3:${airPollutionData.list[0].components.o3}")
-        o3Status.foreground = foregroundColor
-        o3Status.setBounds(180, 400, 180, 30)
-        o3Status.font = Font(null, Font.PLAIN, 20)
-        o3Status.horizontalAlignment = JLabel.CENTER
-        o3Status.verticalAlignment = JLabel.CENTER
-        dataPanel.add(o3Status)
+        //o3Status
+         JLabel("O3:${airPollutionData.list[0].components.o3}").apply {
+            foreground = foregroundColor
+            setBounds(180, 400, 180, 30)
+            font = Font(null, Font.PLAIN, 20)
+            horizontalAlignment = JLabel.CENTER
+            verticalAlignment = JLabel.CENTER
+        }.also {
+             dataPanel.add(it)
+        }
 
-        val backIcon = ImageIcon("assets/back${response.weathers[0].icon.last()}.png")
-        val backButton = JButton(resizeIcon(backIcon, 30, 30))
-        backButton.isOpaque = false
-        backButton.isBorderPainted = false
-        backButton.isContentAreaFilled = false
-        backButton.setBounds(0, 0, 50, 50)
-        backButton.addActionListener(ActionListener { eventListener.previousPage() })
-        dataPanel.add(backButton)
-
-
+        //backIcon
+        JButton(resizeIcon(
+            icon = ImageIcon("assets/back${response.weathers[0].icon.last()}.png"),
+            width = 30,
+            height = 30
+        )).apply {
+            isOpaque = false
+            isBorderPainted = false
+            isContentAreaFilled = false
+            setBounds(0, 0, 50, 50)
+            addActionListener { eventListener.previousPage() }
+        }.also {
+            dataPanel.add(it)
+        }
 
         this.add(dataPanel)
         this.setComponentZOrder(dataPanel, 0)

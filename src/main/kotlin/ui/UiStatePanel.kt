@@ -75,17 +75,20 @@ abstract class UiStatePanel : JPanel() {
         loadingPanel.isVisible = true
     }
 
-    fun onError(message: String, buttonMessage: String?, buttonAction: ActionListener?) {
+    data class ButtonInfo(val title: String?, val action: ActionListener?)
+
+    fun onError(message: String, buttonInfo: ButtonInfo?) {
         errorPanel.errorMassage.text = message
-        if (buttonMessage==null){
-            errorPanel.errorButton.isVisible=false
-        }else {
-            errorPanel.errorButton.text = buttonMessage
-            errorPanel.errorButton.addActionListener(buttonAction)
-        }
-        loadingPanel.isVisible=false
+
+        errorPanel.errorButton.isVisible = buttonInfo != null
+        errorPanel.errorButton.text = buttonInfo?.title
+
+        buttonInfo?.action?.let { errorPanel.errorButton.addActionListener(it) }
+
+        loadingPanel.isVisible = false
         errorPanel.isVisible = true
     }
+
 
     fun onData() {
         loadingPanel.isVisible=false
