@@ -3,12 +3,9 @@ package ui
 import ui.util.RoundedButton
 import java.awt.Color
 import java.awt.Font
-import java.awt.event.ActionListener
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
-import javax.swing.ImageIcon
-import javax.swing.JLabel
-import javax.swing.JPanel
+import java.awt.event.*
+import javax.swing.*
+
 
 abstract class UiStatePanel : JPanel() {
     private val loadingPanel = object : JPanel() {
@@ -17,7 +14,7 @@ abstract class UiStatePanel : JPanel() {
             isVisible = false
             background = Color(0xE5ECF4)
             setBounds(0, 0, 370, 640)
-            val loadingIcon = ImageIcon("assets/loading.gif")
+            val loadingIcon = ImageIcon("assets/IMG/loading.gif")
             val loadingLabel = JLabel(loadingIcon)
             loadingLabel.setBounds(130, 260, 100, 100)
             add(loadingLabel)

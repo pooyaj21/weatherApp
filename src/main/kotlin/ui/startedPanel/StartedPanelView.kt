@@ -14,10 +14,8 @@ import java.awt.Color
 import java.awt.Font
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
-import javax.swing.ImageIcon
-import javax.swing.JButton
-import javax.swing.JLabel
-import javax.swing.JPanel
+import javax.swing.*
+
 
 
 class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
@@ -34,44 +32,40 @@ class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
         isVisible = true
         background = Color(0xE5ECF4)
 
-        //Title
-        JLabel("SkyCast").apply {
+        val title = JLabel("SkyCast").apply {
             foreground = Color(0x1E1E1E)
             setBounds(0, 70, 360, 86)
             font = Font(null, Font.BOLD, 36)
             horizontalAlignment = JLabel.CENTER
             verticalAlignment = JLabel.CENTER
-        }.also {
-            add(it)
         }
+        add(title)
 
-        //Lego
-        JLabel(ImageIcon("assets/SkyCast.png")).apply {
+
+        val imageLabel = JLabel(ImageIcon("assets/IMG/SkyCast.png")).apply {
             setBounds(130, 166, 100, 100)
 
-        }.also { add(it) }
+        }
+        add(imageLabel)
 
-        //PlaceHolder
-        JLabel("Enter your location:").apply {
+        val placeHolder = JLabel("Enter your location:").apply {
             foreground = Color(0x1E1E1E)
             setBounds(60, 300, 240, 30)
             font = Font(null, Font.BOLD, 16)
-        }.also {
-            add(it)
         }
+        add(placeHolder)
 
-        //ErrorSearchBoX
+
         val errorSearchBox = JLabel("*please enter a valid city name").apply {
             foreground = Color.red
             setBounds(70, 375, 240, 30)
             font = Font(null, Font.ITALIC, 12)
             isVisible = false
-        }.also {
-            add(it)
         }
+        add(errorSearchBox)
 
-        //Location Icon
-        JButton(ImageIcon("assets/location.png")).apply {
+
+        val locationButton = JButton(ImageIcon("assets/IMG/location.png")).apply {
             isOpaque = false
             isBorderPainted = false
             isContentAreaFilled = false
@@ -107,9 +101,9 @@ class StartedPanelView(nextPageLoader: EventListener) : UiStatePanel() {
                 }
             }
 
-        }.also {
-            add(it)
         }
+        add(locationButton)
+
 
         searchBox.setBounds(55, 330, 240, 50)
         searchBox.addKeyListener(object : KeyListener {

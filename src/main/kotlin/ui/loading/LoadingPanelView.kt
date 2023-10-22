@@ -5,10 +5,8 @@ import ui.EventListener
 import ui.util.resizeIcon
 import java.awt.Color
 import java.awt.Font
-import javax.swing.ImageIcon
-import javax.swing.JButton
-import javax.swing.JLabel
-import javax.swing.JPanel
+import javax.swing.*
+
 
 class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) : JPanel() {
     private val loadingPanelController = LoadingPanelController(response)
@@ -47,7 +45,7 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
 
         val imageLabel = JLabel(
             resizeIcon(
-                icon = ImageIcon("assets/${loadingPanelController.getIcon()}.png"),
+                icon = ImageIcon("assets/IMG/${loadingPanelController.getIcon()}.png"),
                 width = 100,
                 height = 100
             )
@@ -55,26 +53,23 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
         imageLabel.setBounds(25, 35, 100, 100)
         add(imageLabel)
 
-        // First Line
-        JLabel("It’s").apply {
+        val firstLine = JLabel("It’s").apply {
             foreground = foregroundColor
             setBounds(25, 340, 240, 45)
             font = Font(null, Font.BOLD, 36)
-        }.also {
-            add(it)
         }
+        add(firstLine)
 
-        // Second Line
-        JLabel("fucking").apply {
+
+        val secondLine = JLabel("fucking").apply {
             foreground = foregroundColor
             setBounds(25, 385, 240, 45)
             font = Font(null, Font.BOLD, 36)
-        }.also {
-            add(it)
         }
+        add(secondLine)
 
-        // Weather Status
-        JButton(weatherText).apply {
+
+        val weatherLabel = JButton(weatherText).apply {
             when (weatherText) {
                 "Sunny" -> foreground = Color(0xd8eb34)
                 "Cloudy" -> foreground = Color(0x88d2f7)
@@ -95,33 +90,31 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
             isBorderPainted = false
             isContentAreaFilled = false
             horizontalAlignment = JLabel.LEFT
-        }.also {
-            add(it)
         }
-        // Last Line
-        JLabel("now.").apply {
+        add(weatherLabel)
+
+
+        val lastLine = JLabel("now.").apply {
             foreground = foregroundColor
             setBounds(25, 475, 240, 45)
             font = Font(null, Font.BOLD, 36)
-        }.also {
-            add(it)
         }
+        add(lastLine)
 
-        // Bottom Line
-        JLabel("you can look outside to get more information").apply {
+
+        val bottomLabel = JLabel("you can look outside to get more information").apply {
             foreground = foregroundColor
             setBounds(25, 570, 360, 45)
             font = Font(null, Font.BOLD, 12)
             horizontalAlignment = JLabel.LEFT
             verticalAlignment = JLabel.CENTER
-        }.also {
-            add(it)
         }
+        add(bottomLabel)
 
-        // Back Icon
-        JButton(
+
+        val backButton = JButton(
             resizeIcon(
-                icon = ImageIcon("assets/back${loadingPanelController.getDayOrNight()}.png"),
+                icon = ImageIcon("assets/IMG/back${loadingPanelController.getDayOrNight()}.png"),
                 width = 30,
                 height = 30
             )
@@ -131,9 +124,9 @@ class LoadingPanelView(response: ApiWeatherData, eventListener: EventListener) :
             isContentAreaFilled = false
             setBounds(0, 0, 50, 50)
             addActionListener { eventListener.previousPage() }
-        }.also {
-            add(it)
         }
+        add(backButton)
+
 
     }
 }
