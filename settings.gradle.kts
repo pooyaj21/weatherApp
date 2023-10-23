@@ -10,3 +10,4 @@ plugins {
 }
 
 rootProject.name = "weatherApp"
+include("service")
