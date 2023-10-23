@@ -6,7 +6,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.URL
 
-class GetIp() {
+class GetIpUseCase() {
     suspend fun get(): String=withContext(Dispatchers.IO) {
         var publicIp = ""
         try {

@@ -1,7 +1,7 @@
 package ui.panel.startedPanel
 
 import core.Manager.ApiManager
-import core.domain.GetCityBaseOnIp
+import core.domain.GetWeatherBaseOnIp
 import core.domain.GetCityWeatherUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +21,7 @@ import javax.swing.*
 
 class StartedPanelView(navigator: Navigator) : UiStatePanel() {
     private val startedPanelController = StartedPanelController(
-        CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager), GetCityBaseOnIp(ApiManager)
+        CoroutineScope(Dispatchers.IO), GetCityWeatherUseCase(ApiManager), GetWeatherBaseOnIp(ApiManager)
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
     private val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)

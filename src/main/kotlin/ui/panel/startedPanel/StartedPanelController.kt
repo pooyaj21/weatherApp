@@ -1,7 +1,6 @@
 package ui.panel.startedPanel
 
-import core.service.response.WeatherResponse
-import core.domain.GetCityBaseOnIp
+import core.domain.GetWeatherBaseOnIp
 import core.domain.GetCityWeatherUseCase
 import core.model.Weather
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +10,7 @@ import ui.model.UiState
 class StartedPanelController(
     private val coroutineScope: CoroutineScope,
     private val getCityWeatherUseCase: GetCityWeatherUseCase,
-    private val getCityBaseOnIp: GetCityBaseOnIp
+    private val getCityBaseOnIp: GetWeatherBaseOnIp
 ) {
     var callBack: ((UiState<Weather>) -> Unit)? = null
     fun city(city: String) {
