@@ -1,7 +1,6 @@
 package ui.panel.mainPage
 
 import core.model.Weather
-import core.service.response.WeatherResponse
 import ui.util.convertUTCToLocalHour
 import ui.util.getDayOfWeekFromUTC
 

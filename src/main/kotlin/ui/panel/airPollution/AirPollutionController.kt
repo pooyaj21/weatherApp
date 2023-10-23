@@ -1,7 +1,5 @@
 package ui.panel.airPollution
 
-import core.service.response.PollutionResponse
-import core.service.response.WeatherResponse
 import core.domain.GetWeatherPollutionUseCase
 import core.model.Pollution
 import core.model.Weather

@@ -10,4 +10,4 @@ plugins {
 }
 
 rootProject.name = "weatherApp"
-include("service")
+include(":service")

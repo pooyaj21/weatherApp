@@ -1,11 +1,11 @@
 package core.data
 
+import WeatherApiService
 import core.model.Weather
-import core.service.WeatherService
 
-class WeatherRepository(private val weatherService: WeatherService) {
+class WeatherRepository(private val weatherService: WeatherApiService) {
     suspend fun weather(city:String):Weather{
-        val weatherResponse = weatherService.weather(city)
+        val weatherResponse = weatherService.getData(city)
         return Weather(
             lat = weatherResponse.coord.lat,
             lon = weatherResponse.coord.lon,

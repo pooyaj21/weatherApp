@@ -1,17 +1,13 @@
 package ui.panel.startedPanel
 
-import core.Manager.ApiManager
 import core.data.LocationRepository
 import core.data.WeatherRepository
-import core.domain.GetWeatherBaseOnIp
+import core.domain.GetWeatherBaseOnIpUseCase
 import core.domain.GetCityWeatherUseCase
 import core.domain.GetIpUseCase
-import core.model.Weather
-import core.service.LocationService
-import core.service.WeatherService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import retrofit2.HttpException
+import service.ServiceProvider
 import ui.Navigator
 import ui.UiStatePanel
 import ui.model.UiState
@@ -26,13 +22,13 @@ import javax.swing.*
 
 
 class StartedPanelView(navigator: Navigator) : UiStatePanel() {
-    private val locationRepository = LocationRepository(LocationService())
+    private val locationRepository = LocationRepository(ServiceProvider.provideLocationApiService())
     private val ip = GetIpUseCase()
-    private val getWeatherPollutionUseCase = GetCityWeatherUseCase(WeatherRepository(WeatherService()))
+    private val getWeatherPollutionUseCase = GetCityWeatherUseCase(WeatherRepository(ServiceProvider.provideWeatherApiService()))
     private val startedPanelController = StartedPanelController(
         CoroutineScope(Dispatchers.IO),
-        GetCityWeatherUseCase(WeatherRepository(WeatherService())),
-        GetWeatherBaseOnIp(locationRepository, ip, getWeatherPollutionUseCase)
+        GetCityWeatherUseCase(WeatherRepository(ServiceProvider.provideWeatherApiService())),
+        GetWeatherBaseOnIpUseCase(locationRepository, ip, getWeatherPollutionUseCase)
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
     private val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)
@@ -98,22 +94,22 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
                         }
 
                         is UiState.Error -> {
-                            if (it.throwable is HttpException) {
-                                errorSearchBox.isVisible = true
-                                onData()
-                            } else {
-                                onError(
-                                    "An error occurred while processing the request",
-                                    null
-                                )
-                                Thread.sleep(5000)
-                                onData()
-                            }
+//                            if (it.throwable is HttpException) {
+//                                errorSearchBox.isVisible = true
+//                                onData()
+//                            } else {
+//                                onError(
+//                                    "An error occurred while processing the request",
+//                                    null
+//                                )
+//                                Thread.sleep(5000)
+//                                onData()
+//                            }
+                            println(it.throwable)
                         }
                     }
                 }
             }
-
         }
         add(locationButton)
 
@@ -150,17 +146,17 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
                 }
 
                 is UiState.Error -> {
-                    if (it.throwable is HttpException) {
-                        errorSearchBox.isVisible = true
-                        onData()
-                    } else {
-                        onError(
-                            "An error occurred while processing the request",
-                            null
-                        )
-                        Thread.sleep(5000)
-                        onData()
-                    }
+//                    if (it.throwable is HttpException) {
+//                        errorSearchBox.isVisible = true
+//                        onData()
+//                    } else {
+//                        onError(
+//                            "An error occurred while processing the request",
+//                            null
+//                        )
+//                        Thread.sleep(5000)
+//                        onData()
+//                    }
                 }
             }
         }

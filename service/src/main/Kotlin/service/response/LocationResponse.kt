@@ -1,4 +1,4 @@
-package core.service.response
+package service.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

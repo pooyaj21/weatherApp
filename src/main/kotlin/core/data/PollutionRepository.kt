@@ -1,12 +1,12 @@
 package core.data
 
+import PollutionApiService
 import core.model.Pollution
 import core.model.Weather
-import core.service.PollutionService
 
-class PollutionRepository(private val pollutionService: PollutionService) {
+class PollutionRepository(private val pollutionService: PollutionApiService) {
 suspend fun pollution(previousApi :Weather):Pollution{
-    val pollutionResponse =pollutionService.pollution(previousApi)
+    val pollutionResponse =pollutionService.getData(previousApi.lat.toString(),previousApi.lon.toString())
     return Pollution(
         co = pollutionResponse.list[0].components.co,
         no2 = pollutionResponse.list[0].components.no2,

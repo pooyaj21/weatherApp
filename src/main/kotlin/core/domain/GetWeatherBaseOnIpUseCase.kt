@@ -3,7 +3,7 @@ package core.domain
 import core.data.LocationRepository
 import core.model.Weather
 
-class GetWeatherBaseOnIp(
+class GetWeatherBaseOnIpUseCase(
     private val locationRepository: LocationRepository,
     private val getIp: GetIpUseCase,
     private val getCityWeatherUseCase: GetCityWeatherUseCase

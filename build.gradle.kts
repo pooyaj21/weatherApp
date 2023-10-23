@@ -11,14 +11,13 @@ repositories {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":service")))
     testImplementation(kotlin("test"))
+    implementation (project(":service"))
+
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
-    implementation("com.google.code.gson:gson:2.8.9")
+
 }
 
 tasks.test {
@@ -26,7 +25,7 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(20)
 }
 
 application {
