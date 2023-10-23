@@ -1,7 +1,7 @@
 package core.domain
 
-import core.data.LocationRepository
-import core.model.Weather
+import data.LocationRepository
+import model.Weather
 
 class GetWeatherBaseOnIpUseCase(
     private val locationRepository: LocationRepository,

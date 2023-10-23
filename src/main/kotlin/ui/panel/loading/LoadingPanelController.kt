@@ -1,6 +1,6 @@
 package ui.panel.loading
 
-import core.model.Weather
+import model.Weather
 
 class LoadingPanelController(private val response: Weather) {
     fun getDayOrNight(): String {

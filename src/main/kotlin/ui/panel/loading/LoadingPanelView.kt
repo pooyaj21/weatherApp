@@ -1,6 +1,6 @@
 package ui.panel.loading
 
-import core.model.Weather
+import model.Weather
 import ui.Navigator
 import ui.panel.mainPage.MainPageView
 import ui.util.FontEnum

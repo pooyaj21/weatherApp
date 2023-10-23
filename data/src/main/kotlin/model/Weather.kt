@@ -1,4 +1,4 @@
-package core.model
+package model
 
 data class Weather(
     val lat: Double,

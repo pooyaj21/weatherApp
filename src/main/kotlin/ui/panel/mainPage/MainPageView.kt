@@ -1,7 +1,7 @@
 package ui.panel.mainPage
 
 
-import core.model.Weather
+import model.Weather
 import ui.Navigator
 import ui.panel.airPollution.AirPollutionView
 import ui.util.FontEnum

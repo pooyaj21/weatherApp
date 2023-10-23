@@ -1,8 +1,8 @@
 package ui.panel.airPollution
 
 import core.domain.GetWeatherPollutionUseCase
-import core.model.Pollution
-import core.model.Weather
+import model.Pollution
+import model.Weather
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ui.model.UiState

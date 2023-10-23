@@ -2,7 +2,7 @@ package ui.panel.startedPanel
 
 import core.domain.GetWeatherBaseOnIpUseCase
 import core.domain.GetCityWeatherUseCase
-import core.model.Weather
+import model.Weather
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ui.model.UiState

@@ -1,13 +1,12 @@
 package ui.panel.startedPanel
 
-import core.data.LocationRepository
-import core.data.WeatherRepository
+import data.LocationRepository
+import data.WeatherRepository
 import core.domain.GetWeatherBaseOnIpUseCase
 import core.domain.GetCityWeatherUseCase
 import core.domain.GetIpUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import service.ServiceProvider
 import ui.Navigator
 import ui.UiStatePanel
 import ui.model.UiState
@@ -22,12 +21,12 @@ import javax.swing.*
 
 
 class StartedPanelView(navigator: Navigator) : UiStatePanel() {
-    private val locationRepository = LocationRepository(ServiceProvider.provideLocationApiService())
+    private val locationRepository = LocationRepository()
     private val ip = GetIpUseCase()
-    private val getWeatherPollutionUseCase = GetCityWeatherUseCase(WeatherRepository(ServiceProvider.provideWeatherApiService()))
+    private val getWeatherPollutionUseCase = GetCityWeatherUseCase(WeatherRepository())
     private val startedPanelController = StartedPanelController(
         CoroutineScope(Dispatchers.IO),
-        GetCityWeatherUseCase(WeatherRepository(ServiceProvider.provideWeatherApiService())),
+        GetCityWeatherUseCase(WeatherRepository()),
         GetWeatherBaseOnIpUseCase(locationRepository, ip, getWeatherPollutionUseCase)
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
@@ -98,14 +97,13 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
 //                                errorSearchBox.isVisible = true
 //                                onData()
 //                            } else {
-//                                onError(
-//                                    "An error occurred while processing the request",
-//                                    null
-//                                )
-//                                Thread.sleep(5000)
-//                                onData()
+                                onError(
+                                    "An error occurred while processing the request",
+                                    null
+                                )
+                                Thread.sleep(5000)
+                                onData()
 //                            }
-                            println(it.throwable)
                         }
                     }
                 }
@@ -150,12 +148,12 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
 //                        errorSearchBox.isVisible = true
 //                        onData()
 //                    } else {
-//                        onError(
-//                            "An error occurred while processing the request",
-//                            null
-//                        )
-//                        Thread.sleep(5000)
-//                        onData()
+                        onError(
+                            "An error occurred while processing the request",
+                            null
+                        )
+                        Thread.sleep(5000)
+                        onData()
 //                    }
                 }
             }

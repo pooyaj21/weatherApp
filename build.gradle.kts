@@ -11,9 +11,8 @@ repositories {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":service")))
+    implementation(project(mapOf("path" to ":data")))
     testImplementation(kotlin("test"))
-    implementation (project(":service"))
 
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
