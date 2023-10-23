@@ -1,6 +1,7 @@
 package ui.panel.mainPage
 
 
+import core.model.Weather
 import core.service.response.WeatherResponse
 import ui.Navigator
 import ui.panel.airPollution.AirPollutionView
@@ -11,7 +12,7 @@ import java.awt.*
 import javax.swing.*
 
 
-class MainPageView(response: WeatherResponse, navigator: Navigator) : JPanel() {
+class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
     private val mainPageController = MainPageController(response)
     private val backgroundColor = if (mainPageController.getDayOrNight() == "d") Color(0xE5ECF4)
     else Color(0x1E1E1E)

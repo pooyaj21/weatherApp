@@ -1,7 +1,11 @@
 package ui.panel.airPollution
 
 import core.Manager.*
+import core.data.PollutionRepository
 import core.domain.GetWeatherPollutionUseCase
+import core.model.Pollution
+import core.model.Weather
+import core.service.PollutionService
 import core.service.response.PollutionResponse
 import core.service.response.WeatherResponse
 import kotlinx.coroutines.CoroutineScope
@@ -15,19 +19,19 @@ import java.awt.Color
 import javax.swing.*
 
 
-class AirPollutionView(private val response: WeatherResponse, private val navigator: Navigator) :
+class AirPollutionView(private val response: Weather, private val navigator: Navigator) :
     UiStatePanel() {
     private val airPollutionController = AirPollutionController(
         CoroutineScope(Dispatchers.IO),
-        GetWeatherPollutionUseCase(ApiManager)
+        GetWeatherPollutionUseCase(PollutionRepository(PollutionService()))
     )
-    private val backgroundColor = if (response.weathers[0].icon.last().toString() == "d") Color(0xE5ECF4)
+    private val backgroundColor = if (response.icon.last().toString() == "d") Color(0xE5ECF4)
     else Color(0x1E1E1E)
 
-    private val foregroundColor = if (response.weathers[0].icon.last().toString() == "d") Color(0x1E1E1E)
+    private val foregroundColor = if (response.icon.last().toString() == "d") Color(0x1E1E1E)
     else Color(0xE5ECF4)
 
-    private lateinit var airPollutionData: PollutionResponse
+    private lateinit var airPollutionData: Pollution
 
     init {
         layout = null
@@ -70,7 +74,7 @@ class AirPollutionView(private val response: WeatherResponse, private val naviga
 
         val pollutionIconLabel = JLabel(
             resizeIcon(
-                icon = ImageIcon("assets/IMG/${response.weathers[0].icon}.png"),
+                icon = ImageIcon("assets/IMG/${response.icon}.png"),
                 width = 100,
                 height = 100
             )
@@ -78,7 +82,7 @@ class AirPollutionView(private val response: WeatherResponse, private val naviga
         pollutionIconLabel.setBounds(130, 90, 100, 100)
         dataPanel.add(pollutionIconLabel)
 
-        val description = JLabel(response.weathers[0].description).apply {
+        val description = JLabel(response.description).apply {
             foreground = foregroundColor
             setBounds(0, 200, 360, 30)
             setFont(FontEnum.BOLD, 20)
@@ -88,7 +92,7 @@ class AirPollutionView(private val response: WeatherResponse, private val naviga
         dataPanel.add(description)
 
 
-        val coStatus = JLabel("CO:${airPollutionData.list[0].components.co}").apply {
+        val coStatus = JLabel("CO:${airPollutionData.co}").apply {
             foreground = foregroundColor
             setBounds(0, 350, 180, 30)
             setFont(FontEnum.SEMI_BOLD, 20)
@@ -98,7 +102,7 @@ class AirPollutionView(private val response: WeatherResponse, private val naviga
         dataPanel.add(coStatus)
 
 
-        val no2Status = JLabel("NO2:${airPollutionData.list[0].components.no2}").apply {
+        val no2Status = JLabel("NO2:${airPollutionData.no2}").apply {
             foreground = foregroundColor
             setBounds(180, 350, 180, 30)
             setFont(FontEnum.SEMI_BOLD, 20)
@@ -108,7 +112,7 @@ class AirPollutionView(private val response: WeatherResponse, private val naviga
         dataPanel.add(no2Status)
 
 
-        val noStatus = JLabel("NO:${airPollutionData.list[0].components.no}").apply {
+        val noStatus = JLabel("NO:${airPollutionData.no}").apply {
             foreground = foregroundColor
             setBounds(0, 400, 180, 30)
             setFont(FontEnum.SEMI_BOLD, 20)
@@ -118,7 +122,7 @@ class AirPollutionView(private val response: WeatherResponse, private val naviga
         dataPanel.add(noStatus)
 
 
-        val o3Status = JLabel("O3:${airPollutionData.list[0].components.o3}").apply {
+        val o3Status = JLabel("O3:${airPollutionData.o3}").apply {
             foreground = foregroundColor
             setBounds(180, 400, 180, 30)
             setFont(FontEnum.SEMI_BOLD, 20)
@@ -130,7 +134,7 @@ class AirPollutionView(private val response: WeatherResponse, private val naviga
 
         val backButton = JButton(
             resizeIcon(
-                icon = ImageIcon("assets/IMG/back${response.weathers[0].icon.last()}.png"),
+                icon = ImageIcon("assets/IMG/back${response.icon.last()}.png"),
                 width = 30,
                 height = 30
             )

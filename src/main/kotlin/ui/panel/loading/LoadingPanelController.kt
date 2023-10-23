@@ -1,15 +1,16 @@
 package ui.panel.loading
 
+import core.model.Weather
 import core.service.response.WeatherResponse
 
-class LoadingPanelController(private val response: WeatherResponse) {
+class LoadingPanelController(private val response: Weather) {
     fun getDayOrNight(): String {
-        return response.weathers[0].icon.last().toString()
+        return getIcon().last().toString()
     }
     fun getMainName():String{
-        return response.weathers[0].main
+        return response.mainStatus
     }
     fun getIcon():String{
-        return response.weathers[0].icon
+        return response.icon
     }
 }

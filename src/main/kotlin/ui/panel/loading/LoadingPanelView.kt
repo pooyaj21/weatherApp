@@ -1,5 +1,6 @@
 package ui.panel.loading
 
+import core.model.Weather
 import core.service.response.WeatherResponse
 import ui.Navigator
 import ui.panel.mainPage.MainPageView
@@ -13,7 +14,7 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 
 
-class LoadingPanelView(private val response: WeatherResponse, private val navigator: Navigator) : JPanel() {
+class LoadingPanelView(private val response: Weather, private val navigator: Navigator) : JPanel() {
     private val loadingPanelController = LoadingPanelController(response)
     private val backgroundColor = if (loadingPanelController.getDayOrNight() == "d") Color(0xE5ECF4)
     else Color(0x1E1E1E)
