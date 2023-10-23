@@ -1,8 +1,8 @@
 package ui.panel.loading
 
-import core.ApiWeatherData
+import core.service.response.WeatherResponse
 
-class LoadingPanelController(private val response: ApiWeatherData) {
+class LoadingPanelController(private val response: WeatherResponse) {
     fun getDayOrNight(): String {
         return response.weathers[0].icon.last().toString()
     }

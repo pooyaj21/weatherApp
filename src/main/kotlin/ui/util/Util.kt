@@ -54,3 +54,10 @@ fun JComponent.setFont(fontType: FontEnum?, size: Int) {
         e.printStackTrace()
     }
 }
+enum class FontEnum {
+    BOLD,
+    LIGHT,
+    MEDIUM,
+    REGULAR,
+    SEMI_BOLD
+}

@@ -1,8 +1,10 @@
+package core.service.response
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiLocationData(
+data class LocationResponse(
     @SerialName("ip") val ip: String,
     @SerialName("type") val type: String,
     @SerialName("continent_code") val continentCode: String,

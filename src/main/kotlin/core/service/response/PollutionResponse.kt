@@ -1,10 +1,10 @@
-package core
+package core.service.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiPollutionData(
+data class PollutionResponse(
     @SerialName("coord") val coord: Coord,
     @SerialName("list") val list: List<Pollution>
 ) {

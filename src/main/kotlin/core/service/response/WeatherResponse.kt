@@ -1,10 +1,10 @@
-package core
+package core.service.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ApiWeatherData(
+data class WeatherResponse(
     @SerialName("coord") val coord: Coord,
     @SerialName("weather") val weathers: List<Weather>,
     @SerialName("base") val base: String,

@@ -1,8 +1,8 @@
 package ui.panel.startedPanel
 
-import core.ApiManager
-import domain.GetCityBaseOnIp
-import domain.GetCityWeatherUseCase
+import core.Manager.ApiManager
+import core.domain.GetCityBaseOnIp
+import core.domain.GetCityWeatherUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import retrofit2.HttpException

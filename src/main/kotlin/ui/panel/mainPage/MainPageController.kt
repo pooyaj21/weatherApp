@@ -1,10 +1,10 @@
 package ui.panel.mainPage
 
-import core.ApiWeatherData
+import core.service.response.WeatherResponse
 import ui.util.convertUTCToLocalHour
 import ui.util.getDayOfWeekFromUTC
 
-class MainPageController(private val response: ApiWeatherData) {
+class MainPageController(private val response: WeatherResponse) {
 
     fun getDayOrNight(): String {
         return response.weathers[0].icon.last().toString()

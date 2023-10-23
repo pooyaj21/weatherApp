@@ -1,6 +1,6 @@
 package ui.panel.loading
 
-import core.ApiWeatherData
+import core.service.response.WeatherResponse
 import ui.Navigator
 import ui.panel.mainPage.MainPageView
 import ui.util.FontEnum
@@ -13,7 +13,7 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 
 
-class LoadingPanelView(private val response: ApiWeatherData, private val navigator: Navigator) : JPanel() {
+class LoadingPanelView(private val response: WeatherResponse, private val navigator: Navigator) : JPanel() {
     private val loadingPanelController = LoadingPanelController(response)
     private val backgroundColor = if (loadingPanelController.getDayOrNight() == "d") Color(0xE5ECF4)
     else Color(0x1E1E1E)

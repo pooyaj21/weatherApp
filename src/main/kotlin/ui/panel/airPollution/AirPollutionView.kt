@@ -1,7 +1,9 @@
 package ui.panel.airPollution
 
-import core.*
-import domain.GetWeatherPollutionUseCase
+import core.Manager.*
+import core.domain.GetWeatherPollutionUseCase
+import core.service.response.PollutionResponse
+import core.service.response.WeatherResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import ui.*
@@ -10,11 +12,10 @@ import ui.util.FontEnum
 import ui.util.resizeIcon
 import ui.util.setFont
 import java.awt.Color
-import java.awt.Font
 import javax.swing.*
 
 
-class AirPollutionView(private val response: ApiWeatherData,private val navigator: Navigator) :
+class AirPollutionView(private val response: WeatherResponse, private val navigator: Navigator) :
     UiStatePanel() {
     private val airPollutionController = AirPollutionController(
         CoroutineScope(Dispatchers.IO),
@@ -26,7 +27,7 @@ class AirPollutionView(private val response: ApiWeatherData,private val navigato
     private val foregroundColor = if (response.weathers[0].icon.last().toString() == "d") Color(0x1E1E1E)
     else Color(0xE5ECF4)
 
-    private lateinit var airPollutionData: ApiPollutionData
+    private lateinit var airPollutionData: PollutionResponse
 
     init {
         layout = null

@@ -1,4 +1,4 @@
-package domain
+package core.domain
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
