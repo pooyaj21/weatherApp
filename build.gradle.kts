@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":data")))
+    implementation(project(mapOf("path" to ":domain")))
     testImplementation(kotlin("test"))
 
     implementation(kotlin("reflect"))

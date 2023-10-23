@@ -1,7 +1,7 @@
 package ui.panel.airPollution
 
 import data.PollutionRepository
-import core.domain.GetWeatherPollutionUseCase
+import domain.GetWeatherPollutionUseCase
 import model.Pollution
 import model.Weather
 import kotlinx.coroutines.CoroutineScope

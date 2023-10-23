@@ -1,4 +1,4 @@
-package core.domain
+package domain
 
 import data.LocationRepository
 import model.Weather

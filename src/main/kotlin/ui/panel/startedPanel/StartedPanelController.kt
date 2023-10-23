@@ -1,7 +1,7 @@
 package ui.panel.startedPanel
 
-import core.domain.GetWeatherBaseOnIpUseCase
-import core.domain.GetCityWeatherUseCase
+import domain.GetWeatherBaseOnIpUseCase
+import domain.GetCityWeatherUseCase
 import model.Weather
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

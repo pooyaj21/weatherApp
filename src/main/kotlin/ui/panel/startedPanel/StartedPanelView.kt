@@ -2,9 +2,9 @@ package ui.panel.startedPanel
 
 import data.LocationRepository
 import data.WeatherRepository
-import core.domain.GetWeatherBaseOnIpUseCase
-import core.domain.GetCityWeatherUseCase
-import core.domain.GetIpUseCase
+import domain.GetWeatherBaseOnIpUseCase
+import domain.GetCityWeatherUseCase
+import domain.GetIpUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import ui.Navigator

@@ -12,3 +12,4 @@ plugins {
 rootProject.name = "weatherApp"
 include(":service")
 include("data")
+include("domain")
