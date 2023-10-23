@@ -2,7 +2,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import service.response.WeatherResponse
 
-interface WeatherApiService {
+interface WeatherService {
     @GET("/data/2.5/weather")
     suspend fun getData(
         @Query("q") cityName: String,

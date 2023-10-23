@@ -1,14 +1,13 @@
 package data
 
-import PollutionApiService
+import di.RepositoryProvider
 import model.Pollution
 import model.Weather
-import service.ServiceProvider
 
-class PollutionRepository() {
+class PollutionRepository {
     suspend fun pollution(previousApi: Weather): Pollution {
-        val pollutionResponse =
-            ServiceProvider.providePollutionApiService().getData(
+        val pollutionResponse = RepositoryProvider.providerPollutionRepository()
+            .getData(
                 lat = previousApi.lat.toString(),
                 lon = previousApi.lon.toString()
             )

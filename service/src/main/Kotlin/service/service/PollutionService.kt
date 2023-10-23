@@ -2,7 +2,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import service.response.PollutionResponse
 
-interface PollutionApiService {
+interface PollutionService {
     @GET("/data/2.5/air_pollution")
     suspend fun getData(
         @Query("lat") lat: String,

@@ -1,13 +1,11 @@
 package data
 
+import di.RepositoryProvider
 import model.Location
-import service.ServiceProvider
-import service.service.LocationApiService
 
-class LocationRepository() {
+class LocationRepository {
     suspend fun location(ip: String): Location {
-        val locationResponse = ServiceProvider.provideLocationApiService().getData(ip)
+        val locationResponse = RepositoryProvider.providerLocationRepository().getData(ip)
         return Location(city = locationResponse.city)
-
     }
 }

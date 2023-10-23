@@ -5,7 +5,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import service.response.LocationResponse
 
-interface LocationApiService {
+interface LocationService {
     @GET("/{ip}")
     suspend fun getData(
         @Path("ip") ip: String,
