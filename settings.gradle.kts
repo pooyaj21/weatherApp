@@ -13,4 +13,4 @@ rootProject.name = "weatherApp"
 include(":service")
 include("data")
 include("domain")
-include("sheared")
+include("model")

@@ -5,8 +5,8 @@ import model.Weather
 
 
 class GetCityWeatherUseCase {
+    private val repository = WeatherRepository()
     suspend fun get(city: String): Result<Weather> {
-        val repository = WeatherRepository()
         return runCatching { repository.weather(city) }
     }
 }

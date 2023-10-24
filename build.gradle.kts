@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":sheared"))
+    implementation(project(":model"))
     implementation(project(":domain"))
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))

@@ -3,7 +3,8 @@ package di
 import service.di.ServiceProvider
 
 object RepositoryProvider {
-    fun providerWeatherRepository() = ServiceProvider.provideWeatherApiService()
-    fun providerPollutionRepository() = ServiceProvider.providePollutionApiService()
-    fun providerLocationRepository() = ServiceProvider.provideLocationApiService()
+    fun providerWeatherRepository() = ServiceProvider.provideWeatherService()
+    fun providerPollutionRepository() = ServiceProvider.providePollutionService()
+    fun providerIpRepository() = ServiceProvider.provideIpService()
+    fun providerLocationRepository() = ServiceProvider.provideLocationService()
 }

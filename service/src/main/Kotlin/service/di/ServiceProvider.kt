@@ -3,6 +3,7 @@ package service.di
 import PollutionService
 import WeatherService
 import service.ServiceCreator
+import service.service.IpService
 import service.service.LocationService
 
 object ServiceProvider {
@@ -11,8 +12,9 @@ object ServiceProvider {
         ServiceCreator("https://api.openweathermap.org")
     }
 
-    fun provideWeatherApiService() = weatherServiceCreator.create(WeatherService::class.java)
-    fun providePollutionApiService() = weatherServiceCreator.create(PollutionService::class.java)
-    fun provideLocationApiService() = ServiceCreator("http://api.ipstack.com").create(LocationService::class.java)
+    fun provideWeatherService() = weatherServiceCreator.create(WeatherService::class.java)
+    fun providePollutionService() = weatherServiceCreator.create(PollutionService::class.java)
+    fun provideIpService() = ServiceCreator("https://api.ipify.org").create(IpService::class.java)
+    fun provideLocationService() = ServiceCreator("http://api.ipstack.com").create(LocationService::class.java)
 
 }
