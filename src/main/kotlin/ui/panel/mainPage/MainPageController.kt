@@ -4,44 +4,44 @@ import model.Weather
 import ui.util.convertUTCToLocalHour
 import ui.util.getDayOfWeekFromUTC
 
-class MainPageController(private val response: Weather) {
+class MainPageController(private val model: Weather) {
 
     fun getDayOrNight(): String {
-        return response.icon.last().toString()
+        return model.icon.last().toString()
     }
     fun getCountry(): String {
-        return response.name
+        return model.name
     }
     fun getDay(): String {
-        return getDayOfWeekFromUTC(response.date, response.timeZone).toString()
+        return getDayOfWeekFromUTC(model.date, model.timeZone).toString()
     }
     fun getTime(): String {
-        return convertUTCToLocalHour(response.date, response.timeZone)
+        return convertUTCToLocalHour(model.date, model.timeZone)
     }
     fun getFellingTemp(): Int {
-        return ((response.feelsLike)-273.15).toInt()
+        return ((model.feelsLike)-273.15).toInt()
     }
     fun getIcon():String{
-        return response.icon
+        return model.icon
     }
 
     fun getDescription():String{
-        return response.description
+        return model.description
     }
 
     fun getSunRise():String{
-        return convertUTCToLocalHour(response.sunRise, response.timeZone)
+        return convertUTCToLocalHour(model.sunRise, model.timeZone)
     }
 
     fun getSunSet():String{
-        return convertUTCToLocalHour(response.sunSet, response.timeZone)
+        return convertUTCToLocalHour(model.sunSet, model.timeZone)
     }
 
     fun getTemp(): Int {
-        return ((response.temp)-273.15).toInt()
+        return ((model.temp)-273.15).toInt()
     }
 
     fun getWind(): Double {
-        return response.speed
+        return model.speed
     }
 }

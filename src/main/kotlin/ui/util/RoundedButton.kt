@@ -4,13 +4,13 @@ import java.awt.geom.RoundRectangle2D
 import javax.swing.JButton
 
 class RoundedButton(
-    text: String?,
+    text: String?, // TODO: remove this
     private val cornerRadius: Int,
     private val backgroundColor: Color,
     private val foregroundColor: Color,
     fontSize: Int
-) :
-    JButton(text) {
+) : JButton(text) {
+
     init {
         font = Font("Arial", Font.TRUETYPE_FONT, fontSize)
         isContentAreaFilled = false

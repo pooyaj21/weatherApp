@@ -10,8 +10,8 @@ class RoundedTextField(
     private val backgroundColor: Color,
     private val foregroundColor: Color,
     fontSize: Int
-) :
-    JTextField(columns) {
+) : JTextField(columns) {
+
     init {
         font = Font("Arial", Font.TRUETYPE_FONT, fontSize)
         isOpaque = false
