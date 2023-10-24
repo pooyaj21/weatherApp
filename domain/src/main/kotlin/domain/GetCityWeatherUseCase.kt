@@ -1,6 +1,5 @@
 package domain
 
-import data.PollutionRepository
 import data.WeatherRepository
 import model.Weather
 

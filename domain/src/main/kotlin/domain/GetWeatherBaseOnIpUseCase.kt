@@ -1,7 +1,6 @@
 package domain
 
 import data.LocationRepository
-import data.PollutionRepository
 import model.Weather
 
 class GetWeatherBaseOnIpUseCase(
@@ -12,6 +11,6 @@ class GetWeatherBaseOnIpUseCase(
         val repository = LocationRepository()
         val ip = getIp.get()
         val city = repository.location(ip).city
-        return  getCityWeatherUseCase.get(city)
+        return getCityWeatherUseCase.get(city)
     }
 }
