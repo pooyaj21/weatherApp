@@ -1,16 +1,17 @@
 package domain
 
 import data.LocationRepository
+import data.PollutionRepository
 import model.Weather
 
 class GetWeatherBaseOnIpUseCase(
-    private val locationRepository: LocationRepository,
     private val getIp: GetIpUseCase,
     private val getCityWeatherUseCase: GetCityWeatherUseCase
 ) {
     suspend fun get(): Result<Weather> {
+        val repository = LocationRepository()
         val ip = getIp.get()
-        val city = locationRepository.location(ip).city
+        val city = repository.location(ip).city
         return  getCityWeatherUseCase.get(city)
     }
 }

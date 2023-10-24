@@ -11,9 +11,9 @@ repositories {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":domain")))
+    implementation(project(":sheared"))
+    implementation(project(":domain"))
     testImplementation(kotlin("test"))
-
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 

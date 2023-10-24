@@ -1,7 +1,6 @@
 package ui.panel.startedPanel
 
-import data.LocationRepository
-import data.WeatherRepository
+
 import domain.GetWeatherBaseOnIpUseCase
 import domain.GetCityWeatherUseCase
 import domain.GetIpUseCase
@@ -21,13 +20,12 @@ import javax.swing.*
 
 
 class StartedPanelView(navigator: Navigator) : UiStatePanel() {
-    private val locationRepository = LocationRepository()
     private val ip = GetIpUseCase()
-    private val getWeatherPollutionUseCase = GetCityWeatherUseCase(WeatherRepository())
+    private val getWeatherPollutionUseCase = GetCityWeatherUseCase()
     private val startedPanelController = StartedPanelController(
         CoroutineScope(Dispatchers.IO),
-        GetCityWeatherUseCase(WeatherRepository()),
-        GetWeatherBaseOnIpUseCase(locationRepository, ip, getWeatherPollutionUseCase)
+        GetCityWeatherUseCase(),
+        GetWeatherBaseOnIpUseCase(ip, getWeatherPollutionUseCase)
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
     private val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)

@@ -1,11 +1,13 @@
 package domain
 
+import data.PollutionRepository
 import data.WeatherRepository
 import model.Weather
 
 
-class GetCityWeatherUseCase(private val weatherRepository: WeatherRepository) {
+class GetCityWeatherUseCase {
     suspend fun get(city: String): Result<Weather> {
-        return runCatching { weatherRepository.weather(city) }
+        val repository = WeatherRepository()
+        return runCatching { repository.weather(city) }
     }
 }

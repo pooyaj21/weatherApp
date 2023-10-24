@@ -1,6 +1,5 @@
 package ui.panel.airPollution
 
-import data.PollutionRepository
 import domain.GetWeatherPollutionUseCase
 import model.Pollution
 import model.Weather
@@ -19,7 +18,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
     UiStatePanel() {
     private val airPollutionController = AirPollutionController(
         CoroutineScope(Dispatchers.IO),
-        GetWeatherPollutionUseCase(PollutionRepository())
+        GetWeatherPollutionUseCase()
     )
     private val backgroundColor = if (response.icon.last().toString() == "d") Color(0xE5ECF4)
     else Color(0x1E1E1E)
