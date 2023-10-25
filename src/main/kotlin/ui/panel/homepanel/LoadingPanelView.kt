@@ -1,10 +1,10 @@
-package ui.panel.loading
+package ui.panel.homepanel
 
 import model.Weather
 import ui.Navigator
 import ui.component.PSButton
 import ui.component.PSLabel
-import ui.panel.mainPage.MainPageView
+import ui.panel.mainPanel.MainPanelView
 import ui.extension.*
 import java.awt.Color
 import javax.swing.ImageIcon
@@ -87,7 +87,7 @@ class LoadingPanelView(private val response: Weather, private val navigator: Nav
             }
             setBounds(0, 430, 240, 45)
             addActionListener {
-                val mainPage = MainPageView(response, navigator).apply {
+                val mainPage = MainPanelView(response, navigator).apply {
                     setBounds(0, 0, width, height)
                 }
                 navigator.push(mainPage)

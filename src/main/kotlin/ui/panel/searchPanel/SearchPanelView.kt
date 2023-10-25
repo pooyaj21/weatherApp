@@ -1,4 +1,4 @@
-package ui.panel.startedPanel
+package ui.panel.searchPanel
 
 
 import domain.GetWeatherBaseOnIpUseCase
@@ -12,7 +12,7 @@ import ui.component.PSButton
 import ui.component.PSLabel
 import ui.component.PSTextField
 import ui.model.UiState
-import ui.panel.loading.LoadingPanelView
+import ui.panel.homepanel.LoadingPanelView
 import ui.extension.*
 import java.awt.Color
 import java.awt.event.KeyEvent
@@ -20,10 +20,10 @@ import java.awt.event.KeyListener
 import javax.swing.*
 
 
-class StartedPanelView(navigator: Navigator) : UiStatePanel() {
+class SearchPanelView(navigator: Navigator) : UiStatePanel() {
     private val ip = GetIpUseCase()
     private val getWeatherPollutionUseCase = GetCityWeatherUseCase()
-    private val startedPanelController = StartedPanelController(
+    private val startedPanelController = SearchPanelController(
         CoroutineScope(Dispatchers.IO),
         GetCityWeatherUseCase(),
         GetWeatherBaseOnIpUseCase(ip, getWeatherPollutionUseCase)

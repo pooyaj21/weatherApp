@@ -1,4 +1,4 @@
-package ui.panel.airPollution
+package ui.panel.airPollutionPanel
 
 import ui.component.PSIcon
 import domain.GetWeatherPollutionUseCase
@@ -15,9 +15,9 @@ import java.awt.Color
 import javax.swing.*
 
 
-class AirPollutionView(private val response: Weather, private val navigator: Navigator) :
+class AirPollutionPanelView(private val response: Weather, private val navigator: Navigator) :
     UiStatePanel() {
-    private val airPollutionController = AirPollutionController(
+    private val airPollutionController = AirPollutionPanelController(
         CoroutineScope(Dispatchers.IO),
         GetWeatherPollutionUseCase()
     )
@@ -82,7 +82,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
         dataPanel.add(pollutionStatus)
 
         val coStatus = PSLabel().apply {
-            setFont(FontEnum.REGULAR,20)
+            setFont(FontEnum.SEMI_BOLD,20)
             text="CO:${airPollutionData.amountOfCo}"
             foreground = foregroundColor
             setBounds(0, 350, 180, 30)
@@ -91,7 +91,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
 
 
         val no2Status = PSLabel().apply {
-            setFont(FontEnum.REGULAR,20)
+            setFont(FontEnum.SEMI_BOLD,20)
             text="NO2:${airPollutionData.amountOfNo2}"
             foreground = foregroundColor
             setBounds(180, 350, 180, 30)
@@ -100,7 +100,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
 
 
         val noStatus = PSLabel().apply {
-            setFont(FontEnum.REGULAR,20)
+            setFont(FontEnum.SEMI_BOLD,20)
             text="NO:${airPollutionData.amountOfNo}"
             foreground = foregroundColor
             setBounds(0, 400, 180, 30)
@@ -109,7 +109,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
 
 
         val o3Status = PSLabel().apply {
-            setFont(FontEnum.REGULAR,20)
+            setFont(FontEnum.SEMI_BOLD,20)
             text="O3:${airPollutionData.amountOfO3}"
             foreground = foregroundColor
             setBounds(180, 400, 180, 30)

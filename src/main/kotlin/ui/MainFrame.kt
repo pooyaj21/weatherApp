@@ -1,6 +1,6 @@
 package ui
 
-import ui.panel.startedPanel.StartedPanelView
+import ui.panel.searchPanel.SearchPanelView
 import java.awt.Dimension
 import java.util.*
 import javax.swing.JFrame
@@ -8,7 +8,7 @@ import javax.swing.JPanel
 
 class MainFrame : JFrame("SkyCast") {
 
-    private var startedPanel: StartedPanelView
+    private var startedPanel: SearchPanelView
     private val navigator = StackNavigator(this)
 
     init {
@@ -17,7 +17,7 @@ class MainFrame : JFrame("SkyCast") {
         setLocationRelativeTo(null)
         isVisible = true
 
-        startedPanel = StartedPanelView(navigator)
+        startedPanel = SearchPanelView(navigator)
 
         navigator.push(startedPanel)
     }

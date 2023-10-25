@@ -1,4 +1,4 @@
-package ui.panel.mainPage
+package ui.panel.mainPanel
 
 
 import model.Weather
@@ -8,12 +8,12 @@ import ui.component.PSHorizontalDivider
 import ui.component.PSIcon
 import ui.component.PSLabel
 import ui.extension.*
-import ui.panel.airPollution.AirPollutionView
+import ui.panel.airPollutionPanel.AirPollutionPanelView
 import java.awt.*
 import javax.swing.*
 
 
-class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
+class MainPanelView(response: Weather, navigator: Navigator) : JPanel() {
 
     private var backgroundColor:Color
     private var foregroundColor:Color
@@ -71,7 +71,7 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
             foreground = foregroundColor
             setBounds(0, 340, 360, 30)
             addActionListener {
-                val airPollutionPanel = AirPollutionView(response, navigator).apply {
+                val airPollutionPanel = AirPollutionPanelView(response, navigator).apply {
                     setBounds(0, 0, width, height)
                 }
                 navigator.push(airPollutionPanel)

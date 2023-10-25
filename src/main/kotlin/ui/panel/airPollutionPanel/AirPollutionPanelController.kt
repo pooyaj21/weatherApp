@@ -1,4 +1,4 @@
-package ui.panel.airPollution
+package ui.panel.airPollutionPanel
 
 import domain.GetWeatherPollutionUseCase
 
@@ -8,7 +8,7 @@ import model.Pollution
 import model.Weather
 import ui.model.UiState
 
-class AirPollutionController(
+class AirPollutionPanelController(
     private val coroutineScope: CoroutineScope,
     private val getWeatherPollutionUseCase: GetWeatherPollutionUseCase
 ) {

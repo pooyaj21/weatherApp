@@ -1,4 +1,4 @@
-package ui.panel.startedPanel
+package ui.panel.searchPanel
 
 import domain.GetWeatherBaseOnIpUseCase
 import domain.GetCityWeatherUseCase
@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import ui.model.UiState
 
-class StartedPanelController(
+class SearchPanelController(
     private val coroutineScope: CoroutineScope,
     private val getCityWeatherUseCase: GetCityWeatherUseCase,
     private val getCityBaseOnIp: GetWeatherBaseOnIpUseCase
