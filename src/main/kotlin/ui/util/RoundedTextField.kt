@@ -4,16 +4,14 @@ import java.awt.geom.RoundRectangle2D
 import javax.swing.JTextField
 import javax.swing.SwingConstants
 
-class RoundedTextField(
+open class RoundedTextField(
     columns: Int,
     private val cornerRadius: Int,
     private val backgroundColor: Color,
-    private val foregroundColor: Color,
-    fontSize: Int
+      foregroundColor: Color,
 ) : JTextField(columns) {
 
     init {
-        font = Font("Arial", Font.TRUETYPE_FONT, fontSize)
         isOpaque = false
         foreground = foregroundColor
         caretColor = foregroundColor

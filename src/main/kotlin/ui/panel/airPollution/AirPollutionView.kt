@@ -1,11 +1,14 @@
 package ui.panel.airPollution
 
+import PSIcon
 import domain.GetWeatherPollutionUseCase
 import model.Pollution
 import model.Weather
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import ui.*
+import ui.component.PSButton
+import ui.component.PSLabel
 import ui.model.UiState
 import ui.util.FontEnum
 import ui.util.resizeIcon
@@ -48,8 +51,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
 
                 is UiState.Error -> {
                     onError(
-                        "An error occurred while processing the request",
-                        null
+                        "An error occurred while processing the request"
                     )
                     Thread.sleep(5000)
                     navigator.pop()
@@ -67,76 +69,58 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
             setBounds(0, 0, 370, 640)
         }
 
-        val pollutionIconLabel = JLabel(
-            resizeIcon(
-                icon = ImageIcon("assets/IMG/${response.icon}.png"),
-                width = 100,
-                height = 100
-            )
-        )
-        pollutionIconLabel.setBounds(130, 90, 100, 100)
-        dataPanel.add(pollutionIconLabel)
 
-        val description = JLabel(response.description).apply {
+        val pollutionStatus = PSIcon(
+            ImageIcon("assets/IMG/${response.icon}.png").resizeIcon(100, 100),
+            response.description,
+            ).apply {
+            setBounds(0, 90, 360, 150)
+            setFont(FontEnum.SEMI_BOLD,
+                36,)
             foreground = foregroundColor
-            setBounds(0, 200, 360, 30)
-            setFont(FontEnum.BOLD, 20)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
+            background = backgroundColor
+
         }
-        dataPanel.add(description)
+        dataPanel.add(pollutionStatus)
 
-
-        val coStatus = JLabel("CO:${airPollutionData.co}").apply {
+        val coStatus = PSLabel().apply {
+            setFont(FontEnum.REGULAR,20)
+            text="CO:${airPollutionData.co}"
             foreground = foregroundColor
             setBounds(0, 350, 180, 30)
-            setFont(FontEnum.SEMI_BOLD, 20)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
         }
         dataPanel.add(coStatus)
 
 
-        val no2Status = JLabel("NO2:${airPollutionData.no2}").apply {
+        val no2Status = PSLabel().apply {
+            setFont(FontEnum.REGULAR,20)
+            text="NO2:${airPollutionData.no2}"
             foreground = foregroundColor
             setBounds(180, 350, 180, 30)
-            setFont(FontEnum.SEMI_BOLD, 20)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
         }
         dataPanel.add(no2Status)
 
 
-        val noStatus = JLabel("NO:${airPollutionData.no}").apply {
+        val noStatus = PSLabel().apply {
+            setFont(FontEnum.REGULAR,20)
+            text="NO:${airPollutionData.no}"
             foreground = foregroundColor
             setBounds(0, 400, 180, 30)
-            setFont(FontEnum.SEMI_BOLD, 20)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
         }
         dataPanel.add(noStatus)
 
 
-        val o3Status = JLabel("O3:${airPollutionData.o3}").apply {
+        val o3Status = PSLabel().apply {
+            setFont(FontEnum.REGULAR,20)
+            text="O3:${airPollutionData.o3}"
             foreground = foregroundColor
             setBounds(180, 400, 180, 30)
-            setFont(FontEnum.SEMI_BOLD, 20)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
         }
         dataPanel.add(o3Status)
 
 
-        val backButton = JButton(
-            resizeIcon(
-                icon = ImageIcon("assets/IMG/back${response.icon.last()}.png"),
-                width = 30,
-                height = 30
-            )
-        ).apply {
-            isOpaque = false
-            isBorderPainted = false
-            isContentAreaFilled = false
+        val backButton = PSButton().apply {
+            icon=ImageIcon("assets/IMG/back${response.icon.last()}.png").resizeIcon(30,30)
             setBounds(0, 0, 50, 50)
             addActionListener { navigator.pop() }
         }

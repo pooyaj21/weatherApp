@@ -9,12 +9,11 @@ import java.time.format.DateTimeFormatter
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
-fun resizeIcon(icon: ImageIcon, width: Int, height: Int): ImageIcon {
-    val image = icon.image
+fun ImageIcon.resizeIcon(width: Int, height: Int): ImageIcon {
+    val image = this.image
     val newImage = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH)
     return ImageIcon(newImage)
 }
-
 fun getDayOfWeekFromUTC(utcTimestamp: Long, offsetInSeconds: Int): DayOfWeek {
     val instant = Instant.ofEpochMilli(utcTimestamp*1000)
     val offset = ZoneOffset.ofTotalSeconds(offsetInSeconds)

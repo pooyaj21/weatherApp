@@ -8,11 +8,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import ui.Navigator
 import ui.UiStatePanel
+import ui.component.PSButton
+import ui.component.PSLabel
+import ui.component.PSTextField
 import ui.model.UiState
 import ui.panel.loading.LoadingPanelView
-import ui.util.FontEnum
-import ui.util.RoundedTextField
-import ui.util.setFont
+import ui.util.*
 import java.awt.Color
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
@@ -28,7 +29,14 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
         GetWeatherBaseOnIpUseCase(ip, getWeatherPollutionUseCase)
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
-    private val searchBox = RoundedTextField(23, 25, Color(0xE5ECF4), Color(0x1E1E1E), 16)
+    private val searchBox = PSTextField(
+        columns = 23,
+        cornerRadius = 25,
+        backgroundColor = Color(0xE5ECF4),
+        foregroundColor = Color(0x1E1E1E),
+        fontType = FontEnum.REGULAR,
+        fontSize = 16
+    )
 
 
     init {
@@ -37,42 +45,43 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
         isVisible = true
         background = Color(0xE5ECF4)
 
-        val title = JLabel("SkyCast").apply {
+        val title = PSLabel().apply {
+            setFont(FontEnum.BOLD, 36)
+            text = "SkyCast"
             foreground = Color(0x1E1E1E)
             setBounds(0, 70, 360, 86)
-            setFont(FontEnum.BOLD, 36)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
         }
         add(title)
 
 
-        val imageLabel = JLabel(ImageIcon("assets/IMG/SkyCast.png")).apply {
+        val imageLabel = PSLabel().apply {
+           icon= ImageIcon("assets/IMG/SkyCast.png")
             setBounds(130, 166, 100, 100)
         }
         add(imageLabel)
 
-        val placeHolder = JLabel("Enter your location:").apply {
+        val placeHolder = PSLabel().apply {
+            setFont(FontEnum.SEMI_BOLD, 16)
+            text = "Enter your location:"
             foreground = Color(0x1E1E1E)
             setBounds(60, 300, 240, 30)
-            setFont(FontEnum.SEMI_BOLD, 16)
         }
         add(placeHolder)
 
 
-        val errorSearchBox = JLabel("*please enter a valid city name").apply {
+        val errorSearchBox = PSLabel().apply {
+            text = "*please enter a valid city name"
+            setFont(FontEnum.LIGHT, 12)
             foreground = Color.red
             setBounds(70, 375, 240, 30)
-            setFont(FontEnum.LIGHT, 12)
             isVisible = false
         }
         add(errorSearchBox)
 
 
-        val locationButton = JButton(ImageIcon("assets/IMG/location.png")).apply {
+        val locationButton = PSButton().apply {
+            icon=ImageIcon("assets/IMG/location.png")
             isOpaque = false
-            isBorderPainted = false
-            isContentAreaFilled = false
             setBounds(0, 0, 50, 50)
             addActionListener {
                 startedPanelController.city()
@@ -91,17 +100,13 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
                         }
 
                         is UiState.Error -> {
-//                            if (it.throwable is HttpException) {
-//                                errorSearchBox.isVisible = true
-//                                onData()
-//                            } else {
-                                onError(
-                                    "An error occurred while processing the request",
-                                    null
-                                )
-                                Thread.sleep(5000)
-                                onData()
-//                            }
+
+                            onError(
+                                "An error occurred while processing the request"
+                            )
+                            Thread.sleep(5000)
+                            onData()
+
                         }
                     }
                 }
@@ -110,20 +115,23 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
         add(locationButton)
 
 
-        searchBox.setBounds(55, 330, 240, 50)
-        searchBox.addKeyListener(object : KeyListener {
-            override fun keyTyped(e: KeyEvent?) {}
+        searchBox.apply {
+            setBounds(55, 330, 240, 50)
+            addKeyListener(object : KeyListener {
+                override fun keyTyped(e: KeyEvent?) {}
 
-            override fun keyPressed(e: KeyEvent?) {
-                if (e?.keyCode == KeyEvent.VK_ENTER) {
-                    errorSearchBox.isVisible = false
-                    startedPanelController.city(searchBox.text)
+                override fun keyPressed(e: KeyEvent?) {
+                    if (e?.keyCode == KeyEvent.VK_ENTER) {
+                        errorSearchBox.isVisible = false
+                        startedPanelController.city(searchBox.text)
+                    }
                 }
-            }
 
-            override fun keyReleased(e: KeyEvent?) {}
-        })
-        setVisibilityChangeListener { searchBox.text = "" }
+                override fun keyReleased(e: KeyEvent?) {}
+            })
+            setVisibilityChangeListener { searchBox.text = "" }
+
+        }
         add(searchBox)
 
 
@@ -142,17 +150,11 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
                 }
 
                 is UiState.Error -> {
-//                    if (it.throwable is HttpException) {
-//                        errorSearchBox.isVisible = true
-//                        onData()
-//                    } else {
-                        onError(
-                            "An error occurred while processing the request",
-                            null
-                        )
-                        Thread.sleep(5000)
-                        onData()
-//                    }
+                    onError(
+                        "An error occurred while processing the request"
+                    )
+                    Thread.sleep(5000)
+                    onData()
                 }
             }
         }

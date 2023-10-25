@@ -1,14 +1,18 @@
 package ui.panel.mainPage
 
 
+import PSIcon
 import model.Weather
 import ui.Navigator
+import ui.component.PSButton
+import ui.component.PSHorizontalDivider
+import ui.component.PSLabel
 import ui.panel.airPollution.AirPollutionView
-import ui.util.FontEnum
-import ui.util.resizeIcon
-import ui.util.setFont
+import ui.util.*
 import java.awt.*
 import javax.swing.*
+import javax.swing.border.Border
+import javax.swing.border.LineBorder
 
 
 class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
@@ -25,50 +29,40 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
         background = backgroundColor
         setBounds(0, 0, width, height)
 
-        val country = JLabel(mainPageController.getCountry()).apply {
+        val country = PSLabel().apply {
+            setFont(FontEnum.BOLD, 36)
+            text = mainPageController.getCountry()
             foreground = foregroundColor
             setBounds(0, 90, 360, 50)
-            setFont(FontEnum.BOLD, 36)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
         }
         add(country)
 
-        val date = JLabel("${mainPageController.getDay()}/${mainPageController.getTime()}").apply {
+        val date = PSLabel().apply {
+            text = "${mainPageController.getDay()}/${mainPageController.getTime()}"
+            setFont(FontEnum.SEMI_BOLD, 20)
             foreground = foregroundColor
             setBounds(0, 140, 360, 30)
-            setFont(FontEnum.SEMI_BOLD, 20)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
         }
         add(date)
 
-        val imageLabel = JLabel(resizeIcon(
-            icon = ImageIcon("assets/IMG/${mainPageController.getIcon()}.png"),
-            width = 100,
-            height = 100
-        ))
-        imageLabel.setBounds(130, 190, 100, 100)
-        add(imageLabel)
-
-        val feelingTemp = JLabel("${mainPageController.getFellingTemp()}°C").apply {
-            foreground = foregroundColor
-            setBounds(0, 280, 360, 50)
+        val tempIcon = PSIcon(
+            ImageIcon("assets/IMG/${mainPageController.getIcon()}.png").resizeIcon(100, 100),
+            "${mainPageController.getFellingTemp()}°C",
+        ).apply {
+            setBounds(0, 190, 360, 150)
             setFont(FontEnum.BOLD, 40)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
-        }
-        add(feelingTemp)
 
-        val description =JButton(mainPageController.getDescription()).apply {
+            foreground = foregroundColor
+            background = backgroundColor
+
+        }
+        add(tempIcon)
+
+        val description = PSButton().apply {
+            text = mainPageController.getDescription()
+            setFont(FontEnum.SEMI_BOLD, 20)
             foreground = foregroundColor
             setBounds(0, 340, 360, 30)
-            setFont(FontEnum.SEMI_BOLD, 20)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
-            isOpaque = false
-            isBorderPainted = false
-            isContentAreaFilled = false
             addActionListener {
                 val airPollutionPanel = AirPollutionView(response, navigator).apply {
                     setBounds(0, 0, width, height)
@@ -79,86 +73,63 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
         add(description)
 
 
-        val sunStatusIconLabel = JLabel(resizeIcon(
-            icon = ImageIcon("assets/IMG/sunStatus${mainPageController.getDayOrNight()}.png"),
-            width = 50,
-            height = 50
-        ))
-        sunStatusIconLabel.setBounds(37, 450, 50, 50)
-        add(sunStatusIconLabel)
-
-        val sunStatus = if (mainPageController.getDayOrNight() == "d") mainPageController.getSunSet()
+        val sunStatusText = if (mainPageController.getDayOrNight() == "d") mainPageController.getSunSet()
         else mainPageController.getSunRise()
 
-        val sunStatusLabel = JLabel(sunStatus).apply {
-            foreground = foregroundColor
-            setBounds(0, 490, 120, 50)
+        val sunStatus = PSIcon(
+            ImageIcon("assets/IMG/sunStatus${mainPageController.getDayOrNight()}.png").resizeIcon(50, 50),
+            sunStatusText).apply {
+            setBounds(0, 450, 106, 100)
             setFont(FontEnum.REGULAR, 16)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
+            foreground = foregroundColor
+            background = backgroundColor
+
         }
-        add(sunStatusLabel)
+        add(sunStatus)
 
-        val windIconLabel = JLabel(resizeIcon(
-            icon = ImageIcon("assets/IMG/windIcon${mainPageController.getDayOrNight()}.png"),
-            width = 50,
-            height = 50
-        ))
-        windIconLabel.setBounds(154, 450, 50, 50)
-        add(windIconLabel)
+        val leftHorizontalDivider = PSHorizontalDivider(20, 50, 2F, foregroundColor).apply {
+            background = backgroundColor
+            setBounds(106, 450, 20, 50)
+        }
+        add(leftHorizontalDivider)
 
-        val windStatus = JLabel("${mainPageController.getWind()}").apply {
-            foreground = foregroundColor
-            setBounds(120, 490, 120, 50)
+        val windStatus = PSIcon(
+            ImageIcon("assets/IMG/windIcon${mainPageController.getDayOrNight()}.png").resizeIcon(50, 50),
+            "${mainPageController.getWind()}",
+        ).apply {
+            setBounds(126, 450, 106, 100)
             setFont(FontEnum.REGULAR, 16)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
+            foreground = foregroundColor
+            background = backgroundColor
         }
         add(windStatus)
 
-        val tempIconLabel = JLabel(resizeIcon(
-            icon = ImageIcon("assets/IMG/tempIcon${mainPageController.getDayOrNight()}.png"),
-            width = 50,
-            height = 50
-        ))
-        tempIconLabel.setBounds(273, 450, 50, 50)
-        add(tempIconLabel)
-
-        val temp = JLabel("${mainPageController.getTemp()}").apply {
-            foreground = foregroundColor
-            setBounds(240, 490, 120, 50)
-            setFont(FontEnum.REGULAR, 16)
-            horizontalAlignment = JLabel.CENTER
-            verticalAlignment = JLabel.CENTER
+        val rightHorizontalDivider = PSHorizontalDivider(20, 50, 2F, foregroundColor).apply {
+            background = backgroundColor
+            setBounds(232, 450, 20, 50)
         }
-        add(temp)
+        add(rightHorizontalDivider)
 
-        val backButton = JButton(resizeIcon(
-            icon = ImageIcon("assets/IMG/back${mainPageController.getDayOrNight()}.png"),
-            width = 30,
-            height = 30
-        ))
-        backButton.apply {
-            isOpaque = false
-            isBorderPainted = false
-            isContentAreaFilled = false
+        val tempStatus = PSIcon(
+            ImageIcon("assets/IMG/tempIcon${mainPageController.getDayOrNight()}.png").resizeIcon(50, 50),
+            "${mainPageController.getTemp()}"
+        ).apply {
+            setBounds(252, 450, 106, 100)
+            setFont( FontEnum.REGULAR, 16)
+            foreground = foregroundColor
+            background = backgroundColor
+
+        }
+        add(tempStatus)
+
+        val backButton = PSButton().apply {
+            icon = ImageIcon("assets/IMG/back${mainPageController.getDayOrNight()}.png").resizeIcon(30, 30)
             setBounds(0, 0, 50, 50)
-            addActionListener { navigator.pop()}
+            addActionListener { navigator.pop() }
         }
         add(backButton)
 
         repaint()
         revalidate()
-    }
-
-    override fun paintComponent(g: Graphics) {
-        super.paintComponent(g)
-
-        val g2d = g as Graphics2D
-        g2d.stroke = BasicStroke(2F)
-        g2d.color = foregroundColor
-        g2d.drawLine(120, 450, 120, 500)
-        g2d.drawLine(240, 450, 240, 500)
-
     }
 }

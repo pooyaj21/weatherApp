@@ -2,13 +2,12 @@ package ui.panel.loading
 
 import model.Weather
 import ui.Navigator
+import ui.component.PSButton
+import ui.component.PSLabel
 import ui.panel.mainPage.MainPageView
-import ui.util.FontEnum
-import ui.util.resizeIcon
-import ui.util.setFont
+import ui.util.*
 import java.awt.Color
 import javax.swing.ImageIcon
-import javax.swing.JButton
 import javax.swing.JLabel
 import javax.swing.JPanel
 
@@ -48,33 +47,35 @@ class LoadingPanelView(private val response: Weather, private val navigator: Nav
         }
 
 
-        val imageLabel = JLabel(
-            resizeIcon(
-                icon = ImageIcon("assets/IMG/${loadingPanelController.getIcon()}.png"),
-                width = 100,
-                height = 100
-            )
-        )
-        imageLabel.setBounds(25, 35, 100, 100)
+        val imageLabel = PSLabel().apply {
+            icon = ImageIcon("assets/IMG/${loadingPanelController.getIcon()}.png").resizeIcon(100, 100)
+            setBounds(25, 35, 100, 100)
+        }
         add(imageLabel)
 
-        val firstLine = JLabel("It’s").apply {
-            foreground = foregroundColor
-            setBounds(25, 340, 240, 45)
+        val firstLine = PSLabel().apply {
             setFont(FontEnum.BOLD, 36)
+            text = "It’s"
+            foreground = foregroundColor
+            horizontalAlignment = JLabel.LEFT
+            setBounds(25, 340, 240, 45)
         }
         add(firstLine)
 
 
-        val secondLine = JLabel("fucking").apply {
-            foreground = foregroundColor
-            setBounds(25, 385, 240, 45)
+        val secondLine = PSLabel().apply {
             setFont(FontEnum.BOLD, 36)
+            text = "fucking"
+            foreground = foregroundColor
+            horizontalAlignment = JLabel.LEFT
+            setBounds(25, 385, 240, 45)
         }
         add(secondLine)
 
 
-        val weatherLabel = JButton(weatherText).apply {
+        val weatherLabel = PSButton().apply {
+            setFont(FontEnum.BOLD, 36)
+            text = weatherText
             when (weatherText) {
                 "Sunny" -> foreground = Color(0xd8eb34)
                 "Cloudy" -> foreground = Color(0x88d2f7)
@@ -85,50 +86,40 @@ class LoadingPanelView(private val response: Weather, private val navigator: Nav
                 "Dusty" -> foreground = Color(0xb09f96)
                 "Tornado" -> foreground = Color(0x434a5c)
             }
-            setBounds(5, 430, 240, 45)
-            setFont(FontEnum.BOLD, 36)
+            setBounds(0, 430, 240, 45)
             addActionListener {
                 val mainPage = MainPageView(response, navigator).apply {
                     setBounds(0, 0, width, height)
                 }
                 navigator.push(mainPage)
             }
-            isOpaque = false
-            isBorderPainted = false
-            isContentAreaFilled = false
             horizontalAlignment = JLabel.LEFT
         }
         add(weatherLabel)
 
 
-        val lastLine = JLabel("now.").apply {
+        val lastLine = PSLabel().apply {
+            setFont(FontEnum.BOLD, 36)
+            text = "now."
+            horizontalAlignment = JLabel.LEFT
             foreground = foregroundColor
             setBounds(25, 475, 240, 45)
-            setFont(FontEnum.BOLD, 36)
         }
         add(lastLine)
 
 
-        val bottomLabel = JLabel("you can look outside to get more information").apply {
-            foreground = foregroundColor
-            setBounds(25, 570, 360, 45)
+        val bottomLabel = PSLabel().apply {
             setFont(FontEnum.SEMI_BOLD, 12)
+            text = "you can look outside to get more information"
+            foreground = foregroundColor
             horizontalAlignment = JLabel.LEFT
-            verticalAlignment = JLabel.CENTER
+            setBounds(25, 570, 360, 45)
         }
         add(bottomLabel)
 
 
-        val backButton = JButton(
-            resizeIcon(
-                icon = ImageIcon("assets/IMG/back${loadingPanelController.getDayOrNight()}.png"),
-                width = 30,
-                height = 30
-            )
-        ).apply {
-            isOpaque = false
-            isBorderPainted = false
-            isContentAreaFilled = false
+        val backButton = PSButton().apply {
+            icon = ImageIcon("assets/IMG/back${loadingPanelController.getDayOrNight()}.png").resizeIcon(30, 30)
             setBounds(0, 0, 50, 50)
             addActionListener { navigator.pop() }
         }
