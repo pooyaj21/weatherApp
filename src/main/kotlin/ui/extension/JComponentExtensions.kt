@@ -1,5 +1,6 @@
 package ui.extension
 
+import ui.model.FontEnum
 import java.awt.Font
 import java.awt.FontFormatException
 import java.io.File
@@ -27,6 +28,3 @@ fun JComponent.setFont(fontType: FontEnum, size: Int) {
     }
 }
 
-enum class FontEnum {
-    BOLD, LIGHT, MEDIUM, REGULAR, SEMI_BOLD
-}

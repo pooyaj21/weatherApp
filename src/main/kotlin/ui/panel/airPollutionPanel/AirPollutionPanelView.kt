@@ -10,6 +10,7 @@ import ui.*
 import ui.component.PSButton
 import ui.component.PSLabel
 import ui.extension.*
+import ui.model.FontEnum
 import ui.model.UiState
 import java.awt.Color
 import javax.swing.*

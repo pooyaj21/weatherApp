@@ -1,6 +1,6 @@
 package ui.component
 
-import ui.extension.FontEnum
+import ui.model.FontEnum
 import ui.extension.setFont
 import javax.swing.JLabel
 

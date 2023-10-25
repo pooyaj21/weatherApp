@@ -6,6 +6,7 @@ import ui.component.PSButton
 import ui.component.PSLabel
 import ui.panel.mainPanel.MainPanelView
 import ui.extension.*
+import ui.model.FontEnum
 import java.awt.Color
 import javax.swing.ImageIcon
 import javax.swing.JLabel

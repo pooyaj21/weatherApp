@@ -14,6 +14,7 @@ import ui.component.PSTextField
 import ui.model.UiState
 import ui.panel.homepanel.LoadingPanelView
 import ui.extension.*
+import ui.model.FontEnum
 import java.awt.Color
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener

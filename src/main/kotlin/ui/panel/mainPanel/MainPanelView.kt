@@ -8,6 +8,7 @@ import ui.component.PSHorizontalDivider
 import ui.component.PSIcon
 import ui.component.PSLabel
 import ui.extension.*
+import ui.model.FontEnum
 import ui.panel.airPollutionPanel.AirPollutionPanelView
 import java.awt.*
 import javax.swing.*
