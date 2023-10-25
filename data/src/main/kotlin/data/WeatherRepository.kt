@@ -17,9 +17,9 @@ class WeatherRepository {
             status = Weather.Status(weatherResponse.weathers[0].main, weatherResponse.weathers[0].description),
             temperature = Weather.Temperature(weatherResponse.main.temp, weatherResponse.main.feelsLike),
             time = Weather.Time(
-                Date(weatherResponse.dt),
-                Date(weatherResponse.sys.sunrise),
-                Date(weatherResponse.sys.sunset),
+                Date(weatherResponse.dt*1000),
+                Date(weatherResponse.sys.sunrise*1000),
+                Date(weatherResponse.sys.sunset*1000),
                 weatherResponse.timeZone.toTimeZone()
             ),
             windSpeed = weatherResponse.wind.speed,
