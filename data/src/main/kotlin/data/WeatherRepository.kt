@@ -1,26 +1,29 @@
 package data
 
+import convertors.toTimeZone
 import di.RepositoryProvider
 import model.Weather
+import model.Weather.CityWithLocation.Location
+import java.util.*
+
 
 class WeatherRepository {
 
     suspend fun weather(city: String): Weather {
         val weatherResponse = RepositoryProvider.providerWeatherRepository().getData(city)
+        val location = Location(weatherResponse.coord.lat, weatherResponse.coord.lon)
         return Weather(
-            lat = weatherResponse.coord.lat,
-            lon = weatherResponse.coord.lon,
-            feelsLike = weatherResponse.main.feelsLike,
-            sunRise = weatherResponse.sys.sunrise,
-            sunSet = weatherResponse.sys.sunset,
-            temp = weatherResponse.main.temp,
-            date = weatherResponse.dt,
-            description = weatherResponse.weathers[0].description,
-            icon = weatherResponse.weathers[0].icon,
-            mainStatus = weatherResponse.weathers[0].main,
-            name = weatherResponse.name,
-            timeZone = weatherResponse.timeZone,
-            speed = weatherResponse.wind.speed
+            cityWithLocation = Weather.CityWithLocation(weatherResponse.name, location),
+            status = Weather.Status(weatherResponse.weathers[0].main, weatherResponse.weathers[0].description),
+            temperature = Weather.Temperature(weatherResponse.main.temp, weatherResponse.main.feelsLike),
+            time = Weather.Time(
+                Date(weatherResponse.dt),
+                Date(weatherResponse.sys.sunrise),
+                Date(weatherResponse.sys.sunset),
+                weatherResponse.timeZone.toTimeZone()
+            ),
+            windSpeed = weatherResponse.wind.speed,
+            icon = weatherResponse.weathers[0].icon
         )
     }
 }

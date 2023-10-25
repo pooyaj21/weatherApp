@@ -1,6 +1,6 @@
 package ui.panel.airPollution
 
-import PSIcon
+import ui.component.PSIcon
 import domain.GetWeatherPollutionUseCase
 import model.Pollution
 import model.Weather
@@ -9,10 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import ui.*
 import ui.component.PSButton
 import ui.component.PSLabel
+import ui.extension.*
 import ui.model.UiState
-import ui.util.FontEnum
-import ui.util.resizeIcon
-import ui.util.setFont
 import java.awt.Color
 import javax.swing.*
 
@@ -23,10 +21,10 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
         CoroutineScope(Dispatchers.IO),
         GetWeatherPollutionUseCase()
     )
-    private val backgroundColor = if (response.icon.last().toString() == "d") Color(0xE5ECF4)
+    private val backgroundColor = if (response.icon.last()== 'd') Color(0xE5ECF4)
     else Color(0x1E1E1E)
 
-    private val foregroundColor = if (response.icon.last().toString() == "d") Color(0x1E1E1E)
+    private val foregroundColor = if (response.icon.last()== 'd') Color(0x1E1E1E)
     else Color(0xE5ECF4)
 
     private lateinit var airPollutionData: Pollution
@@ -72,7 +70,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
 
         val pollutionStatus = PSIcon(
             ImageIcon("assets/IMG/${response.icon}.png").resizeIcon(100, 100),
-            response.description,
+            response.status.long,
             ).apply {
             setBounds(0, 90, 360, 150)
             setFont(FontEnum.SEMI_BOLD,
@@ -85,7 +83,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
 
         val coStatus = PSLabel().apply {
             setFont(FontEnum.REGULAR,20)
-            text="CO:${airPollutionData.co}"
+            text="CO:${airPollutionData.amountOfCo}"
             foreground = foregroundColor
             setBounds(0, 350, 180, 30)
         }
@@ -94,7 +92,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
 
         val no2Status = PSLabel().apply {
             setFont(FontEnum.REGULAR,20)
-            text="NO2:${airPollutionData.no2}"
+            text="NO2:${airPollutionData.amountOfNo2}"
             foreground = foregroundColor
             setBounds(180, 350, 180, 30)
         }
@@ -103,7 +101,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
 
         val noStatus = PSLabel().apply {
             setFont(FontEnum.REGULAR,20)
-            text="NO:${airPollutionData.no}"
+            text="NO:${airPollutionData.amountOfNo}"
             foreground = foregroundColor
             setBounds(0, 400, 180, 30)
         }
@@ -112,7 +110,7 @@ class AirPollutionView(private val response: Weather, private val navigator: Nav
 
         val o3Status = PSLabel().apply {
             setFont(FontEnum.REGULAR,20)
-            text="O3:${airPollutionData.o3}"
+            text="O3:${airPollutionData.amountOfO3}"
             foreground = foregroundColor
             setBounds(180, 400, 180, 30)
         }

@@ -1,29 +1,34 @@
 package ui.panel.mainPage
 
 
-import PSIcon
 import model.Weather
 import ui.Navigator
 import ui.component.PSButton
 import ui.component.PSHorizontalDivider
+import ui.component.PSIcon
 import ui.component.PSLabel
+import ui.extension.*
 import ui.panel.airPollution.AirPollutionView
-import ui.util.*
 import java.awt.*
 import javax.swing.*
-import javax.swing.border.Border
-import javax.swing.border.LineBorder
 
 
 class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
-    private val mainPageController = MainPageController(response)
-    private val backgroundColor = if (mainPageController.getDayOrNight() == "d") Color(0xE5ECF4)
-    else Color(0x1E1E1E)
 
-    private val foregroundColor = if (mainPageController.getDayOrNight() == "d") Color(0x1E1E1E)
-    else Color(0xE5ECF4)
+    private var backgroundColor:Color
+    private var foregroundColor:Color
+    private var sunStatusText:String
 
     init {
+        if (response.icon.last() == 'd'){
+            backgroundColor=Color(0xE5ECF4)
+            foregroundColor=Color(0x1E1E1E)
+            sunStatusText=response.time.sunSet.convertToCurrentHour(response.time.timeZone)
+        }else{
+            backgroundColor=Color(0x1E1E1E)
+            foregroundColor=Color(0xE5ECF4)
+            sunStatusText=response.time.sunrise.convertToCurrentHour(response.time.timeZone)
+        }
         layout = null
         isVisible = true
         background = backgroundColor
@@ -31,14 +36,16 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
 
         val country = PSLabel().apply {
             setFont(FontEnum.BOLD, 36)
-            text = mainPageController.getCountry()
+            text = response.cityWithLocation.name
             foreground = foregroundColor
             setBounds(0, 90, 360, 50)
         }
         add(country)
 
         val date = PSLabel().apply {
-            text = "${mainPageController.getDay()}/${mainPageController.getTime()}"
+            text = "${response.time.current.convertToDayOfWeek(response.time.timeZone)}/${
+                response.time.current.convertToCurrentHour(response.time.timeZone)
+            }"
             setFont(FontEnum.SEMI_BOLD, 20)
             foreground = foregroundColor
             setBounds(0, 140, 360, 30)
@@ -46,8 +53,8 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
         add(date)
 
         val tempIcon = PSIcon(
-            ImageIcon("assets/IMG/${mainPageController.getIcon()}.png").resizeIcon(100, 100),
-            "${mainPageController.getFellingTemp()}°C",
+            ImageIcon("assets/IMG/${response.icon}.png").resizeIcon(100, 100),
+            "${response.temperature.feelsLikeCentigrade}°C",
         ).apply {
             setBounds(0, 190, 360, 150)
             setFont(FontEnum.BOLD, 40)
@@ -59,7 +66,7 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
         add(tempIcon)
 
         val description = PSButton().apply {
-            text = mainPageController.getDescription()
+            text = response.status.long
             setFont(FontEnum.SEMI_BOLD, 20)
             foreground = foregroundColor
             setBounds(0, 340, 360, 30)
@@ -73,12 +80,10 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
         add(description)
 
 
-        val sunStatusText = if (mainPageController.getDayOrNight() == "d") mainPageController.getSunSet()
-        else mainPageController.getSunRise()
-
         val sunStatus = PSIcon(
-            ImageIcon("assets/IMG/sunStatus${mainPageController.getDayOrNight()}.png").resizeIcon(50, 50),
-            sunStatusText).apply {
+            ImageIcon("assets/IMG/sunStatus${response.icon.last()}.png").resizeIcon(50, 50),
+            sunStatusText
+        ).apply {
             setBounds(0, 450, 106, 100)
             setFont(FontEnum.REGULAR, 16)
             foreground = foregroundColor
@@ -87,15 +92,19 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
         }
         add(sunStatus)
 
-        val leftHorizontalDivider = PSHorizontalDivider(20, 50, 2F, foregroundColor).apply {
+        val leftHorizontalDivider = PSHorizontalDivider().apply {
+            panelWidth = 20
+            panelHeight = 50
+            stroke = 2F
+            dividerColor = foregroundColor
             background = backgroundColor
             setBounds(106, 450, 20, 50)
         }
         add(leftHorizontalDivider)
 
         val windStatus = PSIcon(
-            ImageIcon("assets/IMG/windIcon${mainPageController.getDayOrNight()}.png").resizeIcon(50, 50),
-            "${mainPageController.getWind()}",
+            ImageIcon("assets/IMG/windIcon${response.icon.last()}.png").resizeIcon(50, 50),
+            "${response.windSpeed}",
         ).apply {
             setBounds(126, 450, 106, 100)
             setFont(FontEnum.REGULAR, 16)
@@ -104,18 +113,22 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
         }
         add(windStatus)
 
-        val rightHorizontalDivider = PSHorizontalDivider(20, 50, 2F, foregroundColor).apply {
+        val rightHorizontalDivider = PSHorizontalDivider().apply {
+            panelWidth = 20
+            panelHeight = 50
+            stroke = 2F
+            dividerColor = foregroundColor
             background = backgroundColor
             setBounds(232, 450, 20, 50)
         }
         add(rightHorizontalDivider)
 
         val tempStatus = PSIcon(
-            ImageIcon("assets/IMG/tempIcon${mainPageController.getDayOrNight()}.png").resizeIcon(50, 50),
-            "${mainPageController.getTemp()}"
+            ImageIcon("assets/IMG/tempIcon${response.icon.last()}.png").resizeIcon(50, 50),
+            "${response.temperature.realCentigrade}"
         ).apply {
             setBounds(252, 450, 106, 100)
-            setFont( FontEnum.REGULAR, 16)
+            setFont(FontEnum.REGULAR, 16)
             foreground = foregroundColor
             background = backgroundColor
 
@@ -123,7 +136,7 @@ class MainPageView(response: Weather, navigator: Navigator) : JPanel() {
         add(tempStatus)
 
         val backButton = PSButton().apply {
-            icon = ImageIcon("assets/IMG/back${mainPageController.getDayOrNight()}.png").resizeIcon(30, 30)
+            icon = ImageIcon("assets/IMG/back${response.icon.last()}.png").resizeIcon(30, 30)
             setBounds(0, 0, 50, 50)
             addActionListener { navigator.pop() }
         }

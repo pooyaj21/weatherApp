@@ -1,11 +1,11 @@
 package data
 
 import di.RepositoryProvider
-import model.Location
+import model.City
 
 class LocationRepository {
-    suspend fun location(ip: String): Location {
+    suspend fun location(ip: String): City {
         val locationResponse = RepositoryProvider.providerLocationRepository().getData(ip)
-        return Location(city = locationResponse.city)
+        return City(name = locationResponse.city)
     }
 }

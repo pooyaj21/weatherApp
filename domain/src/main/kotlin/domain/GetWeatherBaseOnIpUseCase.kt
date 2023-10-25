@@ -11,7 +11,7 @@ class GetWeatherBaseOnIpUseCase(
 
     suspend fun get(): Result<Weather> {
         val ip = getIp.get()
-        val city = repository.location(ip).city
+        val city = repository.location(ip).name
         return getCityWeatherUseCase.get(city)
     }
 }

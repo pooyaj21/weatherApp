@@ -1,12 +1,10 @@
 package ui.component
 
-import ui.util.FontEnum
-import ui.util.setFont
 import javax.swing.JLabel
 
-class PSLabel (): JLabel() {
+class PSLabel : JLabel() {
 
-   init {
+    init {
         horizontalAlignment = CENTER
         verticalAlignment = CENTER
     }

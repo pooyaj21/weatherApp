@@ -1,8 +1,8 @@
 package model
 
 data class Pollution(
-    val co: Double,
-    val no2: Double,
-    val no: Double,
-    val o3: Double
+    val amountOfCo: Double,
+    val amountOfNo2: Double,
+    val amountOfNo: Double,
+    val amountOfO3: Double
 )

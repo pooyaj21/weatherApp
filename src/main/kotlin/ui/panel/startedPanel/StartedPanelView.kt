@@ -13,7 +13,7 @@ import ui.component.PSLabel
 import ui.component.PSTextField
 import ui.model.UiState
 import ui.panel.loading.LoadingPanelView
-import ui.util.*
+import ui.extension.*
 import java.awt.Color
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
@@ -30,14 +30,13 @@ class StartedPanelView(navigator: Navigator) : UiStatePanel() {
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
     private val searchBox = PSTextField(
-        columns = 23,
-        cornerRadius = 25,
-        backgroundColor = Color(0xE5ECF4),
-        foregroundColor = Color(0x1E1E1E),
-        fontType = FontEnum.REGULAR,
-        fontSize = 16
-    )
-
+    ).apply {
+        columns = 23
+        textFieldCornerRadius = 25
+        backgroundColor = Color(0xE5ECF4)
+        foregroundColor = Color(0x1E1E1E)
+        setFont(FontEnum.REGULAR,16)
+    }
 
     init {
 

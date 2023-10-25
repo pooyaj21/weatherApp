@@ -1,14 +1,15 @@
-package ui.util
+package ui.component
 
 import java.awt.*
 import javax.swing.border.Border
 
-class RoundedBorder(
-    private val borderColor: Color,
-    private val cornerRadius: Int,
-    private val strokeWidth: Int,
-    private val padding: Int
+class PSRoundedBorder(
+
 ) : Border {
+     var borderColor: Color = Color.BLACK
+     var cornerRadius: Int = 14
+     var strokeWidth: Int = 4
+     var padding: Int = 10
     override fun paintBorder(c: Component, g: Graphics, x: Int, y: Int, width: Int, height: Int) {
         val g2d = g as Graphics2D
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)

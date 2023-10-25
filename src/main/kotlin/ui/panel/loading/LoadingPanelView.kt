@@ -5,7 +5,7 @@ import ui.Navigator
 import ui.component.PSButton
 import ui.component.PSLabel
 import ui.panel.mainPage.MainPageView
-import ui.util.*
+import ui.extension.*
 import java.awt.Color
 import javax.swing.ImageIcon
 import javax.swing.JLabel
@@ -13,11 +13,10 @@ import javax.swing.JPanel
 
 
 class LoadingPanelView(private val response: Weather, private val navigator: Navigator) : JPanel() {
-    private val loadingPanelController = LoadingPanelController(response)
-    private val backgroundColor = if (loadingPanelController.getDayOrNight() == "d") Color(0xE5ECF4)
+    private val backgroundColor = if (response.icon.last() == 'd') Color(0xE5ECF4)
     else Color(0x1E1E1E)
 
-    private val foregroundColor = if (loadingPanelController.getDayOrNight() == "d") Color(0x1E1E1E)
+    private val foregroundColor = if (response.icon.last() == 'd') Color(0x1E1E1E)
     else Color(0xE5ECF4)
 
     init {
@@ -25,7 +24,7 @@ class LoadingPanelView(private val response: Weather, private val navigator: Nav
         isVisible = true
         background = backgroundColor
 
-        val weatherText = when (loadingPanelController.getMainName()) {
+        val weatherText = when (response.status.short) {
             "Clear" -> "Sunny"
             "Clouds" -> "Cloudy"
             "Rain" -> "Rainy"
@@ -48,7 +47,7 @@ class LoadingPanelView(private val response: Weather, private val navigator: Nav
 
 
         val imageLabel = PSLabel().apply {
-            icon = ImageIcon("assets/IMG/${loadingPanelController.getIcon()}.png").resizeIcon(100, 100)
+            icon = ImageIcon("assets/IMG/${response.icon}.png").resizeIcon(100, 100)
             setBounds(25, 35, 100, 100)
         }
         add(imageLabel)
@@ -119,7 +118,7 @@ class LoadingPanelView(private val response: Weather, private val navigator: Nav
 
 
         val backButton = PSButton().apply {
-            icon = ImageIcon("assets/IMG/back${loadingPanelController.getDayOrNight()}.png").resizeIcon(30, 30)
+            icon = ImageIcon("assets/IMG/back${response.icon.last()}.png").resizeIcon(30, 30)
             setBounds(0, 0, 50, 50)
             addActionListener { navigator.pop() }
         }

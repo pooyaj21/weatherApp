@@ -1,33 +1,10 @@
-package ui.util
+package ui.extension
 
 import java.awt.Font
 import java.awt.FontFormatException
 import java.io.File
 import java.io.IOException
-import java.time.*
-import java.time.format.DateTimeFormatter
-import javax.swing.ImageIcon
 import javax.swing.JComponent
-
-fun ImageIcon.resizeIcon(width: Int, height: Int): ImageIcon {
-    val image = this.image
-    val newImage = image.getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH)
-    return ImageIcon(newImage)
-}
-fun getDayOfWeekFromUTC(utcTimestamp: Long, offsetInSeconds: Int): DayOfWeek {
-    val instant = Instant.ofEpochMilli(utcTimestamp*1000)
-    val offset = ZoneOffset.ofTotalSeconds(offsetInSeconds)
-    val offsetDateTime = instant.atOffset(offset)
-    return offsetDateTime.dayOfWeek
-}
-
-fun convertUTCToLocalHour(utcTimestamp: Long, offsetInSeconds: Int): String {
-    val instant = Instant.ofEpochMilli(utcTimestamp*1000)
-    val offset = ZoneOffset.ofTotalSeconds(offsetInSeconds)
-    val offsetDateTime = instant.atOffset(offset)
-    val formatter = DateTimeFormatter.ofPattern("HH:mm")
-    return formatter.format(offsetDateTime)
-}
 
 fun JComponent.setFont(fontType: FontEnum, size: Int) {
     val fontFilePath = when (fontType) {
