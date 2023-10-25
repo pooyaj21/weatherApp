@@ -15,10 +15,10 @@ open class PSTextField : JTextField() {
         foreground = foregroundColor
         caretColor = foregroundColor
         border = PSRoundedBorder().apply {
-            borderColor=Color(0x1E1E1E)
-            cornerRadius=textFieldCornerRadius
-            strokeWidth=4
-            padding=10
+            borderColor = Color(0x1E1E1E)
+            cornerRadius = textFieldCornerRadius
+            strokeWidth = 4
+            padding = 10
         }
         horizontalAlignment = SwingConstants.LEFT
     }

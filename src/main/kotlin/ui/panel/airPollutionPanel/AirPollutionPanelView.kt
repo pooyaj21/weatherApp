@@ -21,10 +21,10 @@ class AirPollutionPanelView(private val response: Weather, private val navigator
         CoroutineScope(Dispatchers.IO),
         GetWeatherPollutionUseCase()
     )
-    private val backgroundColor = if (response.icon.last()== 'd') Color(0xE5ECF4)
+    private val backgroundColor = if (response.icon.last() == 'd') Color(0xE5ECF4)
     else Color(0x1E1E1E)
 
-    private val foregroundColor = if (response.icon.last()== 'd') Color(0x1E1E1E)
+    private val foregroundColor = if (response.icon.last() == 'd') Color(0x1E1E1E)
     else Color(0xE5ECF4)
 
     private lateinit var airPollutionData: Pollution
@@ -68,57 +68,85 @@ class AirPollutionPanelView(private val response: Weather, private val navigator
         }
 
 
-        val pollutionStatus = PSIcon(
-            ImageIcon("assets/IMG/${response.icon}.png").resizeIcon(100, 100),
-            response.status.long,
-            ).apply {
+        val pollutionStatus = PSIcon().apply {
+            icon = ImageIcon("assets/IMG/${response.icon}.png").resizeIcon(100, 100)
+            text = response.status.long
             setBounds(0, 90, 360, 150)
-            setFont(FontEnum.SEMI_BOLD,
-                36,)
+            setFont(
+                FontEnum.SEMI_BOLD,
+                36,
+            )
             foreground = foregroundColor
             background = backgroundColor
 
         }
         dataPanel.add(pollutionStatus)
 
-        val coStatus = PSLabel().apply {
-            setFont(FontEnum.SEMI_BOLD,20)
-            text="CO:${airPollutionData.amountOfCo}"
+        val coStatusTitle = PSLabel().apply {
+            text = "CO:"
             foreground = foregroundColor
-            setBounds(0, 350, 180, 30)
+            setBounds(0, 350, 130, 30)
         }
-        dataPanel.add(coStatus)
+        dataPanel.add(coStatusTitle)
 
-
-        val no2Status = PSLabel().apply {
-            setFont(FontEnum.SEMI_BOLD,20)
-            text="NO2:${airPollutionData.amountOfNo2}"
+        val coStatusAmount = PSLabel().apply {
+            text = "${airPollutionData.amountOfCo}"
             foreground = foregroundColor
-            setBounds(180, 350, 180, 30)
+            setBounds(50, 350, 130, 30)
+            setFont(FontEnum.REGULAR,20)
         }
-        dataPanel.add(no2Status)
+        dataPanel.add(coStatusAmount)
 
 
-        val noStatus = PSLabel().apply {
-            setFont(FontEnum.SEMI_BOLD,20)
-            text="NO:${airPollutionData.amountOfNo}"
+        val no2StatusTitle = PSLabel().apply {
+            text = "NO2:"
             foreground = foregroundColor
-            setBounds(0, 400, 180, 30)
+            setBounds(180, 350, 130, 30)
         }
-        dataPanel.add(noStatus)
-
-
-        val o3Status = PSLabel().apply {
-            setFont(FontEnum.SEMI_BOLD,20)
-            text="O3:${airPollutionData.amountOfO3}"
+        dataPanel.add(no2StatusTitle)
+        val no2StatusAmount = PSLabel().apply {
+            text = "${airPollutionData.amountOfNo2}"
             foreground = foregroundColor
-            setBounds(180, 400, 180, 30)
+            setBounds(230, 350, 130, 30)
+            setFont(FontEnum.REGULAR,20)
         }
-        dataPanel.add(o3Status)
+        dataPanel.add(no2StatusAmount)
+
+
+        val noStatusTitle = PSLabel().apply {
+            text = "NO:"
+            foreground = foregroundColor
+            setBounds(0, 400, 130, 30)
+        }
+        dataPanel.add(noStatusTitle)
+
+        val noStatusAmount = PSLabel().apply {
+            text = "${airPollutionData.amountOfNo}"
+            foreground = foregroundColor
+            setBounds(50, 400, 130, 30)
+            setFont(FontEnum.REGULAR,20)
+        }
+        dataPanel.add(noStatusAmount)
+
+
+        val o3StatusTitle = PSLabel().apply {
+            text = "O3:"
+            foreground = foregroundColor
+            setBounds(180, 400, 130, 30)
+        }
+        dataPanel.add(o3StatusTitle)
+
+        val o3StatusAmount = PSLabel().apply {
+            text = "${airPollutionData.amountOfO3}"
+            foreground = foregroundColor
+            setBounds(230, 400, 130, 30)
+            setFont(FontEnum.REGULAR,20)
+        }
+        dataPanel.add(o3StatusAmount)
 
 
         val backButton = PSButton().apply {
-            icon=ImageIcon("assets/IMG/back${response.icon.last()}.png").resizeIcon(30,30)
+            icon = ImageIcon("assets/IMG/back${response.icon.last()}.png").resizeIcon(30, 30)
             setBounds(0, 0, 50, 50)
             addActionListener { navigator.pop() }
         }

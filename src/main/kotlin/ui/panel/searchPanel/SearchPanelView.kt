@@ -29,17 +29,15 @@ class SearchPanelView(navigator: Navigator) : UiStatePanel() {
         GetWeatherBaseOnIpUseCase(ip, getWeatherPollutionUseCase)
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
-    private val searchBox = PSTextField(
-    ).apply {
+    private val searchBox = PSTextField().apply {
         columns = 23
         textFieldCornerRadius = 25
         backgroundColor = Color(0xE5ECF4)
         foregroundColor = Color(0x1E1E1E)
-        setFont(FontEnum.REGULAR,16)
+        setFont(FontEnum.REGULAR, 16)
     }
 
     init {
-
         layout = null
         isVisible = true
         background = Color(0xE5ECF4)
@@ -54,7 +52,7 @@ class SearchPanelView(navigator: Navigator) : UiStatePanel() {
 
 
         val imageLabel = PSLabel().apply {
-           icon= ImageIcon("assets/IMG/SkyCast.png")
+            icon = ImageIcon("assets/IMG/SkyCast.png")
             setBounds(130, 166, 100, 100)
         }
         add(imageLabel)
@@ -79,7 +77,7 @@ class SearchPanelView(navigator: Navigator) : UiStatePanel() {
 
 
         val locationButton = PSButton().apply {
-            icon=ImageIcon("assets/IMG/location.png")
+            icon = ImageIcon("assets/IMG/location.png")
             isOpaque = false
             setBounds(0, 0, 50, 50)
             addActionListener {

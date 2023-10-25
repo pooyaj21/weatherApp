@@ -6,7 +6,7 @@ import java.awt.Graphics
 import java.awt.Graphics2D
 import javax.swing.JPanel
 
-class PSHorizontalDivider: JPanel() {
+class PSHorizontalDivider : JPanel() {
     var panelWidth: Int = 100
     var panelHeight: Int = 100
     var stroke: Float = 2F

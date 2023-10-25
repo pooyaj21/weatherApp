@@ -52,6 +52,7 @@ class LoadingPanelView(private val response: Weather, private val navigator: Nav
         }
         add(imageLabel)
 
+
         val firstLine = PSLabel().apply {
             setFont(FontEnum.BOLD, 36)
             text = "It’s"
@@ -123,7 +124,6 @@ class LoadingPanelView(private val response: Weather, private val navigator: Nav
             addActionListener { navigator.pop() }
         }
         add(backButton)
-
 
     }
 }
