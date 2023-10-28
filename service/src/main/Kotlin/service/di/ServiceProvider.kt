@@ -15,6 +15,6 @@ object ServiceProvider {
     fun provideWeatherService() = weatherServiceCreator.create(WeatherService::class.java)
     fun providePollutionService() = weatherServiceCreator.create(PollutionService::class.java)
     fun provideIpService() = ServiceCreator("https://api.ipify.org").create(IpService::class.java)
-    fun provideLocationService() = ServiceCreator("http://api.ipstack.com").create(LocationService::class.java)
+    fun provideLocationService() = ServiceCreator("http://ip-api.com/json/").create(LocationService::class.java)
 
 }
