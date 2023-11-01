@@ -46,7 +46,7 @@ class GetWeatherBaseOnIpUseCaseTest {
     }
 
     @Test
-    fun c() = runTest {
+    fun `is get returns Weather`() = runTest {
         val mockWeatherResult: Result<Weather> = mockk()
         coEvery { mockGetIpUseCase.get() } returns "0.0.0.0"
         coEvery { mockLocationRepository.location("0.0.0.0") } returns City("Tehran")

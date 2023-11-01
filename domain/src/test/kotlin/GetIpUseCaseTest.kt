@@ -13,8 +13,8 @@ class GetIpUseCaseTest {
     private val getIpUseCase: GetIpUseCase = GetIpUseCaseImpl(ipRepository)
 
     @Test
-    fun `is getIpUseCase return Ip String `() = runTest {
-        val expected: String = "1.1.1.1"
+    fun `is getIpUseCase return Ip String`() = runTest {
+        val expected = "1.1.1.1"
         coEvery {
             getIpUseCase.get()
         } returns expected

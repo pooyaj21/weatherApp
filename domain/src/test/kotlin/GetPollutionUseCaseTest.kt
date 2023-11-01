@@ -6,9 +6,10 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import model.Pollution
 import model.Weather
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import repository.PollutionRepository
+import kotlin.test.assertEquals
 
 class GetPollutionUseCaseTest {
     private val pollutionRepository:PollutionRepository= mockk()
@@ -22,12 +23,24 @@ class GetPollutionUseCaseTest {
             getPollutionUseCase.get(any())
         } returns expected
 
-        Assertions.assertEquals(
+        assertEquals(
             expected,
             getPollutionUseCase.get(mockWeather)
         )
     }
 
+    @Test
+    fun `is getPollutionUseCase return Pollution - Failure`() = runTest {
+        val exception = RuntimeException()
+        val mockWeather: Weather= mockk()
+        coEvery {
+            getPollutionUseCase.get(any())
+        } throws exception
 
+        assertEquals(
+            Result.failure(exception),
+            getPollutionUseCase.get(mockWeather)
+        )
+    }
 
 }

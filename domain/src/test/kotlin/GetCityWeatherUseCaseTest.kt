@@ -4,9 +4,9 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import model.Weather
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 import repository.WeatherRepository
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class GetCityWeatherUseCaseTest {
 
@@ -22,6 +22,16 @@ class GetCityWeatherUseCaseTest {
 
         assertEquals(
             expected,
+            getCityWeatherUseCase.get("Tehran")
+        )
+    }
+
+    @Test
+    fun `is getCityWeatherUseCase return Weather - Failure`() = runTest {
+        val exception = RuntimeException()
+        coEvery { getCityWeatherUseCase.get("Tehran") } throws exception
+        assertEquals(
+            Result.failure(exception),
             getCityWeatherUseCase.get("Tehran")
         )
     }
