@@ -12,16 +12,9 @@ object ServiceProvider {
         ServiceCreator("https://api.openweathermap.org")
     }
 
-<<<<<<< Updated upstream
-    fun provideWeatherService() = weatherServiceCreator.create(WeatherService::class.java)
-    fun providePollutionService() = weatherServiceCreator.create(PollutionService::class.java)
-    fun provideIpService() = ServiceCreator("https://api.ipify.org").create(IpService::class.java)
-    fun provideLocationService() = ServiceCreator("http://ip-api.com/json/").create(LocationService::class.java)
-=======
     fun weatherService() = weatherServiceCreator.create(WeatherService::class.java)
     fun pollutionService() = weatherServiceCreator.create(PollutionService::class.java)
     fun ipService() = ServiceCreator("https://api.ipify.org").create(IpService::class.java)
-    fun locationService() = ServiceCreator("http://api.ipstack.com").create(LocationService::class.java)
->>>>>>> Stashed changes
+    fun locationService() = ServiceCreator("http://ip-api.com/json/").create(LocationService::class.java)
 
 }
