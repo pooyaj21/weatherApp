@@ -1,9 +1,7 @@
 package domain
 
-import di.RepositoryProvider
 import model.Pollution
 import model.Weather
-import repository.IpRepository
 import repository.PollutionRepository
 
 interface GetPollutionUseCase {

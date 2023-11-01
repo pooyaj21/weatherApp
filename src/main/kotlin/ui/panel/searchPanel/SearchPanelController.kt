@@ -10,7 +10,7 @@ import ui.model.UiState
 class SearchPanelController(
     private val coroutineScope: CoroutineScope,
     private val getCityWeatherUseCase: GetCityWeatherUseCase,
-    private val getCityBaseOnIp: GetWeatherBaseOnIpUseCase
+    private val getWeatherBaseOnIpUseCase: GetWeatherBaseOnIpUseCase
 ) {
     var callBack: ((UiState<Weather>) -> Unit)? = null
     fun city(city: String) {
@@ -28,7 +28,7 @@ class SearchPanelController(
     fun city() {
         coroutineScope.launch {
             callBack?.invoke(UiState.Loading)
-            val result = getCityBaseOnIp.get()
+            val result = getWeatherBaseOnIpUseCase.get()
             if (result.isSuccess) {
                 callBack?.invoke(UiState.Data(result.getOrThrow()))
             } else {

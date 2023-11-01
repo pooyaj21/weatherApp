@@ -1,6 +1,7 @@
 package ui.panel.searchPanel
 
 
+import di.UseCaseProvider
 import domain.GetWeatherBaseOnIpUseCase
 import domain.GetCityWeatherUseCase
 import domain.GetIpUseCase
@@ -22,12 +23,10 @@ import javax.swing.*
 
 
 class SearchPanelView(navigator: Navigator) : UiStatePanel() {
-    private val ip = GetIpUseCase()
-    private val getWeatherPollutionUseCase = GetCityWeatherUseCase()
     private val startedPanelController = SearchPanelController(
         CoroutineScope(Dispatchers.IO),
-        GetCityWeatherUseCase(),
-        GetWeatherBaseOnIpUseCase(ip, getWeatherPollutionUseCase)
+        UseCaseProvider.cityWeatherUseCase(),
+        UseCaseProvider.ipWeatherUseCase()
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
     private val searchBox = PSTextField().apply {
