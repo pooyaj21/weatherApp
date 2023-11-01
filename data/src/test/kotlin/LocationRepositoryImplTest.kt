@@ -1,10 +1,9 @@
-import data.LocationRepository
-import data.LocationRepositoryImpl
+import repository.LocationRepository
+import repository.LocationRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import model.City
-import model.Weather
 import org.junit.Test
 import service.response.LocationResponse
 import service.service.LocationService

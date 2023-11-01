@@ -1,8 +1,7 @@
-import data.IpRepository
-import data.IpRepositoryImpl
+import repository.IpRepository
+import repository.IpRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.IO_PARALLELISM_PROPERTY_NAME
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import service.response.IpResponse

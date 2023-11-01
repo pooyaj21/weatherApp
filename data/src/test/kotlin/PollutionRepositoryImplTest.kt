@@ -1,6 +1,6 @@
-import convertors.toTimeZone
-import data.PollutionRepository
-import data.PollutionRepositoryImpl
+import convertor.toTimeZone
+import repository.PollutionRepository
+import repository.PollutionRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

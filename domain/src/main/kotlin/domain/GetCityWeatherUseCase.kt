@@ -2,11 +2,16 @@ package domain
 
 import di.RepositoryProvider
 import model.Weather
+import repository.WeatherRepository
 
+interface GetCityWeatherUseCase {
+    suspend fun get(city: String): Result<Weather>
+}
 
-class GetCityWeatherUseCase {
-    private val repository = RepositoryProvider.weatherRepository()
-    suspend fun get(city: String): Result<Weather> {
-        return runCatching { repository.weather(city) }
+internal class GetCityWeatherUseCaseImpl(
+    private val weatherRepository: WeatherRepository
+) : GetCityWeatherUseCase {
+    override suspend fun get(city: String): Result<Weather> {
+        return runCatching { weatherRepository.weather(city) }
     }
 }

@@ -16,6 +16,10 @@ dependencies {
     implementation(project(":model"))
     implementation(project(":data"))
     implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+
 }
 
 tasks.test {

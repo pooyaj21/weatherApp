@@ -1,9 +1,8 @@
-package data
+package repository
 
 import PollutionService
 import model.Pollution
 import model.Weather
-import service.di.ServiceProvider
 
 interface PollutionRepository{
     suspend fun pollution(previousApi: Weather): Pollution

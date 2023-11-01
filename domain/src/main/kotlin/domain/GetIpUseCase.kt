@@ -1,11 +1,15 @@
 package domain
 
-import di.RepositoryProvider
+import repository.IpRepository
 
-class GetIpUseCase {
-    private val repository = RepositoryProvider.ipRepository()
-    suspend fun get(): String {
-        return repository.ip()
+interface GetIpUseCase{
+    suspend fun get(): String
+}
+internal class GetIpUseCaseImpl(
+    private val ipRepository : IpRepository
+) :GetIpUseCase{
+   override suspend fun get(): String {
+        return ipRepository.ip()
     }
 
 }

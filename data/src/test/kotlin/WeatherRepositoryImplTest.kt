@@ -1,11 +1,10 @@
-import convertors.toTimeZone
-import data.WeatherRepository
-import data.WeatherRepositoryImpl
+import convertor.toTimeZone
+import repository.WeatherRepository
+import repository.WeatherRepositoryImpl
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import model.Weather
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import service.response.WeatherResponse
 import java.util.*

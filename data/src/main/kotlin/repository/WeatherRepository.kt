@@ -1,10 +1,9 @@
-package data
+package repository
 
 import WeatherService
-import convertors.toTimeZone
+import convertor.toTimeZone
 import model.Weather
 import model.Weather.CityWithLocation.Location
-import service.di.ServiceProvider
 import java.util.*
 
 

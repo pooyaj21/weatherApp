@@ -1,18 +1,28 @@
 package domain
 
 
-import di.RepositoryProvider
 import model.Weather
+import repository.LocationRepository
 
-class GetWeatherBaseOnIpUseCase(
-    private val getIp: GetIpUseCase,
-    private val getCityWeatherUseCase: GetCityWeatherUseCase
-) {
-    private val repository = RepositoryProvider.locationRepository()
+interface GetWeatherBaseOnIpUseCase {
+    suspend fun get(): Result<Weather>
+}
 
-    suspend fun get(): Result<Weather> {
-        val ip = getIp.get()
-        val city = repository.location(ip).name
-        return getCityWeatherUseCase.get(city)
+internal class GetWeatherBaseOnIpUseCaseImpl(
+    private val getIpUseCase: GetIpUseCase,
+    private val getCityWeatherUseCase: GetCityWeatherUseCase,
+    private val locationRepository: LocationRepository
+) : GetWeatherBaseOnIpUseCase {
+
+    override suspend fun get(): Result<Weather> {
+        val cityResult = runCatching {
+            val ip = getIpUseCase.get()
+            locationRepository.location(ip).name
+        }
+        return if (cityResult.isSuccess) {
+            getCityWeatherUseCase.get(cityResult.getOrThrow())
+        } else {
+            Result.failure(cityResult.exceptionOrNull()!!)
+        }
     }
 }

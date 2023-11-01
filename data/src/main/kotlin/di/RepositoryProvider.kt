@@ -1,7 +1,6 @@
 package di
 
-import WeatherService
-import data.*
+import repository.*
 import service.di.ServiceProvider
 
 object RepositoryProvider {

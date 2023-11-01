@@ -1,4 +1,4 @@
-package data
+package repository
 
 import model.City
 import service.service.LocationService
