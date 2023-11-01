@@ -1,13 +1,16 @@
 package data
 
-import service.di.ServiceProvider
+import service.service.IpService
 
 interface IpRepository {
     suspend fun ip(): String
 }
-internal class IpRepositoryImpl : IpRepository {
+
+internal class IpRepositoryImpl(
+    private val ipService: IpService
+) : IpRepository {
     override suspend fun ip(): String {
-        val ipRepository = ServiceProvider.ipService().getData()
+        val ipRepository = ipService.getData()
         return ipRepository.ip
     }
 }

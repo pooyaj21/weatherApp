@@ -1,5 +1,6 @@
 package data
 
+import PollutionService
 import model.Pollution
 import model.Weather
 import service.di.ServiceProvider
@@ -8,9 +9,11 @@ interface PollutionRepository{
     suspend fun pollution(previousApi: Weather): Pollution
 }
 
-internal class PollutionRepositoryImpl:PollutionRepository {
+internal class PollutionRepositoryImpl(
+    private val pollutionService: PollutionService
+):PollutionRepository {
     override suspend fun pollution(previousApi: Weather): Pollution {
-        val pollutionResponse = ServiceProvider.pollutionService()
+        val pollutionResponse = pollutionService
             .getData(
                 lat = previousApi.cityWithLocation.location.lat.toString(),
                 lon = previousApi.cityWithLocation.location.long.toString()
