@@ -1,6 +1,6 @@
 package ui.panel.airPollutionPanel
 
-import domain.GetWeatherPollutionUseCase
+import domain.GetPollutionUseCase
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -10,7 +10,7 @@ import ui.model.UiState
 
 class AirPollutionPanelController(
     private val coroutineScope: CoroutineScope,
-    private val getWeatherPollutionUseCase: GetWeatherPollutionUseCase
+    private val getWeatherPollutionUseCase: GetPollutionUseCase
 ) {
     var callBack: ((UiState<Pollution>) -> Unit)? = null
     fun pollution(response: Weather) {

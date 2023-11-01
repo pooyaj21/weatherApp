@@ -12,7 +12,7 @@ import ui.component.PSButton
 import ui.component.PSLabel
 import ui.component.PSTextField
 import ui.model.UiState
-import ui.panel.homepanel.LoadingPanelView
+import ui.panel.homepanel.HomePanelView
 import ui.extension.*
 import ui.model.FontEnum
 import java.awt.Color
@@ -91,10 +91,10 @@ class SearchPanelView(navigator: Navigator) : UiStatePanel() {
 
                         is UiState.Data -> {
                             onData()
-                            val loadingPanel = LoadingPanelView(it.model, navigator).apply {
+                            val homePanel = HomePanelView(it.model, navigator).apply {
                                 setBounds(0, 0, width, height)
                             }
-                            navigator.push(loadingPanel)
+                            navigator.push(homePanel)
                         }
 
                         is UiState.Error -> {
@@ -141,7 +141,7 @@ class SearchPanelView(navigator: Navigator) : UiStatePanel() {
 
                 is UiState.Data -> {
                     onData()
-                    val loadingPanel = LoadingPanelView(it.model, navigator).apply {
+                    val loadingPanel = HomePanelView(it.model, navigator).apply {
                         setBounds(0, 0, width, height)
                     }
                     navigator.push(loadingPanel)

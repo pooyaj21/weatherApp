@@ -1,10 +1,10 @@
 package di
 
-import service.di.ServiceProvider
+import data.*
 
 object RepositoryProvider {
-    fun providerWeatherRepository() = ServiceProvider.provideWeatherService()
-    fun providerPollutionRepository() = ServiceProvider.providePollutionService()
-    fun providerIpRepository() = ServiceProvider.provideIpService()
-    fun providerLocationRepository() = ServiceProvider.provideLocationService()
+    fun weatherRepository(): WeatherRepository = WeatherRepositoryImpl()
+    fun pollutionRepository():PollutionRepository = PollutionRepositoryImpl()
+    fun ipRepository(): IpRepository = IpRepositoryImpl()
+    fun locationRepository(): LocationRepository = LocationRepositoryImpl()
 }

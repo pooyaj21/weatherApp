@@ -1,9 +1,9 @@
 package domain
 
-import data.IpRepository
+import di.RepositoryProvider
 
 class GetIpUseCase {
-    private val repository = IpRepository()
+    private val repository = RepositoryProvider.ipRepository()
     suspend fun get(): String {
         return repository.ip()
     }

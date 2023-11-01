@@ -1,7 +1,7 @@
 package ui.panel.airPollutionPanel
 
 import ui.component.PSIcon
-import domain.GetWeatherPollutionUseCase
+import domain.GetPollutionUseCase
 import model.Pollution
 import model.Weather
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +20,7 @@ class AirPollutionPanelView(private val response: Weather, private val navigator
     UiStatePanel() {
     private val airPollutionController = AirPollutionPanelController(
         CoroutineScope(Dispatchers.IO),
-        GetWeatherPollutionUseCase()
+        GetPollutionUseCase()
     )
     private val backgroundColor = if (response.icon.last() == 'd') Color(0xE5ECF4)
     else Color(0x1E1E1E)

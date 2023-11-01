@@ -3,6 +3,7 @@ package ui.panel.homepanel
 import model.Weather
 import ui.Navigator
 import ui.component.PSButton
+import ui.component.PSIcon
 import ui.component.PSLabel
 import ui.panel.mainPanel.MainPanelView
 import ui.extension.*
@@ -13,7 +14,7 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 
 
-class LoadingPanelView(private val response: Weather, private val navigator: Navigator) : JPanel() {
+class HomePanelView(private val response: Weather, private val navigator: Navigator) : JPanel() {
     private val backgroundColor = if (response.icon.last() == 'd') Color(0xE5ECF4)
     else Color(0x1E1E1E)
 

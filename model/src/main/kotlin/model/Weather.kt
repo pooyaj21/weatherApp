@@ -14,9 +14,10 @@ data class Weather(
     data class Temperature(val realKelvin: Double, val feelsLikeKelvin: Double) {
         val realCentigrade: Int = realKelvin.toCentigrade().toInt()
         val feelsLikeCentigrade: Int = feelsLikeKelvin.toCentigrade().toInt()
-        private fun Double.toCentigrade(): Double = this-273.15
+        private fun Double.toCentigrade(): Double = this - 273.15
     }
-    data class CityWithLocation(override val name: String, val location: Location) : City(name) {
+
+    data class CityWithLocation(override val name: String, override val id: Int, val location: Location) : City(name,id) {
         data class Location(val lat: Double, val long: Double)
     }
 

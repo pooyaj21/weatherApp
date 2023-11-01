@@ -16,6 +16,7 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("com.google.zxing:core:3.4.1")
 
 }
 

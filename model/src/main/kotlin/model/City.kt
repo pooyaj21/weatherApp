@@ -1,6 +1,6 @@
 package model
 
-open class City(open val name: String) {
+open class City(open val name: String,open val id:Int=0) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

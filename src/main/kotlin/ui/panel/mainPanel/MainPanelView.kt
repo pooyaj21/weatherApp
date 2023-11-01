@@ -19,6 +19,7 @@ class MainPanelView(response: Weather, navigator: Navigator) : JPanel() {
     private var backgroundColor: Color
     private var foregroundColor: Color
     private var sunStatusText: String
+    private val mainPanelController =MainPanelController()
 
     init {
         if (response.icon.last() == 'd') {
@@ -82,7 +83,7 @@ class MainPanelView(response: Weather, navigator: Navigator) : JPanel() {
         val sunStatus = PSIcon().apply {
             icon = ImageIcon("assets/IMG/sunStatus${response.icon.last()}.png").resizeIcon(50, 50)
             text = sunStatusText
-            setBounds(0, 450, 106, 100)
+            setBounds(0, 400, 106, 100)
             setFont(FontEnum.REGULAR, 16)
             foreground = foregroundColor
             background = backgroundColor
@@ -96,14 +97,14 @@ class MainPanelView(response: Weather, navigator: Navigator) : JPanel() {
             stroke = 2F
             dividerColor = foregroundColor
             background = backgroundColor
-            setBounds(106, 450, 20, 50)
+            setBounds(106, 420, 20, 50)
         }
         add(leftHorizontalDivider)
 
         val windStatus = PSIcon().apply {
             icon = ImageIcon("assets/IMG/windIcon${response.icon.last()}.png").resizeIcon(50, 50)
             text = "${response.windSpeed}"
-            setBounds(126, 450, 106, 100)
+            setBounds(126, 400, 106, 100)
             setFont(FontEnum.REGULAR, 16)
             foreground = foregroundColor
             background = backgroundColor
@@ -116,20 +117,36 @@ class MainPanelView(response: Weather, navigator: Navigator) : JPanel() {
             stroke = 2F
             dividerColor = foregroundColor
             background = backgroundColor
-            setBounds(232, 450, 20, 50)
+            setBounds(232, 420, 20, 50)
         }
         add(rightHorizontalDivider)
 
         val tempStatus = PSIcon().apply {
             icon = ImageIcon("assets/IMG/tempIcon${response.icon.last()}.png").resizeIcon(50, 50)
             text = "${response.temperature.realCentigrade}"
-            setBounds(252, 450, 106, 100)
+            setBounds(252, 400, 106, 100)
             setFont(FontEnum.REGULAR, 16)
             foreground = foregroundColor
             background = backgroundColor
 
         }
         add(tempStatus)
+
+        val qrCode = PSIcon().apply {
+            icon = mainPanelController.generateQRCode(
+                url = "https://openweathermap.org/city/${response.cityWithLocation.id}",
+                width = 90,
+                height = 90,
+                backgroundColor = backgroundColor,
+                foregroundColor = foregroundColor
+            )
+            text = "Scan Me!!"
+            setBounds(126, 485, 106, 140)
+            setFont(FontEnum.REGULAR, 16)
+            foreground = foregroundColor
+            background = backgroundColor
+        }
+        add(qrCode)
 
         val backButton = PSButton().apply {
             icon = ImageIcon("assets/IMG/back${response.icon.last()}.png").resizeIcon(30, 30)
