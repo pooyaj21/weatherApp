@@ -18,8 +18,6 @@ object Deps {
     val reflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.jdk}"
     val coroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutine}"
     val zxing = "com.google.zxing:core:${Versions.zxing}"
-    val junit_api = "org.junit.jupiter:junit-jupiter-api:${Versions.junit}"
-    val junit_engine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit}"
     val mockwebserver = "com.squareup.okhttp3:mockwebserver:${Versions.okHttp}"
     val junit_bom = "org.junit:junit-bom:${Versions.junit}"
     val junit_jupiter = "org.junit.jupiter:junit-jupiter:${Versions.junit}"
