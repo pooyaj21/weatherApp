@@ -1,27 +1,29 @@
 package ui.panel.airPollutionPanel
 
 import di.UseCaseProvider
-import ui.component.PSIcon
-import domain.GetPollutionUseCase
-import model.Pollution
-import model.Weather
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import ui.*
+import model.Pollution
+import model.Weather
+import ui.Navigator
+import ui.UiStatePanel
 import ui.component.PSButton
+import ui.component.PSIcon
 import ui.component.PSLabel
-import ui.extension.*
+import ui.extension.resizeIcon
+import ui.extension.setFont
 import ui.model.FontEnum
 import ui.model.UiState
 import java.awt.Color
-import javax.swing.*
+import javax.swing.ImageIcon
+import javax.swing.JPanel
 
 
 class AirPollutionPanelView(private val response: Weather, private val navigator: Navigator) :
     UiStatePanel() {
     private val airPollutionController = AirPollutionPanelController(
         CoroutineScope(Dispatchers.IO),
-       UseCaseProvider.pollutionUseCase()
+        UseCaseProvider.pollutionUseCase()
     )
     private val backgroundColor = if (response.icon.last() == 'd') Color(0xE5ECF4)
     else Color(0x1E1E1E)
@@ -95,7 +97,7 @@ class AirPollutionPanelView(private val response: Weather, private val navigator
             text = "${airPollutionData.amountOfCo}"
             foreground = foregroundColor
             setBounds(50, 350, 130, 30)
-            setFont(FontEnum.REGULAR,20)
+            setFont(FontEnum.REGULAR, 20)
         }
         dataPanel.add(coStatusAmount)
 
@@ -110,7 +112,7 @@ class AirPollutionPanelView(private val response: Weather, private val navigator
             text = "${airPollutionData.amountOfNo2}"
             foreground = foregroundColor
             setBounds(230, 350, 130, 30)
-            setFont(FontEnum.REGULAR,20)
+            setFont(FontEnum.REGULAR, 20)
         }
         dataPanel.add(no2StatusAmount)
 
@@ -126,7 +128,7 @@ class AirPollutionPanelView(private val response: Weather, private val navigator
             text = "${airPollutionData.amountOfNo}"
             foreground = foregroundColor
             setBounds(50, 400, 130, 30)
-            setFont(FontEnum.REGULAR,20)
+            setFont(FontEnum.REGULAR, 20)
         }
         dataPanel.add(noStatusAmount)
 
@@ -142,7 +144,7 @@ class AirPollutionPanelView(private val response: Weather, private val navigator
             text = "${airPollutionData.amountOfO3}"
             foreground = foregroundColor
             setBounds(230, 400, 130, 30)
-            setFont(FontEnum.REGULAR,20)
+            setFont(FontEnum.REGULAR, 20)
         }
         dataPanel.add(o3StatusAmount)
 

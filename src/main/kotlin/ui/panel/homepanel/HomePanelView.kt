@@ -3,11 +3,11 @@ package ui.panel.homepanel
 import model.Weather
 import ui.Navigator
 import ui.component.PSButton
-import ui.component.PSIcon
 import ui.component.PSLabel
-import ui.panel.mainPanel.MainPanelView
-import ui.extension.*
+import ui.extension.resizeIcon
+import ui.extension.setFont
 import ui.model.FontEnum
+import ui.panel.mainPanel.MainPanelView
 import java.awt.Color
 import javax.swing.ImageIcon
 import javax.swing.JLabel

@@ -11,16 +11,15 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
     implementation(project(":service"))
     implementation(project(":model"))
     implementation(kotlin("stdlib-jdk8"))
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.12.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    testImplementation(kotlin("test"))
+    testImplementation(platform(Deps.junit_bom))
+    testImplementation(Deps.junit_jupiter)
+    testImplementation(Deps.mockk)
+    testImplementation(Deps.coroutines_test)
 }
 
 tasks.test {

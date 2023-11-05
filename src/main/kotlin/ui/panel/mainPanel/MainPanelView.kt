@@ -7,11 +7,15 @@ import ui.component.PSButton
 import ui.component.PSHorizontalDivider
 import ui.component.PSIcon
 import ui.component.PSLabel
-import ui.extension.*
+import ui.extension.convertToCurrentHour
+import ui.extension.convertToDayOfWeek
+import ui.extension.resizeIcon
+import ui.extension.setFont
 import ui.model.FontEnum
 import ui.panel.airPollutionPanel.AirPollutionPanelView
-import java.awt.*
-import javax.swing.*
+import java.awt.Color
+import javax.swing.ImageIcon
+import javax.swing.JPanel
 
 
 class MainPanelView(response: Weather, navigator: Navigator) : JPanel() {
@@ -19,7 +23,7 @@ class MainPanelView(response: Weather, navigator: Navigator) : JPanel() {
     private var backgroundColor: Color
     private var foregroundColor: Color
     private var sunStatusText: String
-    private val mainPanelController =MainPanelController()
+    private val mainPanelController = MainPanelController()
 
     init {
         if (response.icon.last() == 'd') {

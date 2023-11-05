@@ -1,10 +1,10 @@
 package ui.panel.searchPanel
 
-import domain.GetWeatherBaseOnIpUseCase
 import domain.GetCityWeatherUseCase
-import model.Weather
+import domain.GetWeatherBaseOnIpUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import model.Weather
 import ui.model.UiState
 
 class SearchPanelController(

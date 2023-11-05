@@ -4,9 +4,9 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import model.City
-import org.junit.Test
 import service.response.LocationResponse
 import service.service.LocationService
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class LocationRepositoryImplTest {

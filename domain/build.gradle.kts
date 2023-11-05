@@ -11,14 +11,16 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+
     implementation(project(":model"))
     implementation(project(":data"))
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("test"))
-    testImplementation("io.mockk:mockk:1.12.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+
+    testImplementation(platform(Deps.junit_bom))
+    testImplementation(Deps.junit_jupiter)
+    testImplementation(Deps.mockk)
+    testImplementation(Deps.coroutines_test)
 
 }
 

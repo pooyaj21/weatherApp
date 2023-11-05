@@ -11,7 +11,13 @@ import java.util.*
 import javax.swing.ImageIcon
 
 class MainPanelController {
-    fun generateQRCode(url: String, width:Int, height:Int, backgroundColor:Color, foregroundColor:Color ): ImageIcon {
+    fun generateQRCode(
+        url: String,
+        width: Int,
+        height: Int,
+        backgroundColor: Color,
+        foregroundColor: Color
+    ): ImageIcon {
         val hints: MutableMap<EncodeHintType, Any> = EnumMap(EncodeHintType::class.java)
         hints[EncodeHintType.CHARACTER_SET] = "UTF-8"
         hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.H

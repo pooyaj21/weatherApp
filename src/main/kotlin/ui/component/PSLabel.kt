@@ -1,7 +1,7 @@
 package ui.component
 
-import ui.model.FontEnum
 import ui.extension.setFont
+import ui.model.FontEnum
 import javax.swing.JLabel
 
 open class PSLabel : JLabel() {

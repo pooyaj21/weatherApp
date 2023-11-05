@@ -2,9 +2,6 @@ package ui.panel.searchPanel
 
 
 import di.UseCaseProvider
-import domain.GetWeatherBaseOnIpUseCase
-import domain.GetCityWeatherUseCase
-import domain.GetIpUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import ui.Navigator
@@ -12,14 +9,15 @@ import ui.UiStatePanel
 import ui.component.PSButton
 import ui.component.PSLabel
 import ui.component.PSTextField
+import ui.extension.setFont
+import ui.model.FontEnum
 import ui.model.UiState
 import ui.panel.homepanel.HomePanelView
-import ui.extension.*
-import ui.model.FontEnum
 import java.awt.Color
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
-import javax.swing.*
+import javax.swing.ImageIcon
+import javax.swing.JPanel
 
 
 class SearchPanelView(navigator: Navigator) : UiStatePanel() {
