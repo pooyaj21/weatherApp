@@ -13,10 +13,9 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("test"))
 
-    testImplementation(platform(Deps.junit_bom))
-    testImplementation(Deps.junit_jupiter)
-    testImplementation(Deps.mockk)
-    testImplementation(Deps.coroutines_test)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.bundles.test)
+
 
 }
 

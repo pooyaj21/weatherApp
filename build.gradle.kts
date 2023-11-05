@@ -12,8 +12,8 @@ dependencies {
     implementation(project(":domain"))
     testImplementation(kotlin("test"))
     implementation(kotlin("reflect"))
-    implementation(Deps.coroutine)
-    implementation(Deps.zxing)
+    implementation(libs.coroutine)
+    implementation(libs.zxing)
 }
 
 tasks.test {

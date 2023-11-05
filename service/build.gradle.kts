@@ -12,18 +12,17 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("test"))
-    implementation(Deps.coroutine)
-    implementation(Deps.retrofit)
-    implementation(Deps.serialization_converter)
-    implementation(Deps.okHttp)
-    implementation(Deps.okHttp_logging)
-    implementation(Deps.gson)
-    implementation(Deps.serialization)
-    testImplementation(platform(Deps.junit_bom))
-    testImplementation(Deps.junit_jupiter)
-    testImplementation(Deps.mockwebserver)
-    testImplementation(Deps.mockk)
-    testImplementation(Deps.coroutines_test)
+    implementation(libs.coroutine)
+    implementation(libs.retrofit)
+    implementation(libs.serialization.converter)
+    implementation(libs.okHttp)
+    implementation(libs.okHttp.logging)
+    implementation(libs.gson)
+    implementation(libs.serialization)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.mockwebserver)
+
 
 }
 
