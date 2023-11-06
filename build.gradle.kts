@@ -1,10 +1,10 @@
 plugins {
     kotlin("jvm") version "1.9.0"
     application
+    id("VersionUpdatePlugin")
 }
 
 group = "org.example"
-version = "1.0-SNAPSHOT"
 
 
 dependencies {

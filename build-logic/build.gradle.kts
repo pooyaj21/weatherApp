@@ -24,6 +24,14 @@ gradlePlugin{
             id = "TestConvention"
             implementationClass ="com.TestConvention"
         }
+
+        register("VersionUpdatePlugin"){
+            id = "VersionUpdatePlugin"
+            implementationClass ="com.VersionUpdatePlugin"
+        }
+
     }
 }
+
+
 
