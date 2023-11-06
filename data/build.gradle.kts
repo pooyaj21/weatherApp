@@ -1,6 +1,7 @@
 plugins {
     id("java")
-    kotlin("jvm")
+    kotlin("jvm") version "1.9.0"
+    id("TestConvention")
 }
 
 group = "org.example"
@@ -11,11 +12,6 @@ dependencies {
     implementation(project(":service"))
     implementation(project(":model"))
     implementation(kotlin("stdlib-jdk8"))
-
-    testImplementation(kotlin("test"))
-    testImplementation(platform(libs.junit.bom))
-    testImplementation(libs.bundles.test)
-
 }
 
 tasks.test {

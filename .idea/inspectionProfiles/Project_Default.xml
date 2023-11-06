@@ -5,6 +5,10 @@
       <option name="excludeList">
         <list>
           <option value="com.google.code.gson:gson" />
+          <option value="io.mockk:mockk" />
+          <option value="org.jetbrains.kotlin:kotlin-stdlib-jdk8" />
+          <option value="org.jetbrains.kotlin:kotlin-test" />
+          <option value="com.squareup.okhttp3:mockwebserver" />
         </list>
       </option>
     </inspection_tool>
