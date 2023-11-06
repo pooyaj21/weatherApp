@@ -16,8 +16,10 @@ import ui.panel.homepanel.HomePanelView
 import java.awt.Color
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
+import java.io.File
 import javax.swing.ImageIcon
 import javax.swing.JPanel
+import javax.swing.border.LineBorder
 
 
 class SearchPanelView(navigator: Navigator) : UiStatePanel() {
@@ -129,6 +131,14 @@ class SearchPanelView(navigator: Navigator) : UiStatePanel() {
         }
         add(searchBox)
 
+        val versionFile = File("version.txt")
+        val version = PSLabel().apply {
+            setFont(FontEnum.SEMI_BOLD, 21)
+            text = "${versionFile.readText().toDoubleOrNull().toString()}V"
+            foreground = Color(0x1E1E1E)
+            setBounds(280, 570, 70, 50)
+        }
+        add(version)
 
         startedPanelController.callBack = {
             when (it) {

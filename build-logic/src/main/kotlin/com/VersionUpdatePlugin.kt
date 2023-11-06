@@ -6,11 +6,11 @@ import java.io.File
 
 class VersionUpdatePlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        val versionFile = project.file("assets/version.txt")
+        val versionFile = project.file("version.txt")
         val currentVersion = readVersionFromFile(versionFile) ?: 1.0
-        val updatedVersion = currentVersion + 0.1
+        val updatedVersion = String.format("%.1f",currentVersion+0.1)
 
-        project.version = updatedVersion.toString()
+        project.version = updatedVersion
 
         writeVersionToFile(updatedVersion, versionFile)
     }
@@ -23,7 +23,7 @@ class VersionUpdatePlugin : Plugin<Project> {
         }
     }
 
-    private fun writeVersionToFile(version: Double, file: File) {
-        file.writeText(version.toString())
+    private fun writeVersionToFile(version: String, file: File) {
+        file.writeText(version)
     }
 }
