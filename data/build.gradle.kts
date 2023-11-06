@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":service"))
     implementation(project(":model"))
     implementation(kotlin("stdlib-jdk8"))
+    implementation(libs.koin)
 }
 
 tasks.test {

@@ -19,6 +19,8 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.serialization)
     testImplementation(libs.mockwebserver)
+    implementation(libs.koin)
+
 }
 
 tasks.test {

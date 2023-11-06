@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":model"))
     implementation(project(":data"))
     implementation(kotlin("stdlib-jdk8"))
+    implementation(libs.koin)
 }
 
 tasks.test {
