@@ -1,6 +1,5 @@
 package domain
 
-import di.RepositoryProvider
 import model.Weather
 import repository.WeatherRepository
 

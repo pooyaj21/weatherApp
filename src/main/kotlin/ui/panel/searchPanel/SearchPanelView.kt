@@ -1,9 +1,14 @@
 package ui.panel.searchPanel
 
 
-import di.UseCaseProvider
+import domain.GetCityWeatherUseCase
+import domain.GetWeatherBaseOnIpUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 import ui.Navigator
 import ui.UiStatePanel
 import ui.component.PSButton
@@ -19,14 +24,16 @@ import java.awt.event.KeyListener
 import java.io.File
 import javax.swing.ImageIcon
 import javax.swing.JPanel
-import javax.swing.border.LineBorder
 
 
-class SearchPanelView(navigator: Navigator) : UiStatePanel() {
+class SearchPanelView(navigator: Navigator) : UiStatePanel(), KoinComponent {
+
+    private val getCityWeatherUseCaseImpl: GetCityWeatherUseCase = get()
+    private val getWeatherBaseOnIpUseCase: GetWeatherBaseOnIpUseCase =get()
     private val startedPanelController = SearchPanelController(
         CoroutineScope(Dispatchers.IO),
-        UseCaseProvider.cityWeatherUseCase(),
-        UseCaseProvider.ipWeatherUseCase()
+        getCityWeatherUseCaseImpl,
+        getWeatherBaseOnIpUseCase
     )
     private var visibilityChangeListener: ((Boolean) -> Unit)? = null
     private val searchBox = PSTextField().apply {

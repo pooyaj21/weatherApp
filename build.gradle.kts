@@ -14,6 +14,7 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation(libs.coroutine)
     implementation(libs.zxing)
+    implementation(libs.koin)
 }
 
 tasks.test {

@@ -1,10 +1,13 @@
 package ui.panel.airPollutionPanel
 
-import di.UseCaseProvider
+import domain.GetPollutionUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import model.Pollution
 import model.Weather
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
 import ui.Navigator
 import ui.UiStatePanel
 import ui.component.PSButton
@@ -20,11 +23,14 @@ import javax.swing.JPanel
 
 
 class AirPollutionPanelView(private val response: Weather, private val navigator: Navigator) :
-    UiStatePanel() {
+    UiStatePanel(), KoinComponent {
+    private val getWeatherPollutionUseCase: GetPollutionUseCase = get()
+
     private val airPollutionController = AirPollutionPanelController(
         CoroutineScope(Dispatchers.IO),
-        UseCaseProvider.pollutionUseCase()
+        getWeatherPollutionUseCase
     )
+
     private val backgroundColor = if (response.icon.last() == 'd') Color(0xE5ECF4)
     else Color(0x1E1E1E)
 
